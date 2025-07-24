@@ -1,0 +1,35 @@
+{
+  "jsc": {
+    "parser": {
+      "syntax": "typescript",
+      "tsx": true,
+      "decorators": false,
+      "dynamicImport": true
+    },
+    "transform": {
+      "react": {
+        "pragma": "React.createElement",
+        "pragmaFrag": "React.Fragment",
+        "throwIfNamespace": true,
+        "development": false,
+        "useBuiltins": false,
+        "runtime": "automatic"
+      }
+    },
+    "target": "es2017",
+    "loose": false,
+    "externalHelpers": false,
+    "keepClassNames": false
+  },
+  "module": {
+    "type": "es6",
+    "strict": false,
+    "strictMode": true,
+    "lazy": false,
+    "noInterop": false
+  },
+  "minify": false,
+  "isModule": true,
+  "sourceMaps": true,
+  "inlineSourcesContent": true
+}

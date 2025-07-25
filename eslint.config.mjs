@@ -28,7 +28,7 @@ const eslintConfig = [
       'react/no-unescaped-entities': 'off',
 
       // General code quality rules
-      'no-console': 'warn',
+      'no-console': 'off',
       'no-debugger': 'error',
       'no-duplicate-imports': 'error',
       'no-unused-expressions': 'error',

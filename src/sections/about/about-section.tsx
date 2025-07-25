@@ -1,10 +1,14 @@
-'use client';
-
 import { BlurFade } from '@/components/animations/blur-fade';
 
-import { aboutData } from './about-data';
+import { getAboutData } from '@/lib/actions/data-fetching';
 
-export function AboutSection() {
+export async function AboutSection() {
+  const aboutData = await getAboutData();
+
+  if (!aboutData) {
+    return null;
+  }
+
   const replacePlaceholders = (text: string) => {
     return text
       .replace('{name}', aboutData.name)

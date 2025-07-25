@@ -1,9 +1,13 @@
-'use client';
+import { getContactData } from '@/lib/actions/data-fetching';
 
-import { contactData } from './contact-data';
 import { ContactForm } from './contact-form';
 
-export function ContactSection() {
+export async function ContactSection() {
+  const contactData = await getContactData();
+
+  if (!contactData) {
+    return null;
+  }
   return (
     <section className='py-26 flex items-center justify-center p-4 relative overflow-hidden'>
       <div className='w-full max-w-7xl relative z-10 overflow-hidden'>

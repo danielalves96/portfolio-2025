@@ -1,10 +1,16 @@
 import { BlurFade } from '@/components/animations/blur-fade';
 import { TextAnimate } from '@/components/animations/text-animate';
 
-import { heroData } from './hero-data';
+import { getHeroData } from '@/lib/actions/data-fetching';
+
 import { SocialLinks } from './social-links';
 
-export function HeroQuote() {
+export async function HeroQuote() {
+  const heroData = await getHeroData();
+
+  if (!heroData) {
+    return null;
+  }
   return (
     <div className='flex-1 space-y-6 text-center lg:text-right'>
       <div className='space-y-4'>
@@ -15,7 +21,7 @@ export function HeroQuote() {
             delay={1}
             triggerOnce
           >
-            {'"' + heroData.quote.text[0]}
+            {'"' + heroData.quoteText[0]}
           </TextAnimate>
           <span className='block'>
             <span className='inline-flex items-center space-x-2'>
@@ -36,7 +42,7 @@ export function HeroQuote() {
               delay={1.4}
               triggerOnce
             >
-              {String(heroData.quote.text[1])}
+              {String(heroData.quoteText[1])}
             </TextAnimate>
           </span>
           <TextAnimate
@@ -46,7 +52,7 @@ export function HeroQuote() {
             triggerOnce
             className='block'
           >
-            {heroData.quote.text[2] + '"'}
+            {heroData.quoteText[2] + '"'}
           </TextAnimate>
         </blockquote>
         <BlurFade inView={true} delay={1.8}>

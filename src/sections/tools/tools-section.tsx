@@ -1,10 +1,14 @@
-'use client';
+import { getToolsData } from '@/lib/actions/data-fetching';
 
 import { ToolItem } from './tool-item';
-import { toolsData } from './tools-data';
 import { ToolsHeader } from './tools-header';
 
-export function ToolsSection() {
+export async function ToolsSection() {
+  const toolsData = await getToolsData();
+
+  if (!toolsData) {
+    return null;
+  }
   return (
     <section className='w-full bg-background pt-16 pb-30 px-4'>
       <div className='max-w-7xl mx-auto'>

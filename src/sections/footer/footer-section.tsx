@@ -2,21 +2,24 @@ import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
 
+import { getFooterData } from '@/lib/actions/data-fetching';
+
 import { FooterCopyright } from './footer-copyright';
-import { footerData } from './footer-data';
 import { FooterNavigation } from './footer-navigation';
 
-export function FooterSection() {
+export async function FooterSection() {
+  const footerData = await getFooterData();
+
+  if (!footerData) {
+    return null;
+  }
   return (
     <section className='border-t'>
       <footer className='max-w-7xl mx-auto pt-16 pb-8'>
         <div className='flex flex-col items-center space-y-8'>
           <h1 className='text-6xl md:text-9xl font-normal text-center'>
             Let
-            <span className='text-orange-500'>
-              {footerData.title.highlightChar}
-            </span>
-            s Work
+            <span className='text-orange-500'>'</span>s Work
           </h1>
           <div className='mt-6'>
             <Button
@@ -25,8 +28,8 @@ export function FooterSection() {
               className='border-orange-500 hover:bg-orange-500 hover:text-orange-500-foreground transition-colors'
               asChild
             >
-              <Link href={`mailto:${footerData.contact.email}`}>
-                {footerData.contact.email}
+              <Link href='mailto:paolatoliveira@gmail.com'>
+                paolatoliveira@gmail.com
               </Link>
             </Button>
           </div>

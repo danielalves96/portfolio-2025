@@ -1,9 +1,14 @@
-'use client';
+import { getSkillsData } from '@/lib/actions/data-fetching';
 
 import { SkillItem } from './skill-item';
-import { skills } from './skills-data';
 
-export function SkillsCarousel() {
+export async function SkillsCarousel() {
+  const skills = await getSkillsData();
+
+  if (!skills || skills.length === 0) {
+    return null;
+  }
+
   const duplicatedSkills = Array(50).fill(skills).flat();
 
   return (

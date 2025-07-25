@@ -1,10 +1,13 @@
-'use client';
-
 import Link from 'next/link';
 
-import { footerData } from './footer-data';
+import { getFooterData } from '@/lib/actions/data-fetching';
 
-export function FooterNavigation() {
+export async function FooterNavigation() {
+  const footerData = await getFooterData();
+
+  if (!footerData) {
+    return null;
+  }
   return (
     <nav className='flex justify-center items-center gap-6 text-sm'>
       {footerData.navigation.map(link => (

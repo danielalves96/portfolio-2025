@@ -4,7 +4,11 @@ import Image from 'next/image';
 
 import { BlurFade } from '@/components/animations/blur-fade';
 
-import { Tool } from './tools-data';
+interface Tool {
+  id: number;
+  name: string;
+  image: string;
+}
 
 interface ToolItemProps {
   tool: Tool;
@@ -18,7 +22,7 @@ export function ToolItem({ tool, index }: ToolItemProps) {
         {/* Tool Icon */}
         <div className='relative w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 mb-3 group-hover:scale-105 transition-transform duration-300'>
           <Image
-            src={tool.icon}
+            src={tool.image}
             alt={tool.name}
             fill
             className='object-contain filter group-hover:brightness-110 group-hover:drop-shadow-lg transition-all duration-300'

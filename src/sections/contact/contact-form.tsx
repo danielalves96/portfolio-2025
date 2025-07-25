@@ -9,7 +9,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 
-import { ContactFormData, contactSchema } from './contact-validation';
+import { type ContactFormData, sendEmail } from '@/lib/actions/send-email';
+
+import { contactSchema } from './contact-validation';
 
 interface ContactFormProps {
   onSubmitSuccess?: () => void;
@@ -51,19 +53,13 @@ export function ContactForm({
 
     try {
       const validatedData = contactSchema.parse(formData);
+      const result = await sendEmail(validatedData);
 
-      const response = await fetch('/api/send', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(validatedData),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Erro ao enviar mensagem');
+      if (!result.success) {
+        if (result.fieldErrors) {
+          setErrors(result.fieldErrors);
+        }
+        throw new Error(result.error || 'Erro ao enviar mensagem');
       }
 
       // Reset form after successful submission

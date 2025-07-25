@@ -24,14 +24,25 @@ export function ProjectInfo({ project }: ProjectInfoProps) {
           <p className='text-gray-600 dark:text-gray-400 text-sm mb-2'>
             Categorias
           </p>
-          <p className='text-black dark:text-white text-lg'>
+          <p className='text-gray-700 dark:text-gray-300 text-sm'>
             {project.category.join(' | ')}
           </p>
         </div>
         <div>
           <p className='text-gray-600 dark:text-gray-400 text-sm mb-2'>Ano</p>
-          <p className='text-black dark:text-white text-lg'>{project.year}</p>
+          <p className='text-gray-700 dark:text-gray-300 text-sm'>
+            {project.year}
+          </p>
         </div>
+      </div>
+
+      <div>
+        <p className='text-gray-600 dark:text-gray-400 text-sm mb-2'>
+          O que realizei
+        </p>
+        <p className='text-gray-700 dark:text-gray-300 text-sm leading-relaxed'>
+          {project.whatIAccomplished}
+        </p>
       </div>
     </div>
   );

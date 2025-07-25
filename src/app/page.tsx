@@ -1,5 +1,3 @@
-import { ThemeToggle } from '@/components/common/theme-toggle';
-
 import { AboutSection } from '@/sections/about/about-section';
 import { ContactSection } from '@/sections/contact/contact-section';
 import { FooterSection } from '@/sections/footer/footer-section';
@@ -13,9 +11,6 @@ import { ToolsSection } from '@/sections/tools/tools-section';
 export default function Home() {
   return (
     <div>
-      <header className='fixed top-4 right-4 z-10'>
-        <ThemeToggle />
-      </header>
       <HeroSection />
       <SkillsCarousel />
       <div id='about'>

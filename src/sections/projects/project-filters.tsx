@@ -12,7 +12,7 @@ export function ProjectFilters({
   onFilterChange,
 }: ProjectFiltersProps) {
   return (
-    <div className='flex justify-center gap-4 mt-8'>
+    <div className='flex justify-center gap-4 mb-8'>
       {filters.map(filter => (
         <button
           key={filter}

@@ -9,7 +9,7 @@ import { FooterNavigation } from './footer-navigation';
 export function FooterSection() {
   return (
     <section className='border-t'>
-      <footer className='max-w-7xl mx-auto py-16'>
+      <footer className='max-w-7xl mx-auto pt-16 pb-8'>
         <div className='flex flex-col items-center space-y-8'>
           <h1 className='text-6xl md:text-9xl font-normal text-center'>
             Let

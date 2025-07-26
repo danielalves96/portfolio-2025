@@ -27,19 +27,16 @@ import { toast } from 'sonner';
 import { IconSelector } from '@/components/admin/icon-selector';
 import { Button } from '@/components/ui/button';
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { EmptyState } from '@/components/ui/empty-state';
+import { FormField } from '@/components/ui/form-field';
+import { FormSectionGrid } from '@/components/ui/form-section';
+import { SkeletonCard } from '@/components/ui/skeleton';
 
 import { useModal } from '@/hooks/use-modal';
 import {
@@ -183,21 +180,15 @@ export default function SocialAdmin() {
   if (isLoading) {
     return (
       <div className='space-y-6'>
-        <Card>
-          <CardHeader>
-            <div className='h-6 bg-muted animate-pulse rounded' />
-            <div className='h-4 bg-muted animate-pulse rounded w-2/3' />
-          </CardHeader>
-        </Card>
+        <SkeletonCard showImage={false} showActions={false} textLines={2} />
         <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3'>
           {[...Array(6)].map((_, i) => (
-            <Card key={i}>
-              <CardContent className='p-4'>
-                <div className='h-32 bg-muted animate-pulse rounded mb-3' />
-                <div className='h-4 bg-muted animate-pulse rounded mb-2' />
-                <div className='h-3 bg-muted animate-pulse rounded' />
-              </CardContent>
-            </Card>
+            <SkeletonCard
+              key={i}
+              showImage={true}
+              showActions={true}
+              textLines={2}
+            />
           ))}
         </div>
       </div>
@@ -207,108 +198,109 @@ export default function SocialAdmin() {
   return (
     <div className='space-y-6'>
       {/* Header */}
-      <Card>
-        <CardHeader>
-          <div className='flex items-center justify-between'>
-            <div>
-              <CardTitle className='flex items-center gap-2'>
-                <Edit3 className='h-5 w-5' />
-                Redes Sociais ({socialItems.length})
-              </CardTitle>
-              <CardDescription>
-                Gerencie os perfis e links das redes sociais
-              </CardDescription>
-            </div>
-            <Button onClick={() => modal.openModal()}>
-              <Plus className='h-4 w-4 mr-2' />
-              Nova Rede Social
-            </Button>
-          </div>
-        </CardHeader>
-      </Card>
+      <div className='flex items-center justify-between p-6 bg-card rounded-lg border'>
+        <div>
+          <h2 className='text-xl font-semibold flex items-center gap-2'>
+            <Edit3 className='h-5 w-5' />
+            Redes Sociais ({socialItems.length})
+          </h2>
+          <p className='text-sm text-muted-foreground mt-1'>
+            Gerencie os perfis e links das redes sociais
+          </p>
+        </div>
+        <Button onClick={() => modal.openModal()}>
+          <Plus className='h-4 w-4 mr-2' />
+          Nova Rede Social
+        </Button>
+      </div>
 
       {/* Social Items Grid */}
-      <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
-        {socialItems.map(item => (
-          <Card
-            key={item.id}
-            className='group hover:shadow-lg transition-shadow'
-          >
-            <CardContent className='p-4'>
-              {/* Icon */}
-              <div className='aspect-square bg-muted rounded-lg flex items-center justify-center mb-4 overflow-hidden relative'>
-                {item.image ? (
-                  <div className='text-6xl text-orange-500'>
-                    {renderIcon(item.image)}
-                  </div>
-                ) : (
-                  <div className='h-12 w-12 bg-muted-foreground/20 rounded-full flex items-center justify-center'>
-                    <span className='text-xs'>?</span>
-                  </div>
-                )}
-              </div>
-
-              {/* Content */}
-              <div className='space-y-3'>
-                <div className='flex items-start justify-between'>
-                  <div className='space-y-1 flex-1'>
-                    <h3 className='font-medium line-clamp-1'>{item.name}</h3>
-                    <p className='text-sm text-muted-foreground line-clamp-2'>
-                      {item.description}
-                    </p>
-                  </div>
-                  <div className='flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity ml-2'>
-                    <Button
-                      variant='outline'
-                      size='sm'
-                      onClick={() => modal.openModal(item)}
-                    >
-                      <Edit3 className='h-3 w-3' />
-                    </Button>
-                    <Button
-                      variant='outline'
-                      size='sm'
-                      onClick={() => handleDelete(item.id)}
-                    >
-                      <Trash2 className='h-3 w-3' />
-                    </Button>
-                  </div>
+      {socialItems.length === 0 ? (
+        <EmptyState
+          icon={Edit3}
+          title='Nenhuma rede social encontrada'
+          description='Adicione perfis das redes sociais para exibir na seção social'
+          action={{
+            label: 'Criar Primeira Rede Social',
+            onClick: () => modal.openModal(),
+            icon: Plus,
+          }}
+          variant='card'
+        />
+      ) : (
+        <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
+          {socialItems.map(item => {
+            return (
+              <div
+                key={item.id}
+                className='group hover:shadow-lg transition-shadow p-4 border rounded-lg bg-card cursor-pointer'
+                onClick={() => modal.openModal(item)}
+              >
+                {/* Custom icon display */}
+                <div className='aspect-square bg-muted rounded-lg flex items-center justify-center mb-4 overflow-hidden relative'>
+                  {item.image ? (
+                    <div className='text-6xl text-orange-500'>
+                      {renderIcon(item.image)}
+                    </div>
+                  ) : (
+                    <div className='h-12 w-12 bg-muted-foreground/20 rounded-full flex items-center justify-center'>
+                      <span className='text-xs'>?</span>
+                    </div>
+                  )}
                 </div>
 
-                {/* URL */}
-                <div className='pt-2 border-t'>
-                  <a
-                    href={item.url}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    className='flex items-center gap-2 text-sm text-primary hover:underline'
-                  >
-                    <ExternalLink className='h-3 w-3' />
-                    <span className='truncate'>{item.url}</span>
-                  </a>
+                {/* Content */}
+                <div className='space-y-3'>
+                  <div className='flex items-start justify-between'>
+                    <div className='space-y-1 flex-1'>
+                      <h3 className='font-medium line-clamp-1'>{item.name}</h3>
+                      <p className='text-sm text-muted-foreground line-clamp-2'>
+                        {item.description}
+                      </p>
+                    </div>
+                    <div className='flex items-center gap-1 ml-2'>
+                      <Button
+                        variant='outline'
+                        size='sm'
+                        onClick={e => {
+                          e.stopPropagation();
+                          modal.openModal(item);
+                        }}
+                      >
+                        <Edit3 className='h-3 w-3' />
+                      </Button>
+                      <Button
+                        variant='outline'
+                        size='sm'
+                        onClick={e => {
+                          e.stopPropagation();
+                          handleDelete(item.id);
+                        }}
+                      >
+                        <Trash2 className='h-3 w-3' />
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* URL */}
+                  <div className='pt-2 border-t'>
+                    <a
+                      href={item.url}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                      className='flex items-center gap-2 text-sm text-primary hover:underline'
+                      onClick={e => e.stopPropagation()}
+                    >
+                      <ExternalLink className='h-3 w-3' />
+                      <span className='truncate'>{item.url}</span>
+                    </a>
+                  </div>
                 </div>
               </div>
-            </CardContent>
-          </Card>
-        ))}
-
-        {socialItems.length === 0 && (
-          <div className='col-span-full'>
-            <Card>
-              <CardContent className='text-center py-12'>
-                <Edit3 className='h-12 w-12 mx-auto mb-4 opacity-50' />
-                <p className='text-muted-foreground mb-4'>
-                  Nenhuma rede social encontrada
-                </p>
-                <Button onClick={() => modal.openModal()}>
-                  <Plus className='h-4 w-4 mr-2' />
-                  Criar Primeira Rede Social
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        )}
-      </div>
+            );
+          })}
+        </div>
+      )}
 
       {/* Dialog Modal */}
       <Dialog open={modal.isOpen} onOpenChange={modal.closeModal}>
@@ -324,81 +316,72 @@ export default function SocialAdmin() {
             </DialogDescription>
           </DialogHeader>
 
-          <form onSubmit={handleSave} className='space-y-4'>
-            <div className='space-y-4'>
-              <div className='grid md:grid-cols-2 gap-4'>
-                <div className='space-y-2'>
-                  <label htmlFor='name' className='text-sm font-medium'>
-                    Nome da Rede Social
-                  </label>
-                  <input
-                    id='name'
-                    name='name'
-                    type='text'
-                    value={formData.name}
-                    onChange={e =>
-                      setFormData({ ...formData, name: e.target.value })
-                    }
-                    className='w-full px-3 py-2 border border-border rounded-md bg-background'
-                    placeholder='Ex: Instagram, Dribbble, Behance...'
-                    required
-                  />
-                </div>
-
-                <div className='space-y-2'>
-                  <label htmlFor='url' className='text-sm font-medium'>
-                    URL do Perfil
-                  </label>
-                  <input
-                    id='url'
-                    name='url'
-                    type='url'
-                    value={formData.url}
-                    onChange={e =>
-                      setFormData({ ...formData, url: e.target.value })
-                    }
-                    className='w-full px-3 py-2 border border-border rounded-md bg-background'
-                    placeholder='https://instagram.com/seu-perfil'
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className='space-y-2'>
-                <label htmlFor='description' className='text-sm font-medium'>
-                  Descrição
-                </label>
-                <textarea
-                  id='description'
-                  name='description'
-                  rows={3}
-                  value={formData.description}
+          <form onSubmit={handleSave} className='space-y-6'>
+            <FormSectionGrid columns={2} gap='md'>
+              <FormField
+                label='Nome da Rede Social'
+                description='Nome da plataforma social'
+                required
+              >
+                <input
+                  type='text'
+                  value={formData.name}
                   onChange={e =>
-                    setFormData({ ...formData, description: e.target.value })
+                    setFormData({ ...formData, name: e.target.value })
                   }
-                  className='w-full px-3 py-2 border border-border rounded-md bg-background resize-none'
-                  placeholder='Descreva o conteúdo desta rede social...'
+                  className='w-full px-3 py-2 border border-border rounded-md bg-background'
+                  placeholder='Ex: Instagram, Dribbble, Behance...'
                   required
                 />
-              </div>
+              </FormField>
 
-              <div className='space-y-2 flex flex-col'>
-                <label htmlFor='iconName' className='text-sm font-medium mr-4'>
-                  Ícone
-                </label>
-                <div className='w-fit'>
-                  <IconSelector
-                    value={formData.iconName}
-                    onChange={iconName => {
-                      setFormData({ ...formData, iconName });
-                    }}
-                  />
-                </div>
-                <p className='text-xs text-muted-foreground'>
-                  Ícone representativo da rede social
-                </p>
-              </div>
-            </div>
+              <FormField
+                label='URL do Perfil'
+                description='Link completo para o perfil'
+                required
+              >
+                <input
+                  type='url'
+                  value={formData.url}
+                  onChange={e =>
+                    setFormData({ ...formData, url: e.target.value })
+                  }
+                  className='w-full px-3 py-2 border border-border rounded-md bg-background'
+                  placeholder='https://instagram.com/seu-perfil'
+                  required
+                />
+              </FormField>
+            </FormSectionGrid>
+
+            <FormField
+              label='Descrição'
+              description='Descrição do conteúdo desta rede social'
+              required
+            >
+              <textarea
+                rows={3}
+                value={formData.description}
+                onChange={e =>
+                  setFormData({ ...formData, description: e.target.value })
+                }
+                className='w-full px-3 py-2 border border-border rounded-md bg-background resize-none'
+                placeholder='Descreva o conteúdo desta rede social...'
+                required
+              />
+            </FormField>
+
+            <FormField
+              label='Ícone'
+              description='Ícone representativo da rede social'
+              required
+            >
+              <IconSelector
+                value={formData.iconName}
+                onChange={iconName => {
+                  setFormData({ ...formData, iconName });
+                }}
+              />
+            </FormField>
 
             <div className='flex justify-end gap-2 pt-4 border-t'>
               <Button

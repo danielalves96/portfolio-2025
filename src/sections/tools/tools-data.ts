@@ -2,6 +2,7 @@ export interface Tool {
   id: number;
   name: string;
   icon: string;
+  iconComponent?: string; // Para ícones do React Icons
 }
 
 export interface ToolsData {
@@ -19,46 +20,55 @@ export const toolsData: ToolsData = {
       id: 1,
       name: 'Figma',
       icon: '/tools/figma.svg',
+      iconComponent: 'SiFigma',
     },
     {
       id: 2,
       name: 'Sketch',
       icon: '/tools/sketch.svg',
+      iconComponent: 'SiSketch',
     },
     {
       id: 3,
       name: 'Adobe Photoshop',
       icon: '/tools/adobe-photoshop.svg',
+      iconComponent: 'SiAdobephotoshop',
     },
     {
       id: 4,
       name: 'Adobe XD',
       icon: '/tools/adobe-xd.svg',
+      iconComponent: 'SiAdobexd',
     },
     {
       id: 5,
       name: 'Adobe Creative Suite',
       icon: '/tools/adobe-icon.svg',
+      iconComponent: 'SiAdobe',
     },
     {
       id: 6,
       name: 'Miro',
       icon: '/tools/miro-icon.svg',
+      iconComponent: 'SiMiro',
     },
     {
       id: 7,
       name: 'Notion',
       icon: '/tools/notion-icon.svg',
+      iconComponent: 'SiNotion',
     },
     {
       id: 8,
       name: 'Trello',
       icon: '/tools/trello.svg',
+      iconComponent: 'SiTrello',
     },
     {
       id: 9,
       name: 'Atlassian',
       icon: '/tools/atlassian.svg',
+      iconComponent: 'SiAtlassian',
     },
   ],
 };

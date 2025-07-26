@@ -8,7 +8,6 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import {
   Card,
-  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
@@ -20,6 +19,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { SkillsEmptyState } from '@/components/ui/empty-state';
+import { ContentListItem } from '@/components/ui/enhanced-card';
+import { SkeletonList } from '@/components/ui/skeleton';
 
 import { useModal } from '@/hooks/use-modal';
 import {
@@ -115,15 +117,17 @@ export default function SkillsAdmin() {
 
   if (isLoading) {
     return (
-      <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
-        {[...Array(8)].map((_, i) => (
-          <Card key={i}>
-            <CardContent className='p-4'>
-              <div className='h-16 bg-muted animate-pulse rounded mb-2' />
-              <div className='h-4 bg-muted animate-pulse rounded' />
-            </CardContent>
-          </Card>
-        ))}
+      <div className='space-y-6'>
+        {/* Header skeleton */}
+        <Card>
+          <CardHeader>
+            <div className='h-6 bg-muted animate-pulse rounded w-1/3' />
+            <div className='h-4 bg-muted animate-pulse rounded w-1/2' />
+          </CardHeader>
+        </Card>
+
+        {/* Skills skeleton */}
+        <SkeletonList items={8} showAvatar={false} showActions={true} />
       </div>
     );
   }
@@ -151,55 +155,42 @@ export default function SkillsAdmin() {
         </CardHeader>
       </Card>
 
-      {/* Skills Grid */}
-      <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
-        {skills.map(skill => (
-          <Card
-            key={skill.id}
-            className='group hover:shadow-lg transition-shadow'
-          >
-            <CardContent className='p-4'>
-              {/* Name */}
-              <div className='flex items-center justify-between'>
-                <h3 className='font-medium text-lg'>{skill.name}</h3>
-                <div className='flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity'>
-                  <Button
-                    variant='outline'
-                    size='sm'
-                    onClick={() => modal.openModal(skill)}
-                  >
-                    <Edit3 className='h-3 w-3' />
-                  </Button>
-                  <Button
-                    variant='outline'
-                    size='sm'
-                    onClick={() => handleDelete(skill.id)}
-                  >
-                    <Trash2 className='h-3 w-3' />
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+      {/* Skills List */}
+      {skills.length === 0 ? (
+        <SkillsEmptyState
+          onCreateSkill={() => modal.openModal()}
+          variant='card'
+        />
+      ) : (
+        <div className='space-y-2'>
+          {skills.map(skill => {
+            // Prepare actions for the list item
+            const actions = [
+              {
+                label: 'Editar',
+                onClick: () => modal.openModal(skill),
+                icon: Edit3,
+              },
+              {
+                label: 'Excluir',
+                onClick: () => handleDelete(skill.id),
+                icon: Trash2,
+                variant: 'destructive' as const,
+              },
+            ];
 
-        {skills.length === 0 && (
-          <div className='col-span-full'>
-            <Card>
-              <CardContent className='text-center py-12'>
-                <Edit3 className='h-12 w-12 mx-auto mb-4 opacity-50' />
-                <p className='text-muted-foreground mb-4'>
-                  Nenhuma habilidade encontrada
-                </p>
-                <Button onClick={() => modal.openModal()}>
-                  <Plus className='h-4 w-4 mr-2' />
-                  Criar Primeira Habilidade
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        )}
-      </div>
+            return (
+              <ContentListItem
+                key={skill.id}
+                title={skill.name}
+                actions={actions}
+                compact={true}
+                onCardClick={() => modal.openModal(skill)}
+              />
+            );
+          })}
+        </div>
+      )}
 
       {/* Dialog Modal */}
       <Dialog open={modal.isOpen} onOpenChange={modal.closeModal}>

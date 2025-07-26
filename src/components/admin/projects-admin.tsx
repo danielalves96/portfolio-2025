@@ -2,17 +2,13 @@
 
 import { useEffect, useState } from 'react';
 
-import Image from 'next/image';
-
-import { Edit3, ExternalLink, Eye, Plus, Trash2 } from 'lucide-react';
+import { Calendar, Edit3, Plus, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { ImageUpload } from '@/components/admin/image-upload';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Card,
-  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
@@ -24,6 +20,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { ProjectsEmptyState } from '@/components/ui/empty-state';
+import { ContentCard } from '@/components/ui/enhanced-card';
+import { SkeletonCard } from '@/components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 import { useModal } from '@/hooks/use-modal';
@@ -192,17 +191,20 @@ export default function ProjectsAdmin() {
   if (isLoading) {
     return (
       <div className='space-y-6'>
-        {[...Array(3)].map((_, i) => (
-          <Card key={i}>
-            <CardHeader>
-              <div className='h-6 bg-muted animate-pulse rounded' />
-              <div className='h-4 bg-muted animate-pulse rounded w-2/3' />
-            </CardHeader>
-            <CardContent>
-              <div className='h-32 bg-muted animate-pulse rounded' />
-            </CardContent>
-          </Card>
-        ))}
+        {/* Header skeleton */}
+        <SkeletonCard showImage={false} showActions={false} textLines={1} />
+
+        {/* Projects skeleton */}
+        <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
+          {[...Array(6)].map((_, i) => (
+            <SkeletonCard
+              key={i}
+              showImage={true}
+              showActions={true}
+              textLines={2}
+            />
+          ))}
+        </div>
       </div>
     );
   }
@@ -230,152 +232,63 @@ export default function ProjectsAdmin() {
         </CardHeader>
       </Card>
 
-      {/* Projects List */}
-      <div className='grid gap-6'>
-        {projects.map(project => (
-          <Card key={project.id}>
-            <CardHeader>
-              <div className='flex items-start justify-between'>
-                <div className='space-y-2'>
-                  <CardTitle className='flex items-center gap-2'>
-                    {project.title}
-                    <Badge variant='outline'>{project.year}</Badge>
-                  </CardTitle>
-                  <CardDescription className='max-w-2xl'>
-                    {project.description}
-                  </CardDescription>
-                  <div className='flex flex-wrap gap-1'>
-                    {project.tag.map(tag => (
-                      <Badge key={tag} variant='secondary' className='text-xs'>
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-                <div className='flex items-center gap-2'>
-                  <Button
-                    variant='outline'
-                    size='sm'
-                    onClick={() => modal.openModal(project)}
-                  >
-                    <Edit3 className='h-4 w-4' />
-                  </Button>
-                  <Button
-                    variant='outline'
-                    size='sm'
-                    onClick={() => handleDelete(project.id)}
-                  >
-                    <Trash2 className='h-4 w-4' />
-                  </Button>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className='grid md:grid-cols-3 gap-4'>
-                <div className='space-y-2'>
-                  <label className='text-sm font-medium'>Imagem</label>
-                  <div className='aspect-video bg-muted rounded-lg flex items-center justify-center relative'>
-                    {project.image ? (
-                      <Image
-                        src={project.image}
-                        alt={project.title}
-                        fill
-                        className='object-cover rounded-lg'
-                      />
-                    ) : (
-                      <Eye className='h-8 w-8 text-muted-foreground' />
-                    )}
-                  </div>
-                </div>
-                <div className='space-y-3'>
-                  <div>
-                    <label className='text-sm font-medium'>Categorias</label>
-                    <div className='flex flex-wrap gap-1 mt-1'>
-                      {project.category.map(cat => (
-                        <Badge key={cat} variant='outline' className='text-xs'>
-                          {cat}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <label className='text-sm font-medium'>
-                      O que realizei
-                    </label>
-                    <p className='text-sm text-muted-foreground mt-1'>
-                      {project.whatIAccomplished.substring(0, 100)}...
-                    </p>
-                  </div>
-                </div>
-                <div className='space-y-2'>
-                  <label className='text-sm font-medium'>Links</label>
-                  <div className='space-y-1'>
-                    {project.figmaMobile && (
-                      <a
-                        href={project.figmaMobile}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                        className='flex items-center gap-2 text-sm text-primary hover:underline'
-                      >
-                        <ExternalLink className='h-3 w-3' />
-                        Figma Mobile
-                      </a>
-                    )}
-                    {project.figmaDesktop && (
-                      <a
-                        href={project.figmaDesktop}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                        className='flex items-center gap-2 text-sm text-primary hover:underline'
-                      >
-                        <ExternalLink className='h-3 w-3' />
-                        Figma Desktop
-                      </a>
-                    )}
-                    {project.dribbbleUrl && (
-                      <a
-                        href={project.dribbbleUrl}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                        className='flex items-center gap-2 text-sm text-primary hover:underline'
-                      >
-                        <ExternalLink className='h-3 w-3' />
-                        Dribbble
-                      </a>
-                    )}
-                    {project.behanceUrl && (
-                      <a
-                        href={project.behanceUrl}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                        className='flex items-center gap-2 text-sm text-primary hover:underline'
-                      >
-                        <ExternalLink className='h-3 w-3' />
-                        Behance
-                      </a>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+      {/* Projects Grid */}
+      {projects.length === 0 ? (
+        <ProjectsEmptyState
+          onCreateProject={() => modal.openModal()}
+          variant='card'
+        />
+      ) : (
+        <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
+          {projects.map(project => {
+            // Prepare metadata for the card
+            const metadata = [
+              {
+                label: 'Ano',
+                value: project.year,
+                icon: Calendar,
+              },
+              {
+                label: 'Categorias',
+                value:
+                  project.category.length > 0
+                    ? project.category.join(', ')
+                    : 'Nenhuma',
+              },
+            ];
 
-        {projects.length === 0 && (
-          <Card>
-            <CardContent className='text-center py-12'>
-              <Edit3 className='h-12 w-12 mx-auto mb-4 opacity-50' />
-              <p className='text-muted-foreground mb-4'>
-                Nenhum projeto encontrado
-              </p>
-              <Button onClick={() => modal.openModal()}>
-                <Plus className='h-4 w-4 mr-2' />
-                Criar Primeiro Projeto
-              </Button>
-            </CardContent>
-          </Card>
-        )}
-      </div>
+            // Prepare actions for the card
+            const actions = [
+              {
+                label: 'Editar',
+                onClick: () => modal.openModal(project),
+                icon: Edit3,
+              },
+              {
+                label: 'Excluir',
+                onClick: () => handleDelete(project.id),
+                icon: Trash2,
+                variant: 'destructive' as const,
+              },
+            ];
+
+            return (
+              <ContentCard
+                key={project.id}
+                title={project.title}
+                description={project.description}
+                image={project.image}
+                imageAlt={project.title}
+                tags={project.tag}
+                metadata={metadata}
+                actions={actions}
+                layout='featured'
+                onCardClick={() => modal.openModal(project)}
+              />
+            );
+          })}
+        </div>
+      )}
 
       {/* Dialog Modal */}
       <Dialog open={modal.isOpen} onOpenChange={modal.closeModal}>

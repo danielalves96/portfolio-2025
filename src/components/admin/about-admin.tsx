@@ -6,13 +6,9 @@ import { Edit3, Plus, Save, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { FormField } from '@/components/ui/form-field';
+import { FormSection, FormSectionGrid } from '@/components/ui/form-section';
+import { SkeletonCard } from '@/components/ui/skeleton';
 
 import { updateAboutData } from '@/lib/actions/admin-actions';
 import { getAboutData } from '@/lib/actions/data-fetching';
@@ -65,7 +61,7 @@ export default function AboutAdmin() {
   const loadData = async () => {
     try {
       const data = await getAboutData();
-      setAboutData(data);
+      setAboutData(data || null);
     } catch (error) {
       console.error('Error loading about data:', error);
     } finally {
@@ -122,45 +118,28 @@ export default function AboutAdmin() {
   };
 
   if (isLoading) {
-    return (
-      <Card>
-        <CardHeader>
-          <div className='h-6 bg-muted animate-pulse rounded' />
-          <div className='h-4 bg-muted animate-pulse rounded w-2/3' />
-        </CardHeader>
-        <CardContent>
-          <div className='space-y-4'>
-            {[...Array(4)].map((_, i) => (
-              <div key={i} className='h-10 bg-muted animate-pulse rounded' />
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-    );
+    return <SkeletonCard showImage={false} showActions={false} textLines={3} />;
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className='flex items-center gap-2'>
-          <Edit3 className='h-5 w-5' />
-          Dados Sobre
-        </CardTitle>
-        <CardDescription>
-          Configure as informações pessoais e biografia da seção sobre
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSave} className='space-y-6'>
-          {/* Basic Info */}
-          <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
-            <div className='space-y-2'>
-              <label htmlFor='name' className='text-sm font-medium'>
-                Nome Completo
-              </label>
+    <FormSection
+      title='Dados Sobre'
+      description='Configure as informações pessoais e biografia da seção sobre'
+    >
+      <form onSubmit={handleSave} className='space-y-6'>
+        {/* Basic Info */}
+        <FormSection
+          title='Informações Básicas'
+          description='Dados pessoais que aparecerão na seção sobre'
+          collapsible={false}
+        >
+          <FormSectionGrid columns={3} gap='md'>
+            <FormField
+              label='Nome Completo'
+              description='Seu nome completo'
+              required
+            >
               <input
-                id='name'
-                name='name'
                 type='text'
                 value={formData.name}
                 onChange={e =>
@@ -170,14 +149,14 @@ export default function AboutAdmin() {
                 placeholder='Ex: Paola Oliveira'
                 required
               />
-            </div>
-            <div className='space-y-2'>
-              <label htmlFor='city' className='text-sm font-medium'>
-                Cidade
-              </label>
+            </FormField>
+
+            <FormField
+              label='Cidade'
+              description='Sua localização atual'
+              required
+            >
               <input
-                id='city'
-                name='city'
                 type='text'
                 value={formData.city}
                 onChange={e =>
@@ -187,14 +166,14 @@ export default function AboutAdmin() {
                 placeholder='Ex: São Paulo, SP'
                 required
               />
-            </div>
-            <div className='space-y-2'>
-              <label htmlFor='role' className='text-sm font-medium'>
-                Função/Cargo
-              </label>
+            </FormField>
+
+            <FormField
+              label='Função/Cargo'
+              description='Sua profissão ou área de atuação'
+              required
+            >
               <input
-                id='role'
-                name='role'
                 type='text'
                 value={formData.role}
                 onChange={e =>
@@ -204,15 +183,19 @@ export default function AboutAdmin() {
                 placeholder='Ex: UX/UI Designer'
                 required
               />
-            </div>
-          </div>
+            </FormField>
+          </FormSectionGrid>
+        </FormSection>
 
-          {/* Paragraphs */}
+        {/* Biography Paragraphs */}
+        <FormSection
+          title='Biografia'
+          description='Parágrafos que compõem sua biografia pessoal'
+          collapsible={false}
+        >
           <div className='space-y-4'>
             <div className='flex items-center justify-between'>
-              <label className='text-sm font-medium'>
-                Parágrafos da Biografia
-              </label>
+              <h4 className='text-sm font-medium'>Parágrafos</h4>
               <Button
                 type='button'
                 variant='outline'
@@ -224,34 +207,7 @@ export default function AboutAdmin() {
               </Button>
             </div>
 
-            <div className='space-y-3'>
-              {paragraphs.map((paragraph, index) => (
-                <div key={index} className='flex gap-2'>
-                  <div className='flex-1'>
-                    <textarea
-                      value={paragraph}
-                      onChange={e => updateParagraph(index, e.target.value)}
-                      rows={3}
-                      className='w-full px-3 py-2 border border-border rounded-md bg-background resize-none'
-                      placeholder={`Parágrafo ${index + 1}...`}
-                    />
-                  </div>
-                  {paragraphs.length > 1 && (
-                    <Button
-                      type='button'
-                      variant='outline'
-                      size='sm'
-                      onClick={() => removeParagraph(index)}
-                      className='flex-shrink-0'
-                    >
-                      <Trash2 className='h-4 w-4' />
-                    </Button>
-                  )}
-                </div>
-              ))}
-            </div>
-
-            {paragraphs.length === 0 && (
+            {paragraphs.length === 0 ? (
               <div className='text-center py-8 text-muted-foreground border-2 border-dashed rounded-lg'>
                 <Edit3 className='h-12 w-12 mx-auto mb-4 opacity-50' />
                 <p>Nenhum parágrafo adicionado</p>
@@ -259,24 +215,54 @@ export default function AboutAdmin() {
                   Clique em "Adicionar Parágrafo" para começar
                 </p>
               </div>
+            ) : (
+              <div className='space-y-3'>
+                {paragraphs.map((paragraph, index) => (
+                  <FormField
+                    key={index}
+                    label={`Parágrafo ${index + 1}`}
+                    description={`Conteúdo do ${index + 1}º parágrafo da biografia`}
+                  >
+                    <div className='flex gap-2'>
+                      <textarea
+                        value={paragraph}
+                        onChange={e => updateParagraph(index, e.target.value)}
+                        rows={3}
+                        className='flex-1 px-3 py-2 border border-border rounded-md bg-background resize-none'
+                        placeholder={`Conteúdo do parágrafo ${index + 1}...`}
+                      />
+                      {paragraphs.length > 1 && (
+                        <Button
+                          type='button'
+                          variant='outline'
+                          size='sm'
+                          onClick={() => removeParagraph(index)}
+                          className='flex-shrink-0'
+                        >
+                          <Trash2 className='h-4 w-4' />
+                        </Button>
+                      )}
+                    </div>
+                  </FormField>
+                ))}
+              </div>
             )}
           </div>
+        </FormSection>
 
-          {/* Save Button */}
-          <div className='flex justify-end pt-4 border-t'>
-            <Button type='submit' disabled={isSaving} className='min-w-[120px]'>
-              {isSaving ? (
-                <>Salvando...</>
-              ) : (
-                <>
-                  <Save className='h-4 w-4 mr-2' />
-                  Salvar Dados
-                </>
-              )}
-            </Button>
-          </div>
-        </form>
-      </CardContent>
-    </Card>
+        {/* Save Button */}
+        <div className='flex justify-end pt-4 border-t'>
+          <Button
+            type='submit'
+            disabled={isSaving}
+            loading={isSaving}
+            className='min-w-[120px]'
+          >
+            <Save className='h-4 w-4 mr-2' />
+            {isSaving ? 'Salvando...' : 'Salvar Dados'}
+          </Button>
+        </div>
+      </form>
+    </FormSection>
   );
 }

@@ -1,8 +1,6 @@
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
-import AdminHeader from '@/components/admin/admin-header';
-
 import { isAuthenticated } from '@/lib/actions/auth-actions';
 
 export const metadata: Metadata = {
@@ -28,10 +26,5 @@ export default async function AdminLayout({
     redirect('/login');
   }
 
-  return (
-    <div className='min-h-screen bg-background'>
-      <AdminHeader />
-      <main className='container mx-auto py-8 px-4'>{children}</main>
-    </div>
-  );
+  return <div className='min-h-screen bg-background'>{children}</div>;
 }

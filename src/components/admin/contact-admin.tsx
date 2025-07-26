@@ -2,17 +2,13 @@
 
 import { useEffect, useState } from 'react';
 
-import { AtSign, Mail, MessageSquare, Save, User } from 'lucide-react';
+import { Save } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { FormField } from '@/components/ui/form-field';
+import { FormSection, FormSectionGrid } from '@/components/ui/form-section';
+import { SkeletonCard } from '@/components/ui/skeleton';
 
 import { updateContactData } from '@/lib/actions/admin-actions';
 import { getContactData } from '@/lib/actions/data-fetching';
@@ -119,202 +115,133 @@ export default function ContactAdmin() {
   };
 
   if (isLoading) {
-    return (
-      <div className='space-y-6'>
-        <Card>
-          <CardHeader>
-            <div className='h-6 bg-muted animate-pulse rounded' />
-            <div className='h-4 bg-muted animate-pulse rounded w-2/3' />
-          </CardHeader>
-          <CardContent>
-            <div className='space-y-4'>
-              {[...Array(5)].map((_, i) => (
-                <div key={i} className='h-10 bg-muted animate-pulse rounded' />
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    );
+    return <SkeletonCard showImage={false} showActions={false} textLines={3} />;
   }
 
   return (
-    <div className='space-y-6'>
-      {/* Contact Form Configuration */}
-      <Card>
-        <CardHeader>
-          <CardTitle className='flex items-center gap-2'>
-            <MessageSquare className='h-5 w-5' />
-            Configurações de Contato
-          </CardTitle>
-          <CardDescription>
-            Configure o título da seção e parâmetros do formulário de contato
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSave} className='space-y-6'>
-            {/* Section Title */}
-            <div className='space-y-2'>
-              <label htmlFor='title' className='text-sm font-medium'>
-                Título da Seção
-              </label>
+    <FormSection
+      title='Configurações de Contato'
+      description='Configure o título da seção e parâmetros do formulário de contato'
+    >
+      <form onSubmit={handleSave} className='space-y-6'>
+        {/* Section Title */}
+        <FormField
+          label='Título da Seção'
+          description='Título que aparecerá na seção de contato'
+          required
+        >
+          <input
+            type='text'
+            value={formData.title}
+            onChange={e => setFormData({ ...formData, title: e.target.value })}
+            className='w-full px-3 py-2 border border-border rounded-md bg-background'
+            placeholder='Ex: ENTRE EM CONTATO'
+            required
+          />
+        </FormField>
+
+        {/* Email Configuration */}
+        <FormSection
+          title='Configuração de Email'
+          description='Parâmetros para o envio de emails do formulário de contato'
+          collapsible={false}
+        >
+          <FormSectionGrid columns={2} gap='md'>
+            <FormField
+              label='Email Destinatário'
+              description='Email que receberá as mensagens do formulário'
+              required
+            >
               <input
-                id='title'
-                name='title'
-                type='text'
-                value={formData.title}
+                type='email'
+                value={formData.emailRecipient}
                 onChange={e =>
-                  setFormData({ ...formData, title: e.target.value })
+                  setFormData({
+                    ...formData,
+                    emailRecipient: e.target.value,
+                  })
                 }
                 className='w-full px-3 py-2 border border-border rounded-md bg-background'
-                placeholder='Ex: ENTRE EM CONTATO'
+                placeholder='contato@exemplo.com'
                 required
               />
-            </div>
+            </FormField>
 
-            {/* Email Configuration */}
-            <div className='space-y-4'>
-              <div className='flex items-center gap-2 mb-3'>
-                <Mail className='h-4 w-4' />
-                <h3 className='font-medium'>Configuração de Email</h3>
-              </div>
+            <FormField
+              label='Prefixo do Assunto'
+              description='Texto que aparecerá no início do assunto do email'
+              required
+            >
+              <input
+                type='text'
+                value={formData.emailSubjectPrefix}
+                onChange={e =>
+                  setFormData({
+                    ...formData,
+                    emailSubjectPrefix: e.target.value,
+                  })
+                }
+                className='w-full px-3 py-2 border border-border rounded-md bg-background'
+                placeholder='[Contato Site]'
+                required
+              />
+            </FormField>
 
-              <div className='grid md:grid-cols-2 gap-4'>
-                <div className='space-y-2'>
-                  <label
-                    htmlFor='emailRecipient'
-                    className='text-sm font-medium flex items-center gap-2'
-                  >
-                    <AtSign className='h-3 w-3' />
-                    Email Destinatário
-                  </label>
-                  <input
-                    id='emailRecipient'
-                    name='emailRecipient'
-                    type='email'
-                    value={formData.emailRecipient}
-                    onChange={e =>
-                      setFormData({
-                        ...formData,
-                        emailRecipient: e.target.value,
-                      })
-                    }
-                    className='w-full px-3 py-2 border border-border rounded-md bg-background'
-                    placeholder='contato@exemplo.com'
-                    required
-                  />
-                  <p className='text-xs text-muted-foreground'>
-                    Email que receberá as mensagens do formulário
-                  </p>
-                </div>
+            <FormField
+              label='Nome do Remetente'
+              description='Nome que aparecerá como remetente'
+              required
+            >
+              <input
+                type='text'
+                value={formData.emailSenderName}
+                onChange={e =>
+                  setFormData({
+                    ...formData,
+                    emailSenderName: e.target.value,
+                  })
+                }
+                className='w-full px-3 py-2 border border-border rounded-md bg-background'
+                placeholder='Sistema de Contato'
+                required
+              />
+            </FormField>
 
-                <div className='space-y-2'>
-                  <label
-                    htmlFor='emailSubjectPrefix'
-                    className='text-sm font-medium'
-                  >
-                    Prefixo do Assunto
-                  </label>
-                  <input
-                    id='emailSubjectPrefix'
-                    name='emailSubjectPrefix'
-                    type='text'
-                    value={formData.emailSubjectPrefix}
-                    onChange={e =>
-                      setFormData({
-                        ...formData,
-                        emailSubjectPrefix: e.target.value,
-                      })
-                    }
-                    className='w-full px-3 py-2 border border-border rounded-md bg-background'
-                    placeholder='[Contato Site]'
-                    required
-                  />
-                  <p className='text-xs text-muted-foreground'>
-                    Texto que aparecerá no início do assunto do email
-                  </p>
-                </div>
-              </div>
+            <FormField
+              label='Email do Remetente'
+              description='Email que aparecerá como remetente'
+              required
+            >
+              <input
+                type='email'
+                value={formData.emailSenderEmail}
+                onChange={e =>
+                  setFormData({
+                    ...formData,
+                    emailSenderEmail: e.target.value,
+                  })
+                }
+                className='w-full px-3 py-2 border border-border rounded-md bg-background'
+                placeholder='noreply@exemplo.com'
+                required
+              />
+            </FormField>
+          </FormSectionGrid>
+        </FormSection>
 
-              <div className='grid md:grid-cols-2 gap-4'>
-                <div className='space-y-2'>
-                  <label
-                    htmlFor='emailSenderName'
-                    className='text-sm font-medium flex items-center gap-2'
-                  >
-                    <User className='h-3 w-3' />
-                    Nome do Remetente
-                  </label>
-                  <input
-                    id='emailSenderName'
-                    name='emailSenderName'
-                    type='text'
-                    value={formData.emailSenderName}
-                    onChange={e =>
-                      setFormData({
-                        ...formData,
-                        emailSenderName: e.target.value,
-                      })
-                    }
-                    className='w-full px-3 py-2 border border-border rounded-md bg-background'
-                    placeholder='Sistema de Contato'
-                    required
-                  />
-                  <p className='text-xs text-muted-foreground'>
-                    Nome que aparecerá como remetente
-                  </p>
-                </div>
-
-                <div className='space-y-2'>
-                  <label
-                    htmlFor='emailSenderEmail'
-                    className='text-sm font-medium flex items-center gap-2'
-                  >
-                    <Mail className='h-3 w-3' />
-                    Email do Remetente
-                  </label>
-                  <input
-                    id='emailSenderEmail'
-                    name='emailSenderEmail'
-                    type='email'
-                    value={formData.emailSenderEmail}
-                    onChange={e =>
-                      setFormData({
-                        ...formData,
-                        emailSenderEmail: e.target.value,
-                      })
-                    }
-                    className='w-full px-3 py-2 border border-border rounded-md bg-background'
-                    placeholder='noreply@exemplo.com'
-                    required
-                  />
-                  <p className='text-xs text-muted-foreground'>
-                    Email que aparecerá como remetente
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Save Button */}
-            <div className='flex justify-end pt-4 border-t'>
-              <Button
-                type='submit'
-                disabled={isSaving}
-                className='min-w-[120px]'
-              >
-                {isSaving ? (
-                  <>Salvando...</>
-                ) : (
-                  <>
-                    <Save className='h-4 w-4 mr-2' />
-                    Salvar Configurações
-                  </>
-                )}
-              </Button>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
-    </div>
+        {/* Save Button */}
+        <div className='flex justify-end pt-4 border-t'>
+          <Button
+            type='submit'
+            disabled={isSaving}
+            loading={isSaving}
+            className='min-w-[120px]'
+          >
+            <Save className='h-4 w-4 mr-2' />
+            {isSaving ? 'Salvando...' : 'Salvar Configurações'}
+          </Button>
+        </div>
+      </form>
+    </FormSection>
   );
 }

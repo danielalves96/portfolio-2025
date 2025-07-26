@@ -29,19 +29,17 @@ import { ImageUpload } from '@/components/admin/image-upload';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { EmptyState } from '@/components/ui/empty-state';
+import { ContentListItem } from '@/components/ui/enhanced-card';
+import { FormField } from '@/components/ui/form-field';
+import { FormSection, FormSectionGrid } from '@/components/ui/form-section';
+import { SkeletonCard, SkeletonList } from '@/components/ui/skeleton';
 
 import { useModal } from '@/hooks/use-modal';
 import {
@@ -245,19 +243,8 @@ export default function HeroAdmin() {
   if (isLoading) {
     return (
       <div className='space-y-6'>
-        <Card>
-          <CardHeader>
-            <div className='h-6 bg-muted animate-pulse rounded' />
-            <div className='h-4 bg-muted animate-pulse rounded w-2/3' />
-          </CardHeader>
-          <CardContent>
-            <div className='space-y-4'>
-              {[...Array(5)].map((_, i) => (
-                <div key={i} className='h-10 bg-muted animate-pulse rounded' />
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+        <SkeletonCard showImage={false} showActions={false} textLines={2} />
+        <SkeletonList items={3} showAvatar={false} showActions={true} />
       </div>
     );
   }
@@ -265,26 +252,23 @@ export default function HeroAdmin() {
   return (
     <div className='space-y-6'>
       {/* Hero Data */}
-      <Card>
-        <CardHeader>
-          <CardTitle className='flex items-center gap-2'>
-            <Edit3 className='h-5 w-5' />
-            Dados do Hero
-          </CardTitle>
-          <CardDescription>
-            Configure o título, perfil e citação da seção principal
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSaveHero} className='space-y-4'>
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-              <div className='space-y-2'>
-                <label htmlFor='titleLine1' className='text-sm font-medium'>
-                  Título - Linha 1
-                </label>
+      <FormSection
+        title='Dados do Hero'
+        description='Configure o título, perfil e citação da seção principal'
+      >
+        <form onSubmit={handleSaveHero} className='space-y-8'>
+          {/* Seção do Título Principal */}
+          <div>
+            <h3 className='text-lg font-semibold mb-4 text-foreground'>
+              Título Principal
+            </h3>
+            <FormSectionGrid columns={2} gap='md'>
+              <FormField
+                label='Primeira Linha'
+                description='Texto de apresentação inicial'
+                required
+              >
                 <input
-                  id='titleLine1'
-                  name='titleLine1'
                   type='text'
                   value={heroFormData.titleLine1}
                   onChange={e =>
@@ -295,15 +279,16 @@ export default function HeroAdmin() {
                   }
                   className='w-full px-3 py-2 border border-border rounded-md bg-background'
                   placeholder='Ex: Olá, eu sou'
+                  required
                 />
-              </div>
-              <div className='space-y-2'>
-                <label htmlFor='titleLine2' className='text-sm font-medium'>
-                  Título - Linha 2
-                </label>
+              </FormField>
+
+              <FormField
+                label='Segunda Linha'
+                description='Nome ou título profissional'
+                required
+              >
                 <input
-                  id='titleLine2'
-                  name='titleLine2'
                   type='text'
                   value={heroFormData.titleLine2}
                   onChange={e =>
@@ -314,15 +299,25 @@ export default function HeroAdmin() {
                   }
                   className='w-full px-3 py-2 border border-border rounded-md bg-background'
                   placeholder='Ex: Paola Oliveira'
+                  required
                 />
-              </div>
-            </div>
+              </FormField>
+            </FormSectionGrid>
+          </div>
 
-            <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
-              <div className='space-y-2'>
-                <label htmlFor='profileSrc' className='text-sm font-medium'>
-                  Imagem do Perfil
-                </label>
+          {/* Seção do Perfil */}
+          <div>
+            <h3 className='text-lg font-semibold mb-4 text-foreground'>
+              👤 Perfil e Imagem
+            </h3>
+
+            {/* Upload da imagem com mais espaço */}
+            <FormField
+              label='Imagem do Perfil'
+              description='Foto de perfil que aparecerá no hero. Recomenda-se uma imagem quadrada de alta qualidade (mínimo 400x400px).'
+              required
+            >
+              <div className='max-w-sm'>
                 <ImageUpload
                   value={currentImage}
                   onChange={url => {
@@ -332,54 +327,66 @@ export default function HeroAdmin() {
                   placeholder='Upload da imagem do perfil'
                 />
               </div>
-              <div className='space-y-2'>
-                <label htmlFor='profileAlt' className='text-sm font-medium'>
-                  Texto Alternativo
-                </label>
-                <input
-                  id='profileAlt'
-                  name='profileAlt'
-                  type='text'
-                  value={heroFormData.profileAlt}
-                  onChange={e =>
-                    setHeroFormData(prev => ({
-                      ...prev,
-                      profileAlt: e.target.value,
-                    }))
-                  }
-                  className='w-full px-3 py-2 border border-border rounded-md bg-background'
-                  placeholder='Foto de perfil'
-                />
-              </div>
-              <div className='space-y-2'>
-                <label htmlFor='profileName' className='text-sm font-medium'>
-                  Nome do Perfil
-                </label>
-                <input
-                  id='profileName'
-                  name='profileName'
-                  type='text'
-                  value={heroFormData.profileName}
-                  onChange={e =>
-                    setHeroFormData(prev => ({
-                      ...prev,
-                      profileName: e.target.value,
-                    }))
-                  }
-                  className='w-full px-3 py-2 border border-border rounded-md bg-background'
-                  placeholder='Paola Oliveira'
-                />
-              </div>
-            </div>
+            </FormField>
 
-            <div className='space-y-2'>
-              <label htmlFor='quoteText' className='text-sm font-medium'>
-                Citação (uma linha por parágrafo)
-              </label>
+            {/* Campos relacionados à imagem */}
+            <div className='mt-6'>
+              <FormSectionGrid columns={2} gap='md'>
+                <FormField
+                  label='Texto Alternativo'
+                  description='Descrição da imagem para acessibilidade'
+                  required
+                >
+                  <input
+                    type='text'
+                    value={heroFormData.profileAlt}
+                    onChange={e =>
+                      setHeroFormData(prev => ({
+                        ...prev,
+                        profileAlt: e.target.value,
+                      }))
+                    }
+                    className='w-full px-3 py-2 border border-border rounded-md bg-background'
+                    placeholder='Foto de perfil da Paola Oliveira'
+                    required
+                  />
+                </FormField>
+
+                <FormField
+                  label='Nome do Perfil'
+                  description='Nome que aparecerá abaixo da foto'
+                  required
+                >
+                  <input
+                    type='text'
+                    value={heroFormData.profileName}
+                    onChange={e =>
+                      setHeroFormData(prev => ({
+                        ...prev,
+                        profileName: e.target.value,
+                      }))
+                    }
+                    className='w-full px-3 py-2 border border-border rounded-md bg-background'
+                    placeholder='Paola Oliveira'
+                    required
+                  />
+                </FormField>
+              </FormSectionGrid>
+            </div>
+          </div>
+
+          {/* Seção da Citação */}
+          <div>
+            <h3 className='text-lg font-semibold mb-4 text-foreground'>
+              Citação Inspiracional
+            </h3>
+            <FormField
+              label='Texto da Citação'
+              description='Texto motivacional que aparecerá no hero. Separe parágrafos com quebras de linha para criar múltiplas linhas.'
+              required
+            >
               <textarea
-                id='quoteText'
-                name='quoteText'
-                rows={4}
+                rows={6}
                 value={heroFormData.quoteText}
                 onChange={e =>
                   setHeroFormData(prev => ({
@@ -387,124 +394,131 @@ export default function HeroAdmin() {
                     quoteText: e.target.value,
                   }))
                 }
-                className='w-full px-3 py-2 border border-border rounded-md bg-background resize-none'
-                placeholder='Design é resolver problemas de forma criativa...'
+                className='w-full px-3 py-2 border border-border rounded-md bg-background resize-y focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors'
+                placeholder='Design é resolver problemas de forma criativa e eficiente.&#10;Cada projeto é uma oportunidade de inovar e impactar positivamente.&#10;Transformo ideias em experiências digitais memoráveis.'
+                required
               />
-            </div>
+              <div className='flex items-start gap-2 text-xs text-muted-foreground mt-3 p-2 bg-blue-50/50 dark:bg-blue-950/20 rounded border border-blue-200/50 dark:border-blue-800/50'>
+                <span className='text-blue-600 dark:text-blue-400'>💡</span>
+                <span>
+                  <strong>Dica:</strong> Use quebras de linha (Enter) para criar
+                  múltiplos parágrafos. Cada linha será exibida como um
+                  parágrafo separado na citação.
+                </span>
+              </div>
+            </FormField>
+          </div>
 
+          <div className='flex justify-end pt-4 border-t'>
             <Button
               type='submit'
               disabled={isSaving}
-              className='w-full md:w-auto'
+              loading={isSaving}
+              className='min-w-[120px]'
             >
-              {isSaving ? (
-                <>Salvando...</>
-              ) : (
-                <>
-                  <Save className='h-4 w-4 mr-2' />
-                  Salvar Hero
-                </>
-              )}
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
-
-      {/* Social Links */}
-      <Card>
-        <CardHeader>
-          <CardTitle className='flex items-center gap-2'>
-            <Plus className='h-5 w-5' />
-            Links Sociais
-          </CardTitle>
-          <CardDescription>
-            Gerencie os links sociais exibidos no hero
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className='space-y-4'>
-            {socialLinks.map(link => (
-              <div
-                key={link.id}
-                className='flex items-center gap-4 p-4 border rounded-lg'
-              >
-                <div className='flex-1 grid grid-cols-1 md:grid-cols-4 gap-3'>
-                  <div>
-                    <label className='text-sm font-medium'>Ícone</label>
-                    <Badge
-                      variant='outline'
-                      className='mt-1 flex items-center gap-2'
-                    >
-                      {renderIcon(link.iconName)}
-                      <span>{link.iconName}</span>
-                    </Badge>
-                  </div>
-                  <div>
-                    <label className='text-sm font-medium'>Label</label>
-                    <p className='text-sm text-muted-foreground mt-1'>
-                      {link.label}
-                    </p>
-                  </div>
-                  <div>
-                    <label className='text-sm font-medium'>URL</label>
-                    <p className='text-sm text-muted-foreground mt-1 truncate'>
-                      {link.href}
-                    </p>
-                  </div>
-                  <div>
-                    <label className='text-sm font-medium'>Ordem</label>
-                    <Badge variant='secondary' className='mt-1'>
-                      {link.order}
-                    </Badge>
-                  </div>
-                </div>
-                <div className='flex items-center gap-2'>
-                  <Button
-                    variant='outline'
-                    size='sm'
-                    onClick={() => modal.openModal(link)}
-                  >
-                    <Edit3 className='h-4 w-4' />
-                  </Button>
-                  <Button
-                    variant='outline'
-                    size='sm'
-                    onClick={async () => {
-                      try {
-                        await deleteSocialLink(link.id);
-                        toast.success('Link social deletado com sucesso!');
-                        await loadData();
-                      } catch (error) {
-                        console.error('Error deleting social link:', error);
-                        toast.error('Erro ao deletar link social.');
-                      }
-                    }}
-                  >
-                    <Trash2 className='h-4 w-4' />
-                  </Button>
-                </div>
-              </div>
-            ))}
-
-            {socialLinks.length === 0 && (
-              <div className='text-center py-8 text-muted-foreground'>
-                <Plus className='h-12 w-12 mx-auto mb-4 opacity-50' />
-                <p>Nenhum link social encontrado</p>
-                <p className='text-sm'>Adicione seu primeiro link social</p>
-              </div>
-            )}
-
-            <Button
-              variant='outline'
-              className='w-full'
-              onClick={() => modal.openModal()}
-            >
-              <Plus className='h-4 w-4 mr-2' />
-              Adicionar Link Social
+              <Save className='h-4 w-4 mr-2' />
+              {isSaving ? 'Salvando...' : 'Salvar Hero'}
             </Button>
           </div>
-        </CardContent>
-      </Card>
+        </form>
+      </FormSection>
+
+      {/* Social Links */}
+      <FormSection
+        title={`Links Sociais (${socialLinks.length})`}
+        description='Gerencie os links sociais exibidos no hero'
+      >
+        <div className='space-y-4'>
+          {socialLinks.length === 0 ? (
+            <EmptyState
+              icon={Plus}
+              title='Nenhum link social encontrado'
+              description='Adicione links para suas redes sociais que aparecerão no hero'
+              action={{
+                label: 'Adicionar Primeiro Link',
+                onClick: () => modal.openModal(),
+                icon: Plus,
+              }}
+              variant='card'
+            />
+          ) : (
+            <div className='space-y-2'>
+              {socialLinks.map(link => {
+                const metadata = [
+                  {
+                    label: 'Ícone',
+                    value: (
+                      <Badge
+                        variant='outline'
+                        className='flex items-center gap-2'
+                      >
+                        {renderIcon(link.iconName)}
+                        <span>{link.iconName}</span>
+                      </Badge>
+                    ),
+                  },
+                  {
+                    label: 'URL',
+                    value: link.href,
+                  },
+                  {
+                    label: 'Ordem',
+                    value: <Badge variant='secondary'>{link.order}</Badge>,
+                  },
+                ];
+
+                const actions = [
+                  {
+                    label: 'Editar',
+                    onClick: () => modal.openModal(link),
+                    icon: Edit3,
+                  },
+                  {
+                    label: 'Excluir',
+                    onClick: async () => {
+                      if (
+                        confirm(
+                          'Tem certeza que deseja deletar este link social?'
+                        )
+                      ) {
+                        try {
+                          await deleteSocialLink(link.id);
+                          toast.success('Link social deletado com sucesso!');
+                          await loadData();
+                        } catch (error) {
+                          console.error('Error deleting social link:', error);
+                          toast.error('Erro ao deletar link social.');
+                        }
+                      }
+                    },
+                    icon: Trash2,
+                    variant: 'destructive' as const,
+                  },
+                ];
+
+                return (
+                  <ContentListItem
+                    key={link.id}
+                    title={link.label}
+                    metadata={metadata}
+                    actions={actions}
+                    onCardClick={() => modal.openModal(link)}
+                  />
+                );
+              })}
+            </div>
+          )}
+
+          <Button
+            variant='outline'
+            className='w-full'
+            onClick={() => modal.openModal()}
+          >
+            <Plus className='h-4 w-4 mr-2' />
+            Adicionar Link Social
+          </Button>
+        </div>
+      </FormSection>
 
       {/* Dialog Modal for Social Links */}
       <Dialog open={modal.isOpen} onOpenChange={modal.closeModal}>
@@ -520,86 +534,81 @@ export default function HeroAdmin() {
             </DialogDescription>
           </DialogHeader>
 
-          <form onSubmit={handleSaveSocialLink} className='space-y-4'>
-            <div className='space-y-4'>
-              <div className='grid md:grid-cols-2 gap-4'>
-                <div className='space-y-2 flex flex-col'>
-                  <label htmlFor='iconName' className='text-sm font-medium'>
-                    Ícone
-                  </label>
-                  <div className='w-fit'>
-                    <IconSelector
-                      value={socialFormData.iconName}
-                      onChange={iconName => {
-                        setSocialFormData(prev => ({ ...prev, iconName }));
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className='space-y-2'>
-                  <label htmlFor='order' className='text-sm font-medium'>
-                    Ordem
-                  </label>
-                  <input
-                    id='order'
-                    name='order'
-                    type='number'
-                    value={socialFormData.order}
-                    onChange={e =>
-                      setSocialFormData(prev => ({
-                        ...prev,
-                        order: parseInt(e.target.value) || 1,
-                      }))
-                    }
-                    className='w-full px-3 py-2 border border-border rounded-md bg-background'
-                    min='1'
-                    required
-                  />
-                </div>
-              </div>
+          <form onSubmit={handleSaveSocialLink} className='space-y-6'>
+            <FormSectionGrid columns={2} gap='md'>
+              <FormField
+                label='Ícone'
+                description='Ícone que representará o link social'
+                required
+              >
+                <IconSelector
+                  value={socialFormData.iconName}
+                  onChange={iconName => {
+                    setSocialFormData(prev => ({ ...prev, iconName }));
+                  }}
+                />
+              </FormField>
 
-              <div className='space-y-2'>
-                <label htmlFor='label' className='text-sm font-medium'>
-                  Label
-                </label>
+              <FormField
+                label='Ordem'
+                description='Posição do link na lista (menor número aparece primeiro)'
+                required
+              >
                 <input
-                  id='label'
-                  name='label'
-                  type='text'
-                  value={socialFormData.label}
+                  type='number'
+                  value={socialFormData.order}
                   onChange={e =>
                     setSocialFormData(prev => ({
                       ...prev,
-                      label: e.target.value,
+                      order: parseInt(e.target.value) || 1,
                     }))
                   }
                   className='w-full px-3 py-2 border border-border rounded-md bg-background'
-                  placeholder='Ex: Meu Instagram, GitHub Pessoal'
+                  min='1'
                   required
                 />
-              </div>
+              </FormField>
+            </FormSectionGrid>
 
-              <div className='space-y-2'>
-                <label htmlFor='href' className='text-sm font-medium'>
-                  URL do Link
-                </label>
-                <input
-                  id='href'
-                  name='href'
-                  type='url'
-                  value={socialFormData.href}
-                  onChange={e =>
-                    setSocialFormData(prev => ({
-                      ...prev,
-                      href: e.target.value,
-                    }))
-                  }
-                  className='w-full px-3 py-2 border border-border rounded-md bg-background'
-                  placeholder='https://instagram.com/seu-perfil'
-                  required
-                />
-              </div>
-            </div>
+            <FormField
+              label='Label'
+              description='Nome descritivo do link social'
+              required
+            >
+              <input
+                type='text'
+                value={socialFormData.label}
+                onChange={e =>
+                  setSocialFormData(prev => ({
+                    ...prev,
+                    label: e.target.value,
+                  }))
+                }
+                className='w-full px-3 py-2 border border-border rounded-md bg-background'
+                placeholder='Ex: Meu Instagram, GitHub Pessoal'
+                required
+              />
+            </FormField>
+
+            <FormField
+              label='URL do Link'
+              description='Link completo para o perfil da rede social'
+              required
+            >
+              <input
+                type='url'
+                value={socialFormData.href}
+                onChange={e =>
+                  setSocialFormData(prev => ({
+                    ...prev,
+                    href: e.target.value,
+                  }))
+                }
+                className='w-full px-3 py-2 border border-border rounded-md bg-background'
+                placeholder='https://instagram.com/seu-perfil'
+                required
+              />
+            </FormField>
 
             <div className='flex justify-end gap-2 pt-4 border-t'>
               <Button

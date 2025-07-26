@@ -2,21 +2,12 @@
 
 import { useEffect, useState } from 'react';
 
-import Image from 'next/image';
-
-import { Edit3, Eye, Plus, Trash2, Wrench } from 'lucide-react';
+import { Edit3, Plus, Trash2, Wrench } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { ImageUpload } from '@/components/admin/image-upload';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
 import {
   Dialog,
   DialogContent,
@@ -24,6 +15,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { EmptyState } from '@/components/ui/empty-state';
+import { ContentCard } from '@/components/ui/enhanced-card';
+import { FormField } from '@/components/ui/form-field';
+import { SkeletonCard } from '@/components/ui/skeleton';
 
 import { useModal } from '@/hooks/use-modal';
 import {
@@ -131,20 +126,18 @@ export default function ToolsAdmin() {
   if (isLoading) {
     return (
       <div className='space-y-6'>
-        <Card>
-          <CardHeader>
-            <div className='h-6 bg-muted animate-pulse rounded' />
-            <div className='h-4 bg-muted animate-pulse rounded w-2/3' />
-          </CardHeader>
-        </Card>
+        {/* Header skeleton */}
+        <SkeletonCard showImage={false} showActions={false} textLines={1} />
+
+        {/* Tools skeleton */}
         <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
           {[...Array(8)].map((_, i) => (
-            <Card key={i}>
-              <CardContent className='p-4'>
-                <div className='h-16 bg-muted animate-pulse rounded mb-2' />
-                <div className='h-4 bg-muted animate-pulse rounded' />
-              </CardContent>
-            </Card>
+            <SkeletonCard
+              key={i}
+              showImage={true}
+              showActions={true}
+              textLines={1}
+            />
           ))}
         </div>
       </div>
@@ -156,99 +149,73 @@ export default function ToolsAdmin() {
   return (
     <div className='space-y-6'>
       {/* Section Info */}
-      <Card>
-        <CardHeader>
-          <CardTitle className='flex items-center gap-2'>
+      <div className='flex items-center justify-between p-6 bg-card rounded-lg border'>
+        <div className='space-y-2'>
+          <h2 className='text-xl font-semibold flex items-center gap-2'>
             <Wrench className='h-5 w-5' />
             {toolsData?.title || 'FERRAMENTAS'}
-          </CardTitle>
-          <CardDescription>
+          </h2>
+          <p className='text-sm text-muted-foreground'>
             {toolsData?.description ||
               'Gerencie as ferramentas utilizadas no trabalho'}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className='flex items-center gap-4'>
-            <Badge variant='secondary' className='gap-1'>
-              <Wrench className='h-3 w-3' />
-              {tools.length} Ferramentas
-            </Badge>
-            <Button onClick={() => modal.openModal()}>
-              <Plus className='h-4 w-4 mr-2' />
-              Nova Ferramenta
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+          </p>
+          <Badge variant='secondary' className='gap-1'>
+            <Wrench className='h-3 w-3' />
+            {tools.length} Ferramentas
+          </Badge>
+        </div>
+        <Button onClick={() => modal.openModal()}>
+          <Plus className='h-4 w-4 mr-2' />
+          Nova Ferramenta
+        </Button>
+      </div>
 
       {/* Tools Grid */}
-      <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
-        {tools.map(tool => (
-          <Card
-            key={tool.id}
-            className='group hover:shadow-lg transition-shadow'
-          >
-            <CardContent className='p-4'>
-              {/* Image */}
-              <div className='aspect-square bg-muted rounded-lg flex items-center justify-center mb-3 overflow-hidden relative'>
-                {tool.image ? (
-                  <Image
-                    src={tool.image}
-                    alt={tool.name}
-                    fill
-                    className='object-contain p-2'
-                  />
-                ) : (
-                  <Eye className='h-8 w-8 text-muted-foreground' />
-                )}
-              </div>
+      {tools.length === 0 ? (
+        <EmptyState
+          icon={Wrench}
+          title='Nenhuma ferramenta encontrada'
+          description='Adicione as ferramentas que você utiliza no seu trabalho.'
+          action={{
+            label: 'Criar Primeira Ferramenta',
+            onClick: () => modal.openModal(),
+            icon: Plus,
+          }}
+          variant='card'
+        />
+      ) : (
+        <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+          {tools.map(tool => {
+            // Prepare actions for the card
+            const actions = [
+              {
+                label: 'Editar',
+                onClick: () => modal.openModal(tool),
+                icon: Edit3,
+              },
+              {
+                label: 'Excluir',
+                onClick: () => handleDelete(tool.id),
+                icon: Trash2,
+                variant: 'destructive' as const,
+              },
+            ];
 
-              {/* Name */}
-              <div className='flex items-center justify-between'>
-                <h3 className='font-medium truncate'>{tool.name}</h3>
-                <div className='flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity'>
-                  <Button
-                    variant='outline'
-                    size='sm'
-                    onClick={() => modal.openModal(tool)}
-                  >
-                    <Edit3 className='h-3 w-3' />
-                  </Button>
-                  <Button
-                    variant='outline'
-                    size='sm'
-                    onClick={() => handleDelete(tool.id)}
-                  >
-                    <Trash2 className='h-3 w-3' />
-                  </Button>
-                </div>
-              </div>
-
-              {/* Image Path */}
-              <p className='text-xs text-muted-foreground font-mono truncate mt-2 pt-2 border-t'>
-                {tool.image || 'Sem imagem'}
-              </p>
-            </CardContent>
-          </Card>
-        ))}
-
-        {tools.length === 0 && (
-          <div className='col-span-full'>
-            <Card>
-              <CardContent className='text-center py-12'>
-                <Wrench className='h-12 w-12 mx-auto mb-4 opacity-50' />
-                <p className='text-muted-foreground mb-4'>
-                  Nenhuma ferramenta encontrada
-                </p>
-                <Button onClick={() => modal.openModal()}>
-                  <Plus className='h-4 w-4 mr-2' />
-                  Criar Primeira Ferramenta
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        )}
-      </div>
+            return (
+              <ContentCard
+                key={tool.id}
+                title={tool.name}
+                image={tool.image}
+                imageAlt={tool.name}
+                actions={actions}
+                layout='compact'
+                density='compact'
+                onCardClick={() => modal.openModal(tool)}
+              />
+            );
+          })}
+        </div>
+      )}
 
       {/* Dialog Modal */}
       <Dialog open={modal.isOpen} onOpenChange={modal.closeModal}>
@@ -264,37 +231,34 @@ export default function ToolsAdmin() {
             </DialogDescription>
           </DialogHeader>
 
-          <form onSubmit={handleSave} className='space-y-4'>
-            <div className='space-y-4'>
-              <div className='space-y-2'>
-                <label htmlFor='name' className='text-sm font-medium'>
-                  Nome da Ferramenta
-                </label>
-                <input
-                  id='name'
-                  name='name'
-                  type='text'
-                  value={formData.name}
-                  onChange={e =>
-                    setFormData({ ...formData, name: e.target.value })
-                  }
-                  className='w-full px-3 py-2 border border-border rounded-md bg-background'
-                  placeholder='Ex: Figma, Adobe XD, Sketch...'
-                  required
-                />
-              </div>
+          <form onSubmit={handleSave} className='space-y-6'>
+            <FormField
+              label='Nome da Ferramenta'
+              description='Nome da ferramenta que será exibido'
+              required
+            >
+              <input
+                type='text'
+                value={formData.name}
+                onChange={e =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
+                className='w-full px-3 py-2 border border-border rounded-md bg-background'
+                placeholder='Ex: Figma, Adobe XD, Sketch...'
+                required
+              />
+            </FormField>
 
-              <div className='space-y-2'>
-                <label htmlFor='image' className='text-sm font-medium'>
-                  Ícone da Ferramenta
-                </label>
-                <ImageUpload
-                  value={currentImage}
-                  onChange={setCurrentImage}
-                  placeholder='Upload do ícone da ferramenta'
-                />
-              </div>
-            </div>
+            <FormField
+              label='Ícone da Ferramenta'
+              description='Ícone representativo da ferramenta'
+            >
+              <ImageUpload
+                value={currentImage}
+                onChange={setCurrentImage}
+                placeholder='Upload do ícone da ferramenta'
+              />
+            </FormField>
 
             <div className='flex justify-end gap-2 pt-4 border-t'>
               <Button

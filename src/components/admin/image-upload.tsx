@@ -144,8 +144,8 @@ export function ImageUpload({
                 src={value!}
                 alt='Uploaded image'
                 className='w-full h-full object-cover'
-                width={384}
-                height={384}
+                width={250}
+                height={250}
                 unoptimized // For external S3 URLs
               />
             )}

@@ -1,10 +1,8 @@
 import { Metadata } from 'next';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
-import { ArrowLeft } from 'lucide-react';
-
 import AboutAdmin from '@/components/admin/about-admin';
+import AdminHeader from '@/components/admin/admin-header';
 import ContactAdmin from '@/components/admin/contact-admin';
 import FooterAdmin from '@/components/admin/footer-admin';
 import HeroAdmin from '@/components/admin/hero-admin';
@@ -13,7 +11,8 @@ import ServicesAdmin from '@/components/admin/services-admin';
 import SkillsAdmin from '@/components/admin/skills-admin';
 import SocialAdmin from '@/components/admin/social-admin';
 import ToolsAdmin from '@/components/admin/tools-admin';
-import { Button } from '@/components/ui/button';
+import { BackButton } from '@/components/ui/back-button';
+import { BreadcrumbItem } from '@/components/ui/breadcrumb';
 
 const validSections = [
   'hero',
@@ -98,32 +97,26 @@ export default async function AdminSectionPage({
     }
   };
 
+  const breadcrumbs: BreadcrumbItem[] = [
+    { label: 'Dashboard', href: '/admin' },
+    { label: sectionTitles[sectionTyped], current: true },
+  ];
+
+  const headerActions = (
+    <BackButton href='/admin' iconOnly variant='outline' size='icon' />
+  );
+
   return (
     <div className='min-h-screen bg-background'>
-      <div className='container mx-auto px-4 py-8'>
-        {/* Header */}
-        <div className='mb-8'>
-          <div className='flex items-center gap-4 mb-4'>
-            <Button variant='outline' size='icon' asChild>
-              <Link href='/admin'>
-                <ArrowLeft className='h-4 w-4' />
-              </Link>
-            </Button>
-            <div>
-              <h1 className='text-3xl font-bold tracking-tight'>
-                {sectionTitles[sectionTyped]}
-              </h1>
-              <p className='text-muted-foreground'>
-                Gerencie os dados da seção{' '}
-                {sectionTitles[sectionTyped].toLowerCase()}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Section Content */}
-        {renderSectionAdmin()}
-      </div>
+      <AdminHeader
+        title={sectionTitles[sectionTyped]}
+        subtitle={`Gerencie os dados da seção ${sectionTitles[sectionTyped].toLowerCase()}`}
+        breadcrumbs={breadcrumbs}
+        actions={headerActions}
+      />
+      <main className='container mx-auto py-8 px-4 max-w-7xl'>
+        <div className='space-y-6'>{renderSectionAdmin()}</div>
+      </main>
     </div>
   );
 }

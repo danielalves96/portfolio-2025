@@ -55,6 +55,22 @@ export async function getSkillsData() {
 // Tools data
 export async function getToolsData() {
   const tools = await db.select().from(schema.tools).orderBy(schema.tools.id);
+
+  // Se não há dados no banco, usar dados estáticos como fallback
+  if (tools.length === 0) {
+    const { toolsData } = await import('@/sections/tools/tools-data');
+    return {
+      title: toolsData.title,
+      description: toolsData.description,
+      tools: toolsData.tools.map(tool => ({
+        id: tool.id,
+        name: tool.name,
+        image: tool.icon, // Mapear icon para image
+        iconComponent: tool.iconComponent,
+      })),
+    };
+  }
+
   return {
     title: 'FERRAMENTAS',
     description:

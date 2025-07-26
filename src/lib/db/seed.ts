@@ -108,7 +108,6 @@ async function seed() {
     await db.insert(schema.skills).values(
       skillsData.map(skill => ({
         name: skill,
-        image: `/skills/${skill.toLowerCase().replace(/\s+/g, '-')}.jpg`,
       }))
     );
     console.log('✅ Seeded skills data');

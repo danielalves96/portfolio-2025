@@ -103,8 +103,10 @@ export async function getFooterData() {
     copyright: footer.copyrightText,
     designer: 'Paola Oliveira',
     navigation: navigation.map(nav => ({
+      id: nav.id,
       href: nav.href,
       label: nav.name,
+      order: nav.order,
     })),
   };
 }
@@ -118,6 +120,7 @@ export async function getSocialSectionData() {
 
   return {
     socialItems: socialItems.map(item => ({
+      id: item.id,
       name: item.name,
       description: item.description,
       image: item.image,

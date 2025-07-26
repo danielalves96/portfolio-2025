@@ -64,7 +64,6 @@ export const services = pgTable('services', {
 export const skills = pgTable('skills', {
   id: serial('id').primaryKey(),
   name: varchar('name', { length: 100 }).notNull(),
-  image: varchar('image', { length: 255 }).notNull(),
 });
 
 // Tools

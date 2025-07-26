@@ -5,7 +5,6 @@ import { Dot } from 'lucide-react';
 interface Skill {
   id: number;
   name: string;
-  image: string;
 }
 
 interface SkillItemProps {

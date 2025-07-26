@@ -91,9 +91,37 @@ export default function SocialAdmin() {
   const [isLoading, setIsLoading] = useState(true);
   const modal = useModal<SocialItem>();
 
+  // Form state
+  const [formData, setFormData] = useState({
+    name: '',
+    description: '',
+    iconName: '',
+    url: '',
+  });
+
   useEffect(() => {
     loadData();
   }, []);
+
+  // Update form state when modal data changes
+  useEffect(() => {
+    if (modal.data) {
+      setFormData({
+        name: modal.data.name || '',
+        description: modal.data.description || '',
+        iconName: modal.data.image || '', // image field contains iconName
+        url: modal.data.url || '',
+      });
+    } else {
+      // Reset form state
+      setFormData({
+        name: '',
+        description: '',
+        iconName: '',
+        url: '',
+      });
+    }
+  }, [modal.data]);
 
   const loadData = async () => {
     try {
@@ -119,12 +147,14 @@ export default function SocialAdmin() {
     }
   };
 
-  const handleSave = async (formData: FormData) => {
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+
     const data = {
-      name: formData.get('name') as string,
-      description: formData.get('description') as string,
-      image: formData.get('iconName') as string, // Save iconName in image field temporarily
-      url: formData.get('url') as string,
+      name: formData.name,
+      description: formData.description,
+      image: formData.iconName, // Save iconName in image field
+      url: formData.url,
     };
 
     try {
@@ -137,6 +167,13 @@ export default function SocialAdmin() {
       }
       await loadData();
       modal.closeModal();
+      // Reset form state after successful save
+      setFormData({
+        name: '',
+        description: '',
+        iconName: '',
+        url: '',
+      });
     } catch (error) {
       console.error('Error saving social item:', error);
       toast.error('Erro ao salvar rede social. Tente novamente.');
@@ -287,7 +324,7 @@ export default function SocialAdmin() {
             </DialogDescription>
           </DialogHeader>
 
-          <form action={handleSave} className='space-y-4'>
+          <form onSubmit={handleSave} className='space-y-4'>
             <div className='space-y-4'>
               <div className='grid md:grid-cols-2 gap-4'>
                 <div className='space-y-2'>
@@ -298,7 +335,10 @@ export default function SocialAdmin() {
                     id='name'
                     name='name'
                     type='text'
-                    defaultValue={modal.data?.name || ''}
+                    value={formData.name}
+                    onChange={e =>
+                      setFormData({ ...formData, name: e.target.value })
+                    }
                     className='w-full px-3 py-2 border border-border rounded-md bg-background'
                     placeholder='Ex: Instagram, Dribbble, Behance...'
                     required
@@ -313,7 +353,10 @@ export default function SocialAdmin() {
                     id='url'
                     name='url'
                     type='url'
-                    defaultValue={modal.data?.url || ''}
+                    value={formData.url}
+                    onChange={e =>
+                      setFormData({ ...formData, url: e.target.value })
+                    }
                     className='w-full px-3 py-2 border border-border rounded-md bg-background'
                     placeholder='https://instagram.com/seu-perfil'
                     required
@@ -329,7 +372,10 @@ export default function SocialAdmin() {
                   id='description'
                   name='description'
                   rows={3}
-                  defaultValue={modal.data?.description || ''}
+                  value={formData.description}
+                  onChange={e =>
+                    setFormData({ ...formData, description: e.target.value })
+                  }
                   className='w-full px-3 py-2 border border-border rounded-md bg-background resize-none'
                   placeholder='Descreva o conteúdo desta rede social...'
                   required
@@ -342,22 +388,12 @@ export default function SocialAdmin() {
                 </label>
                 <div className='w-fit'>
                   <IconSelector
-                    value={modal.data?.image || ''}
+                    value={formData.iconName}
                     onChange={iconName => {
-                      const input = document.getElementById(
-                        'iconName'
-                      ) as HTMLInputElement;
-                      if (input) input.value = iconName;
+                      setFormData({ ...formData, iconName });
                     }}
                   />
                 </div>
-                <input
-                  id='iconName'
-                  name='iconName'
-                  type='hidden'
-                  defaultValue={modal.data?.image || ''}
-                  required
-                />
                 <p className='text-xs text-muted-foreground'>
                   Ícone representativo da rede social
                 </p>

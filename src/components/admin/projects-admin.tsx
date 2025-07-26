@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { Edit3, ExternalLink, Eye, Plus, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
+import { ImageUpload } from '@/components/admin/image-upload';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -51,11 +52,61 @@ interface Project {
 export default function ProjectsAdmin() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentImage, setCurrentImage] = useState('');
+
+  // Form state
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    year: new Date().getFullYear().toString(),
+    whatIAccomplished: '',
+    tags: '',
+    categories: '',
+    figmaMobile: '',
+    figmaDesktop: '',
+    dribbbleUrl: '',
+    behanceUrl: '',
+  });
+
   const modal = useModal<Project>();
 
   useEffect(() => {
     loadData();
   }, []);
+
+  // Update form state when modal data changes
+  useEffect(() => {
+    if (modal.data) {
+      setCurrentImage(modal.data.image || '');
+      setFormData({
+        title: modal.data.title || '',
+        description: modal.data.description || '',
+        year: modal.data.year || new Date().getFullYear().toString(),
+        whatIAccomplished: modal.data.whatIAccomplished || '',
+        tags: modal.data.tag?.join(', ') || '',
+        categories: modal.data.category?.join(', ') || '',
+        figmaMobile: modal.data.figmaMobile || '',
+        figmaDesktop: modal.data.figmaDesktop || '',
+        dribbbleUrl: modal.data.dribbbleUrl || '',
+        behanceUrl: modal.data.behanceUrl || '',
+      });
+    } else {
+      // Reset for new project
+      setCurrentImage('');
+      setFormData({
+        title: '',
+        description: '',
+        year: new Date().getFullYear().toString(),
+        whatIAccomplished: '',
+        tags: '',
+        categories: '',
+        figmaMobile: '',
+        figmaDesktop: '',
+        dribbbleUrl: '',
+        behanceUrl: '',
+      });
+    }
+  }, [modal.data]);
 
   const loadData = async () => {
     try {
@@ -81,30 +132,34 @@ export default function ProjectsAdmin() {
     }
   };
 
-  const handleSave = async (formData: FormData) => {
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+
     // Handle array fields properly
-    const tags = ((formData.get('tags') as string) || '')
+    const tags = formData.tags
       .split(',')
       .map(t => t.trim())
       .filter(Boolean);
-    const categories = ((formData.get('categories') as string) || '')
+    const categories = formData.categories
       .split(',')
       .map(c => c.trim())
       .filter(Boolean);
 
     const data = {
-      title: formData.get('title') as string,
-      description: formData.get('description') as string,
-      image: formData.get('image') as string,
+      title: formData.title,
+      description: formData.description,
+      image: currentImage,
       tag: tags,
       category: categories,
-      year: formData.get('year') as string,
-      whatIAccomplished: formData.get('whatIAccomplished') as string,
-      figmaMobile: (formData.get('figmaMobile') as string) || undefined,
-      figmaDesktop: (formData.get('figmaDesktop') as string) || undefined,
-      dribbbleUrl: (formData.get('dribbbleUrl') as string) || undefined,
-      behanceUrl: (formData.get('behanceUrl') as string) || undefined,
+      year: formData.year,
+      whatIAccomplished: formData.whatIAccomplished,
+      figmaMobile: formData.figmaMobile || undefined,
+      figmaDesktop: formData.figmaDesktop || undefined,
+      dribbbleUrl: formData.dribbbleUrl || undefined,
+      behanceUrl: formData.behanceUrl || undefined,
     };
+
+    console.log('Form data being saved:', data);
 
     try {
       if (modal.data) {
@@ -115,6 +170,20 @@ export default function ProjectsAdmin() {
         toast.success('Projeto criado com sucesso!');
       }
       await loadData();
+      // Reset form state
+      setCurrentImage('');
+      setFormData({
+        title: '',
+        description: '',
+        year: new Date().getFullYear().toString(),
+        whatIAccomplished: '',
+        tags: '',
+        categories: '',
+        figmaMobile: '',
+        figmaDesktop: '',
+        dribbbleUrl: '',
+        behanceUrl: '',
+      });
       modal.closeModal();
     } catch (error) {
       console.error('Error saving project:', error);
@@ -324,7 +393,7 @@ export default function ProjectsAdmin() {
             </DialogDescription>
           </DialogHeader>
 
-          <form action={handleSave} className='space-y-6'>
+          <form onSubmit={handleSave} className='space-y-6'>
             <Tabs defaultValue='basic' className='w-full'>
               <TabsList className='grid w-full grid-cols-3'>
                 <TabsTrigger value='basic'>Básico</TabsTrigger>
@@ -342,7 +411,10 @@ export default function ProjectsAdmin() {
                       id='title'
                       name='title'
                       type='text'
-                      defaultValue={modal.data?.title || ''}
+                      value={formData.title}
+                      onChange={e =>
+                        setFormData({ ...formData, title: e.target.value })
+                      }
                       className='w-full px-3 py-2 border border-border rounded-md bg-background'
                       required
                     />
@@ -355,8 +427,9 @@ export default function ProjectsAdmin() {
                       id='year'
                       name='year'
                       type='text'
-                      defaultValue={
-                        modal.data?.year || new Date().getFullYear().toString()
+                      value={formData.year}
+                      onChange={e =>
+                        setFormData({ ...formData, year: e.target.value })
                       }
                       className='w-full px-3 py-2 border border-border rounded-md bg-background'
                       maxLength={4}
@@ -367,16 +440,12 @@ export default function ProjectsAdmin() {
 
                 <div className='space-y-2'>
                   <label htmlFor='image' className='text-sm font-medium'>
-                    URL da Imagem
+                    Imagem do Projeto
                   </label>
-                  <input
-                    id='image'
-                    name='image'
-                    type='text'
-                    defaultValue={modal.data?.image || ''}
-                    className='w-full px-3 py-2 border border-border rounded-md bg-background'
-                    placeholder='/projects/project-image.jpg'
-                    required
+                  <ImageUpload
+                    value={currentImage}
+                    onChange={setCurrentImage}
+                    placeholder='Upload da imagem do projeto'
                   />
                 </div>
 
@@ -389,7 +458,10 @@ export default function ProjectsAdmin() {
                       id='tags'
                       name='tags'
                       type='text'
-                      defaultValue={modal.data?.tag?.join(', ') || ''}
+                      value={formData.tags}
+                      onChange={e =>
+                        setFormData({ ...formData, tags: e.target.value })
+                      }
                       className='w-full px-3 py-2 border border-border rounded-md bg-background'
                       placeholder='React, Design, Frontend'
                     />
@@ -402,7 +474,10 @@ export default function ProjectsAdmin() {
                       id='categories'
                       name='categories'
                       type='text'
-                      defaultValue={modal.data?.category?.join(', ') || ''}
+                      value={formData.categories}
+                      onChange={e =>
+                        setFormData({ ...formData, categories: e.target.value })
+                      }
                       className='w-full px-3 py-2 border border-border rounded-md bg-background'
                       placeholder='Web Design, Mobile App'
                     />
@@ -419,7 +494,10 @@ export default function ProjectsAdmin() {
                     id='description'
                     name='description'
                     rows={3}
-                    defaultValue={modal.data?.description || ''}
+                    value={formData.description}
+                    onChange={e =>
+                      setFormData({ ...formData, description: e.target.value })
+                    }
                     className='w-full px-3 py-2 border border-border rounded-md bg-background resize-none'
                     required
                   />
@@ -436,7 +514,13 @@ export default function ProjectsAdmin() {
                     id='whatIAccomplished'
                     name='whatIAccomplished'
                     rows={4}
-                    defaultValue={modal.data?.whatIAccomplished || ''}
+                    value={formData.whatIAccomplished}
+                    onChange={e =>
+                      setFormData({
+                        ...formData,
+                        whatIAccomplished: e.target.value,
+                      })
+                    }
                     className='w-full px-3 py-2 border border-border rounded-md bg-background resize-none'
                     required
                   />
@@ -456,7 +540,13 @@ export default function ProjectsAdmin() {
                       id='figmaMobile'
                       name='figmaMobile'
                       type='url'
-                      defaultValue={modal.data?.figmaMobile || ''}
+                      value={formData.figmaMobile}
+                      onChange={e =>
+                        setFormData({
+                          ...formData,
+                          figmaMobile: e.target.value,
+                        })
+                      }
                       className='w-full px-3 py-2 border border-border rounded-md bg-background'
                     />
                   </div>
@@ -471,7 +561,13 @@ export default function ProjectsAdmin() {
                       id='figmaDesktop'
                       name='figmaDesktop'
                       type='url'
-                      defaultValue={modal.data?.figmaDesktop || ''}
+                      value={formData.figmaDesktop}
+                      onChange={e =>
+                        setFormData({
+                          ...formData,
+                          figmaDesktop: e.target.value,
+                        })
+                      }
                       className='w-full px-3 py-2 border border-border rounded-md bg-background'
                     />
                   </div>
@@ -486,7 +582,13 @@ export default function ProjectsAdmin() {
                       id='dribbbleUrl'
                       name='dribbbleUrl'
                       type='url'
-                      defaultValue={modal.data?.dribbbleUrl || ''}
+                      value={formData.dribbbleUrl}
+                      onChange={e =>
+                        setFormData({
+                          ...formData,
+                          dribbbleUrl: e.target.value,
+                        })
+                      }
                       className='w-full px-3 py-2 border border-border rounded-md bg-background'
                     />
                   </div>
@@ -498,7 +600,10 @@ export default function ProjectsAdmin() {
                       id='behanceUrl'
                       name='behanceUrl'
                       type='url'
-                      defaultValue={modal.data?.behanceUrl || ''}
+                      value={formData.behanceUrl}
+                      onChange={e =>
+                        setFormData({ ...formData, behanceUrl: e.target.value })
+                      }
                       className='w-full px-3 py-2 border border-border rounded-md bg-background'
                     />
                   </div>

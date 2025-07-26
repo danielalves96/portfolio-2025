@@ -31,17 +31,41 @@ export default function AboutAdmin() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
 
+  // Form state
+  const [formData, setFormData] = useState({
+    name: '',
+    city: '',
+    role: '',
+  });
+
   useEffect(() => {
     loadData();
   }, []);
 
+  // Update form state when aboutData changes
+  useEffect(() => {
+    if (aboutData) {
+      setFormData({
+        name: aboutData.name || '',
+        city: aboutData.city || '',
+        role: aboutData.role || '',
+      });
+      setParagraphs(aboutData.paragraphs || ['']);
+    } else {
+      // Reset form state
+      setFormData({
+        name: '',
+        city: '',
+        role: '',
+      });
+      setParagraphs(['']);
+    }
+  }, [aboutData]);
+
   const loadData = async () => {
     try {
       const data = await getAboutData();
-      if (data) {
-        setAboutData(data);
-        setParagraphs(data.paragraphs || ['']);
-      }
+      setAboutData(data);
     } catch (error) {
       console.error('Error loading about data:', error);
     } finally {
@@ -49,13 +73,15 @@ export default function AboutAdmin() {
     }
   };
 
-  const handleSave = async (formData: FormData) => {
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
     setIsSaving(true);
+
     try {
       const data = {
-        name: formData.get('name') as string,
-        city: formData.get('city') as string,
-        role: formData.get('role') as string,
+        name: formData.name,
+        city: formData.city,
+        role: formData.role,
         paragraphs: paragraphs.filter(p => p.trim()),
       };
 
@@ -63,6 +89,13 @@ export default function AboutAdmin() {
       if (result.success) {
         toast.success('Dados pessoais atualizados com sucesso!');
         await loadData();
+        // Reset form state after successful save
+        setFormData({
+          name: '',
+          city: '',
+          role: '',
+        });
+        setParagraphs(['']);
       } else {
         toast.error('Erro ao salvar dados pessoais.');
       }
@@ -118,7 +151,7 @@ export default function AboutAdmin() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form action={handleSave} className='space-y-6'>
+        <form onSubmit={handleSave} className='space-y-6'>
           {/* Basic Info */}
           <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
             <div className='space-y-2'>
@@ -129,7 +162,10 @@ export default function AboutAdmin() {
                 id='name'
                 name='name'
                 type='text'
-                defaultValue={aboutData?.name || ''}
+                value={formData.name}
+                onChange={e =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
                 className='w-full px-3 py-2 border border-border rounded-md bg-background'
                 placeholder='Ex: Paola Oliveira'
                 required
@@ -143,7 +179,10 @@ export default function AboutAdmin() {
                 id='city'
                 name='city'
                 type='text'
-                defaultValue={aboutData?.city || ''}
+                value={formData.city}
+                onChange={e =>
+                  setFormData({ ...formData, city: e.target.value })
+                }
                 className='w-full px-3 py-2 border border-border rounded-md bg-background'
                 placeholder='Ex: São Paulo, SP'
                 required
@@ -157,7 +196,10 @@ export default function AboutAdmin() {
                 id='role'
                 name='role'
                 type='text'
-                defaultValue={aboutData?.role || ''}
+                value={formData.role}
+                onChange={e =>
+                  setFormData({ ...formData, role: e.target.value })
+                }
                 className='w-full px-3 py-2 border border-border rounded-md bg-background'
                 placeholder='Ex: UX/UI Designer'
                 required

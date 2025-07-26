@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { Edit3, Eye, Plus, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
+import { ImageUpload } from '@/components/admin/image-upload';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -41,11 +42,37 @@ interface Service {
 export default function ServicesAdmin() {
   const [services, setServices] = useState<Service[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentImage, setCurrentImage] = useState('');
+
+  // Form state
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+  });
+
   const modal = useModal<Service>();
 
   useEffect(() => {
     loadData();
   }, []);
+
+  // Update form state when modal data changes
+  useEffect(() => {
+    if (modal.data) {
+      setCurrentImage(modal.data.image || '');
+      setFormData({
+        title: modal.data.title || '',
+        description: modal.data.description || '',
+      });
+    } else {
+      // Reset for new service
+      setCurrentImage('');
+      setFormData({
+        title: '',
+        description: '',
+      });
+    }
+  }, [modal.data]);
 
   const loadData = async () => {
     try {
@@ -71,12 +98,16 @@ export default function ServicesAdmin() {
     }
   };
 
-  const handleSave = async (formData: FormData) => {
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+
     const data = {
-      title: formData.get('title') as string,
-      description: formData.get('description') as string,
-      image: formData.get('image') as string,
+      title: formData.title,
+      description: formData.description,
+      image: currentImage,
     };
+
+    console.log('Service data being saved:', data);
 
     try {
       if (modal.data) {
@@ -87,6 +118,12 @@ export default function ServicesAdmin() {
         toast.success('Serviço criado com sucesso!');
       }
       await loadData();
+      // Reset form state
+      setCurrentImage('');
+      setFormData({
+        title: '',
+        description: '',
+      });
       modal.closeModal();
     } catch (error) {
       console.error('Error saving service:', error);
@@ -227,7 +264,7 @@ export default function ServicesAdmin() {
             </DialogDescription>
           </DialogHeader>
 
-          <form action={handleSave} className='space-y-4'>
+          <form onSubmit={handleSave} className='space-y-4'>
             <div className='space-y-4'>
               <div className='space-y-2'>
                 <label htmlFor='title' className='text-sm font-medium'>
@@ -237,7 +274,10 @@ export default function ServicesAdmin() {
                   id='title'
                   name='title'
                   type='text'
-                  defaultValue={modal.data?.title || ''}
+                  value={formData.title}
+                  onChange={e =>
+                    setFormData({ ...formData, title: e.target.value })
+                  }
                   className='w-full px-3 py-2 border border-border rounded-md bg-background'
                   placeholder='Ex: UX/UI Design'
                   required
@@ -252,7 +292,10 @@ export default function ServicesAdmin() {
                   id='description'
                   name='description'
                   rows={4}
-                  defaultValue={modal.data?.description || ''}
+                  value={formData.description}
+                  onChange={e =>
+                    setFormData({ ...formData, description: e.target.value })
+                  }
                   className='w-full px-3 py-2 border border-border rounded-md bg-background resize-none'
                   placeholder='Descreva o serviço oferecido...'
                   required
@@ -261,19 +304,15 @@ export default function ServicesAdmin() {
 
               <div className='space-y-2'>
                 <label htmlFor='image' className='text-sm font-medium'>
-                  URL da Imagem
+                  Imagem do Serviço
                 </label>
-                <input
-                  id='image'
-                  name='image'
-                  type='text'
-                  defaultValue={modal.data?.image || ''}
-                  className='w-full px-3 py-2 border border-border rounded-md bg-background'
-                  placeholder='/services/service-icon.svg'
-                  required
+                <ImageUpload
+                  value={currentImage}
+                  onChange={setCurrentImage}
+                  placeholder='Upload da imagem do serviço'
                 />
                 <p className='text-xs text-muted-foreground'>
-                  Caminho para o ícone ou imagem do serviço
+                  Imagem representativa do serviço
                 </p>
               </div>
             </div>

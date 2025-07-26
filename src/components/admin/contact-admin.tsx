@@ -36,9 +36,40 @@ export default function ContactAdmin() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
 
+  // Form state
+  const [formData, setFormData] = useState({
+    title: '',
+    emailRecipient: '',
+    emailSenderName: '',
+    emailSenderEmail: '',
+    emailSubjectPrefix: '',
+  });
+
   useEffect(() => {
     loadData();
   }, []);
+
+  // Update form state when contactData changes
+  useEffect(() => {
+    if (contactData) {
+      setFormData({
+        title: contactData.title || '',
+        emailRecipient: contactData.email?.recipient || '',
+        emailSenderName: contactData.email?.sender?.name || '',
+        emailSenderEmail: contactData.email?.sender?.email || '',
+        emailSubjectPrefix: contactData.email?.subject?.prefix || '',
+      });
+    } else {
+      // Reset form state
+      setFormData({
+        title: '',
+        emailRecipient: '',
+        emailSenderName: '',
+        emailSenderEmail: '',
+        emailSubjectPrefix: '',
+      });
+    }
+  }, [contactData]);
 
   const loadData = async () => {
     try {
@@ -51,21 +82,31 @@ export default function ContactAdmin() {
     }
   };
 
-  const handleSave = async (formData: FormData) => {
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
     setIsSaving(true);
+
     try {
       const data = {
-        title: formData.get('title') as string,
-        emailRecipient: formData.get('emailRecipient') as string,
-        emailSenderName: formData.get('emailSenderName') as string,
-        emailSenderEmail: formData.get('emailSenderEmail') as string,
-        emailSubjectPrefix: formData.get('emailSubjectPrefix') as string,
+        title: formData.title,
+        emailRecipient: formData.emailRecipient,
+        emailSenderName: formData.emailSenderName,
+        emailSenderEmail: formData.emailSenderEmail,
+        emailSubjectPrefix: formData.emailSubjectPrefix,
       };
 
       const result = await updateContactData(data);
       if (result.success) {
         toast.success('Configurações de contato atualizadas com sucesso!');
         await loadData();
+        // Reset form state after successful save
+        setFormData({
+          title: '',
+          emailRecipient: '',
+          emailSenderName: '',
+          emailSenderEmail: '',
+          emailSubjectPrefix: '',
+        });
       } else {
         toast.error('Erro ao salvar configurações de contato.');
       }
@@ -111,7 +152,7 @@ export default function ContactAdmin() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form action={handleSave} className='space-y-6'>
+          <form onSubmit={handleSave} className='space-y-6'>
             {/* Section Title */}
             <div className='space-y-2'>
               <label htmlFor='title' className='text-sm font-medium'>
@@ -121,7 +162,10 @@ export default function ContactAdmin() {
                 id='title'
                 name='title'
                 type='text'
-                defaultValue={contactData?.title || ''}
+                value={formData.title}
+                onChange={e =>
+                  setFormData({ ...formData, title: e.target.value })
+                }
                 className='w-full px-3 py-2 border border-border rounded-md bg-background'
                 placeholder='Ex: ENTRE EM CONTATO'
                 required
@@ -148,7 +192,13 @@ export default function ContactAdmin() {
                     id='emailRecipient'
                     name='emailRecipient'
                     type='email'
-                    defaultValue={contactData?.email?.recipient || ''}
+                    value={formData.emailRecipient}
+                    onChange={e =>
+                      setFormData({
+                        ...formData,
+                        emailRecipient: e.target.value,
+                      })
+                    }
                     className='w-full px-3 py-2 border border-border rounded-md bg-background'
                     placeholder='contato@exemplo.com'
                     required
@@ -169,7 +219,13 @@ export default function ContactAdmin() {
                     id='emailSubjectPrefix'
                     name='emailSubjectPrefix'
                     type='text'
-                    defaultValue={contactData?.email?.subject?.prefix || ''}
+                    value={formData.emailSubjectPrefix}
+                    onChange={e =>
+                      setFormData({
+                        ...formData,
+                        emailSubjectPrefix: e.target.value,
+                      })
+                    }
                     className='w-full px-3 py-2 border border-border rounded-md bg-background'
                     placeholder='[Contato Site]'
                     required
@@ -193,7 +249,13 @@ export default function ContactAdmin() {
                     id='emailSenderName'
                     name='emailSenderName'
                     type='text'
-                    defaultValue={contactData?.email?.sender?.name || ''}
+                    value={formData.emailSenderName}
+                    onChange={e =>
+                      setFormData({
+                        ...formData,
+                        emailSenderName: e.target.value,
+                      })
+                    }
                     className='w-full px-3 py-2 border border-border rounded-md bg-background'
                     placeholder='Sistema de Contato'
                     required
@@ -215,7 +277,13 @@ export default function ContactAdmin() {
                     id='emailSenderEmail'
                     name='emailSenderEmail'
                     type='email'
-                    defaultValue={contactData?.email?.sender?.email || ''}
+                    value={formData.emailSenderEmail}
+                    onChange={e =>
+                      setFormData({
+                        ...formData,
+                        emailSenderEmail: e.target.value,
+                      })
+                    }
                     className='w-full px-3 py-2 border border-border rounded-md bg-background'
                     placeholder='noreply@exemplo.com'
                     required

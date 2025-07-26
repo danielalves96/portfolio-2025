@@ -39,9 +39,28 @@ export default function SkillsAdmin() {
   const [isLoading, setIsLoading] = useState(true);
   const modal = useModal<Skill>();
 
+  // Form state
+  const [formData, setFormData] = useState({
+    name: '',
+  });
+
   useEffect(() => {
     loadData();
   }, []);
+
+  // Update form state when modal data changes
+  useEffect(() => {
+    if (modal.data) {
+      setFormData({
+        name: modal.data.name || '',
+      });
+    } else {
+      // Reset form state
+      setFormData({
+        name: '',
+      });
+    }
+  }, [modal.data]);
 
   const loadData = async () => {
     try {
@@ -67,9 +86,11 @@ export default function SkillsAdmin() {
     }
   };
 
-  const handleSave = async (formData: FormData) => {
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+
     const data = {
-      name: formData.get('name') as string,
+      name: formData.name,
     };
 
     try {
@@ -82,6 +103,10 @@ export default function SkillsAdmin() {
       }
       await loadData();
       modal.closeModal();
+      // Reset form state after successful save
+      setFormData({
+        name: '',
+      });
     } catch (error) {
       console.error('Error saving skill:', error);
       toast.error('Erro ao salvar habilidade. Tente novamente.');
@@ -190,7 +215,7 @@ export default function SkillsAdmin() {
             </DialogDescription>
           </DialogHeader>
 
-          <form action={handleSave} className='space-y-4'>
+          <form onSubmit={handleSave} className='space-y-4'>
             <div className='space-y-4'>
               <div className='space-y-2'>
                 <label htmlFor='name' className='text-sm font-medium'>
@@ -200,7 +225,10 @@ export default function SkillsAdmin() {
                   id='name'
                   name='name'
                   type='text'
-                  defaultValue={modal.data?.name || ''}
+                  value={formData.name}
+                  onChange={e =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
                   className='w-full px-3 py-2 border border-border rounded-md bg-background'
                   placeholder='Ex: React, Figma, Photoshop...'
                   required

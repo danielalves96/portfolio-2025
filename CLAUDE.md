@@ -60,9 +60,10 @@ This is a Next.js 15 portfolio application with a complete admin panel and datab
 - **Animation**: Framer Motion for smooth transitions
 - **Theme**: next-themes for dark/light mode support
 
-**Communication:**
+**Communication & Storage:**
 
 - **Email**: Resend API for contact form submissions
+- **File Storage**: Zenko S3-compatible storage for image uploads
 - **Notifications**: Sonner for toast notifications
 - **Validation**: Zod schemas for form and API validation
 
@@ -121,6 +122,7 @@ This is a Next.js 15 portfolio application with a complete admin panel and datab
 - `src/components/ui/` - Base UI components (button, input, dialog, etc.)
 - `src/components/common/` - Common components (theme toggle, admin float button)
 - `src/components/animations/` - Animation components (blur-fade, text-animate)
+- `src/components/admin/image-upload.tsx` - S3 image upload component with drag-and-drop
 
 **Utilities & Actions:**
 
@@ -128,6 +130,9 @@ This is a Next.js 15 portfolio application with a complete admin panel and datab
   - `admin-actions.ts` - CRUD operations for all content types
   - `data-fetching.ts` - Data retrieval functions
   - `send-email.ts` - Email sending functionality
+  - `upload-actions.ts` - S3 image upload functionality
+- `src/lib/storage/` - Storage configuration
+  - `s3-client.ts` - Zenko S3-compatible client configuration
 - `src/lib/` - Utility functions and configurations
 - `src/hooks/` - Custom React hooks
 
@@ -167,7 +172,7 @@ The application uses 11 main database tables:
 **Advanced Features:**
 
 - **React Icons Integration**: Comprehensive icon picker with search functionality
-- **Image Management**: File path management for all images
+- **Image Upload System**: Direct upload to Zenko S3-compatible storage with drag-and-drop
 - **Ordering System**: Drag-and-drop ordering for navigation items
 - **Rich Text Support**: JSON-based paragraph management
 - **External Links**: Management of Figma, Dribbble, and Behance links
@@ -206,6 +211,8 @@ The application uses 11 main database tables:
 - `ADMIN_EMAIL` - Admin login email (defaults to paolatoliveira@gmail.com)
 - `ADMIN_PASSWORD` - Admin login password (defaults to P&d011217)
 - `RESEND_API_KEY` - Resend API key for email functionality
+- `SCALITY_ACCESS_KEY_ID` - Zenko S3 access key for image uploads
+- `SCALITY_SECRET_ACCESS_KEY` - Zenko S3 secret key for image uploads
 
 **Development Configuration:**
 
@@ -241,6 +248,27 @@ The application uses 11 main database tables:
 - Form validation with Zod schemas
 - Configurable sender/recipient settings
 
+### Image Upload System
+
+**Zenko S3-Compatible Storage:**
+
+- **Storage Endpoint**: Zenko S3-compatible storage at `https://l0la-storage.kyantech.com.br`
+- **Bucket**: `portfolio-assets` for all uploaded images (auto-created)
+- **Upload Component**: Drag-and-drop ImageUpload component with preview
+- **File Validation**: Support for JPEG, PNG, WebP, SVG with 5MB size limit
+- **Unique Naming**: UUID-based filenames to prevent conflicts
+- **Public Access**: Uploaded images accessible via `https://l0la-storage.kyantech.com.br/portfolio-assets/[filename]`
+- **Integration**: Replaces manual URL input fields in all admin forms
+- **Setup**: Requires specific Zenko configuration (see ZENKO-SETUP.md)
+
+**Upload Workflow:**
+
+1. User drags/drops or selects image file in admin form
+2. File is validated (type, size) on client-side
+3. File is uploaded to Zenko S3 via server action
+4. Public URL is returned and saved to database
+5. Image preview is shown with remove option
+
 ### Development Notes
 
 **Key Implementation Details:**
@@ -265,5 +293,6 @@ The application uses 11 main database tables:
 1. Access admin panel at `/admin` (requires authentication)
 2. Select content section to edit
 3. Use forms to create, update, or delete content
-4. Changes immediately reflect on live site
-5. Use icon picker for social links and visual elements
+4. Upload images via drag-and-drop or file picker
+5. Changes immediately reflect on live site
+6. Use icon picker for social links and visual elements

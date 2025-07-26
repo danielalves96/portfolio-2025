@@ -25,6 +25,7 @@ import * as VscIcons from 'react-icons/vsc';
 import { toast } from 'sonner';
 
 import { IconSelector } from '@/components/admin/icon-selector';
+import { ImageUpload } from '@/components/admin/image-upload';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -105,9 +106,62 @@ export default function HeroAdmin() {
   const [isSaving, setIsSaving] = useState(false);
   const modal = useModal<SocialLink>();
 
+  // Hero form state
+  const [currentImage, setCurrentImage] = useState('');
+  const [heroFormData, setHeroFormData] = useState({
+    titleLine1: '',
+    titleLine2: '',
+    profileSrc: '',
+    profileAlt: '',
+    profileName: '',
+    quoteText: '',
+  });
+
+  // Social links form state
+  const [socialFormData, setSocialFormData] = useState({
+    href: '',
+    iconName: '',
+    label: '',
+    order: 1,
+  });
+
   useEffect(() => {
     loadData();
   }, []);
+
+  // Sync hero form state with data
+  useEffect(() => {
+    if (heroData) {
+      setHeroFormData({
+        titleLine1: heroData.titleLine1,
+        titleLine2: heroData.titleLine2,
+        profileSrc: heroData.profileSrc,
+        profileAlt: heroData.profileAlt,
+        profileName: heroData.profileName,
+        quoteText: heroData.quoteText.join('\n'),
+      });
+      setCurrentImage(heroData.profileSrc);
+    }
+  }, [heroData]);
+
+  // Sync social form state with modal data
+  useEffect(() => {
+    if (modal.data) {
+      setSocialFormData({
+        href: modal.data.href,
+        iconName: modal.data.iconName,
+        label: modal.data.label,
+        order: modal.data.order,
+      });
+    } else {
+      setSocialFormData({
+        href: '',
+        iconName: '',
+        label: '',
+        order: socialLinks.length + 1,
+      });
+    }
+  }, [modal.data, socialLinks.length]);
 
   const loadData = async () => {
     try {
@@ -126,16 +180,17 @@ export default function HeroAdmin() {
     }
   };
 
-  const handleSaveHero = async (formData: FormData) => {
+  const handleSaveHero = async (e: React.FormEvent) => {
+    e.preventDefault();
     setIsSaving(true);
     try {
       const data = {
-        titleLine1: formData.get('titleLine1') as string,
-        titleLine2: formData.get('titleLine2') as string,
-        profileSrc: formData.get('profileSrc') as string,
-        profileAlt: formData.get('profileAlt') as string,
-        profileName: formData.get('profileName') as string,
-        quoteText: (formData.get('quoteText') as string)
+        titleLine1: heroFormData.titleLine1,
+        titleLine2: heroFormData.titleLine2,
+        profileSrc: heroFormData.profileSrc,
+        profileAlt: heroFormData.profileAlt,
+        profileName: heroFormData.profileName,
+        quoteText: heroFormData.quoteText
           .split('\n')
           .filter(line => line.trim()),
       };
@@ -155,12 +210,13 @@ export default function HeroAdmin() {
     }
   };
 
-  const handleSaveSocialLink = async (formData: FormData) => {
+  const handleSaveSocialLink = async (e: React.FormEvent) => {
+    e.preventDefault();
     const data = {
-      href: formData.get('href') as string,
-      iconName: formData.get('iconName') as string,
-      label: formData.get('label') as string,
-      order: parseInt(formData.get('order') as string) || 0,
+      href: socialFormData.href,
+      iconName: socialFormData.iconName,
+      label: socialFormData.label,
+      order: socialFormData.order,
     };
 
     try {
@@ -173,6 +229,13 @@ export default function HeroAdmin() {
       }
       await loadData();
       modal.closeModal();
+      // Reset form state
+      setSocialFormData({
+        href: '',
+        iconName: '',
+        label: '',
+        order: socialLinks.length + 1,
+      });
     } catch (error) {
       console.error('Error saving social link:', error);
       toast.error('Erro ao salvar link social. Tente novamente.');
@@ -213,7 +276,7 @@ export default function HeroAdmin() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form action={handleSaveHero} className='space-y-4'>
+          <form onSubmit={handleSaveHero} className='space-y-4'>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
               <div className='space-y-2'>
                 <label htmlFor='titleLine1' className='text-sm font-medium'>
@@ -223,7 +286,13 @@ export default function HeroAdmin() {
                   id='titleLine1'
                   name='titleLine1'
                   type='text'
-                  defaultValue={heroData?.titleLine1 || ''}
+                  value={heroFormData.titleLine1}
+                  onChange={e =>
+                    setHeroFormData(prev => ({
+                      ...prev,
+                      titleLine1: e.target.value,
+                    }))
+                  }
                   className='w-full px-3 py-2 border border-border rounded-md bg-background'
                   placeholder='Ex: Olá, eu sou'
                 />
@@ -236,7 +305,13 @@ export default function HeroAdmin() {
                   id='titleLine2'
                   name='titleLine2'
                   type='text'
-                  defaultValue={heroData?.titleLine2 || ''}
+                  value={heroFormData.titleLine2}
+                  onChange={e =>
+                    setHeroFormData(prev => ({
+                      ...prev,
+                      titleLine2: e.target.value,
+                    }))
+                  }
                   className='w-full px-3 py-2 border border-border rounded-md bg-background'
                   placeholder='Ex: Paola Oliveira'
                 />
@@ -246,15 +321,15 @@ export default function HeroAdmin() {
             <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
               <div className='space-y-2'>
                 <label htmlFor='profileSrc' className='text-sm font-medium'>
-                  URL da Imagem
+                  Imagem do Perfil
                 </label>
-                <input
-                  id='profileSrc'
-                  name='profileSrc'
-                  type='text'
-                  defaultValue={heroData?.profileSrc || ''}
-                  className='w-full px-3 py-2 border border-border rounded-md bg-background'
-                  placeholder='/headshot/profile.jpg'
+                <ImageUpload
+                  value={currentImage}
+                  onChange={url => {
+                    setCurrentImage(url);
+                    setHeroFormData(prev => ({ ...prev, profileSrc: url }));
+                  }}
+                  placeholder='Upload da imagem do perfil'
                 />
               </div>
               <div className='space-y-2'>
@@ -265,7 +340,13 @@ export default function HeroAdmin() {
                   id='profileAlt'
                   name='profileAlt'
                   type='text'
-                  defaultValue={heroData?.profileAlt || ''}
+                  value={heroFormData.profileAlt}
+                  onChange={e =>
+                    setHeroFormData(prev => ({
+                      ...prev,
+                      profileAlt: e.target.value,
+                    }))
+                  }
                   className='w-full px-3 py-2 border border-border rounded-md bg-background'
                   placeholder='Foto de perfil'
                 />
@@ -278,7 +359,13 @@ export default function HeroAdmin() {
                   id='profileName'
                   name='profileName'
                   type='text'
-                  defaultValue={heroData?.profileName || ''}
+                  value={heroFormData.profileName}
+                  onChange={e =>
+                    setHeroFormData(prev => ({
+                      ...prev,
+                      profileName: e.target.value,
+                    }))
+                  }
                   className='w-full px-3 py-2 border border-border rounded-md bg-background'
                   placeholder='Paola Oliveira'
                 />
@@ -293,7 +380,13 @@ export default function HeroAdmin() {
                 id='quoteText'
                 name='quoteText'
                 rows={4}
-                defaultValue={heroData?.quoteText?.join('\n') || ''}
+                value={heroFormData.quoteText}
+                onChange={e =>
+                  setHeroFormData(prev => ({
+                    ...prev,
+                    quoteText: e.target.value,
+                  }))
+                }
                 className='w-full px-3 py-2 border border-border rounded-md bg-background resize-none'
                 placeholder='Design é resolver problemas de forma criativa...'
               />
@@ -427,7 +520,7 @@ export default function HeroAdmin() {
             </DialogDescription>
           </DialogHeader>
 
-          <form action={handleSaveSocialLink} className='space-y-4'>
+          <form onSubmit={handleSaveSocialLink} className='space-y-4'>
             <div className='space-y-4'>
               <div className='grid md:grid-cols-2 gap-4'>
                 <div className='space-y-2 flex flex-col'>
@@ -436,23 +529,12 @@ export default function HeroAdmin() {
                   </label>
                   <div className='w-fit'>
                     <IconSelector
-                      value={modal.data?.iconName || ''}
+                      value={socialFormData.iconName}
                       onChange={iconName => {
-                        const input = document.getElementById(
-                          'iconName'
-                        ) as HTMLInputElement;
-                        if (input) input.value = iconName;
+                        setSocialFormData(prev => ({ ...prev, iconName }));
                       }}
                     />
                   </div>
-
-                  <input
-                    id='iconName'
-                    name='iconName'
-                    type='hidden'
-                    defaultValue={modal.data?.iconName || ''}
-                    required
-                  />
                 </div>
                 <div className='space-y-2'>
                   <label htmlFor='order' className='text-sm font-medium'>
@@ -462,7 +544,13 @@ export default function HeroAdmin() {
                     id='order'
                     name='order'
                     type='number'
-                    defaultValue={modal.data?.order || socialLinks.length + 1}
+                    value={socialFormData.order}
+                    onChange={e =>
+                      setSocialFormData(prev => ({
+                        ...prev,
+                        order: parseInt(e.target.value) || 1,
+                      }))
+                    }
                     className='w-full px-3 py-2 border border-border rounded-md bg-background'
                     min='1'
                     required
@@ -478,7 +566,13 @@ export default function HeroAdmin() {
                   id='label'
                   name='label'
                   type='text'
-                  defaultValue={modal.data?.label || ''}
+                  value={socialFormData.label}
+                  onChange={e =>
+                    setSocialFormData(prev => ({
+                      ...prev,
+                      label: e.target.value,
+                    }))
+                  }
                   className='w-full px-3 py-2 border border-border rounded-md bg-background'
                   placeholder='Ex: Meu Instagram, GitHub Pessoal'
                   required
@@ -493,7 +587,13 @@ export default function HeroAdmin() {
                   id='href'
                   name='href'
                   type='url'
-                  defaultValue={modal.data?.href || ''}
+                  value={socialFormData.href}
+                  onChange={e =>
+                    setSocialFormData(prev => ({
+                      ...prev,
+                      href: e.target.value,
+                    }))
+                  }
                   className='w-full px-3 py-2 border border-border rounded-md bg-background'
                   placeholder='https://instagram.com/seu-perfil'
                   required

@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { Edit3, Eye, Plus, Trash2, Wrench } from 'lucide-react';
 import { toast } from 'sonner';
 
+import { ImageUpload } from '@/components/admin/image-upload';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -45,11 +46,34 @@ export default function ToolsAdmin() {
     tools: Tool[];
   } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentImage, setCurrentImage] = useState('');
+
+  // Form state
+  const [formData, setFormData] = useState({
+    name: '',
+  });
+
   const modal = useModal<Tool>();
 
   useEffect(() => {
     loadData();
   }, []);
+
+  // Update form state when modal data changes
+  useEffect(() => {
+    if (modal.data) {
+      setCurrentImage(modal.data.image || '');
+      setFormData({
+        name: modal.data.name || '',
+      });
+    } else {
+      // Reset for new tool
+      setCurrentImage('');
+      setFormData({
+        name: '',
+      });
+    }
+  }, [modal.data]);
 
   const loadData = async () => {
     try {
@@ -75,10 +99,12 @@ export default function ToolsAdmin() {
     }
   };
 
-  const handleSave = async (formData: FormData) => {
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+
     const data = {
-      name: formData.get('name') as string,
-      image: formData.get('image') as string,
+      name: formData.name,
+      image: currentImage,
     };
 
     try {
@@ -90,6 +116,11 @@ export default function ToolsAdmin() {
         toast.success('Ferramenta criada com sucesso!');
       }
       await loadData();
+      // Reset form state
+      setCurrentImage('');
+      setFormData({
+        name: '',
+      });
       modal.closeModal();
     } catch (error) {
       console.error('Error saving tool:', error);
@@ -233,7 +264,7 @@ export default function ToolsAdmin() {
             </DialogDescription>
           </DialogHeader>
 
-          <form action={handleSave} className='space-y-4'>
+          <form onSubmit={handleSave} className='space-y-4'>
             <div className='space-y-4'>
               <div className='space-y-2'>
                 <label htmlFor='name' className='text-sm font-medium'>
@@ -243,7 +274,10 @@ export default function ToolsAdmin() {
                   id='name'
                   name='name'
                   type='text'
-                  defaultValue={modal.data?.name || ''}
+                  value={formData.name}
+                  onChange={e =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
                   className='w-full px-3 py-2 border border-border rounded-md bg-background'
                   placeholder='Ex: Figma, Adobe XD, Sketch...'
                   required
@@ -252,16 +286,12 @@ export default function ToolsAdmin() {
 
               <div className='space-y-2'>
                 <label htmlFor='image' className='text-sm font-medium'>
-                  URL da Imagem/Ícone
+                  Ícone da Ferramenta
                 </label>
-                <input
-                  id='image'
-                  name='image'
-                  type='text'
-                  defaultValue={modal.data?.image || ''}
-                  className='w-full px-3 py-2 border border-border rounded-md bg-background'
-                  placeholder='/tools/figma.svg'
-                  required
+                <ImageUpload
+                  value={currentImage}
+                  onChange={setCurrentImage}
+                  placeholder='Upload do ícone da ferramenta'
                 />
               </div>
             </div>

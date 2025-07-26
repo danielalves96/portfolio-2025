@@ -65,9 +65,47 @@ export default function FooterAdmin() {
   const [isSaving, setIsSaving] = useState(false);
   const modal = useModal<NavigationItem>();
 
+  // Footer form state
+  const [footerFormData, setFooterFormData] = useState({
+    copyrightText: '',
+  });
+
+  // Navigation form state
+  const [navFormData, setNavFormData] = useState({
+    name: '',
+    href: '',
+    order: 1,
+  });
+
   useEffect(() => {
     loadData();
   }, []);
+
+  // Sync footer form state with data
+  useEffect(() => {
+    if (footerData) {
+      setFooterFormData({
+        copyrightText: footerData.copyright || '',
+      });
+    }
+  }, [footerData]);
+
+  // Sync navigation form state with modal data
+  useEffect(() => {
+    if (modal.data) {
+      setNavFormData({
+        name: modal.data.name,
+        href: modal.data.href,
+        order: modal.data.order,
+      });
+    } else {
+      setNavFormData({
+        name: '',
+        href: '',
+        order: navigation.length + 1,
+      });
+    }
+  }, [modal.data, navigation.length]);
 
   const loadData = async () => {
     try {
@@ -91,11 +129,12 @@ export default function FooterAdmin() {
     }
   };
 
-  const handleSaveFooter = async (formData: FormData) => {
+  const handleSaveFooter = async (e: React.FormEvent) => {
+    e.preventDefault();
     setIsSaving(true);
     try {
       const data = {
-        copyrightText: formData.get('copyrightText') as string,
+        copyrightText: footerFormData.copyrightText,
       };
 
       const result = await updateFooterData(data);
@@ -126,11 +165,12 @@ export default function FooterAdmin() {
     }
   };
 
-  const handleSaveNavigation = async (formData: FormData) => {
+  const handleSaveNavigation = async (e: React.FormEvent) => {
+    e.preventDefault();
     const data = {
-      name: formData.get('name') as string,
-      href: formData.get('href') as string,
-      order: parseInt(formData.get('order') as string) || navigation.length + 1,
+      name: navFormData.name,
+      href: navFormData.href,
+      order: navFormData.order,
     };
 
     try {
@@ -143,6 +183,12 @@ export default function FooterAdmin() {
       }
       await loadData();
       modal.closeModal();
+      // Reset form state
+      setNavFormData({
+        name: '',
+        href: '',
+        order: navigation.length + 1,
+      });
     } catch (error) {
       console.error('Error saving navigation:', error);
       toast.error('Erro ao salvar navegação. Tente novamente.');
@@ -220,7 +266,7 @@ export default function FooterAdmin() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <form action={handleSaveFooter} className='space-y-4'>
+              <form onSubmit={handleSaveFooter} className='space-y-4'>
                 <div className='space-y-2'>
                   <label
                     htmlFor='copyrightText'
@@ -232,7 +278,13 @@ export default function FooterAdmin() {
                     id='copyrightText'
                     name='copyrightText'
                     rows={3}
-                    defaultValue={footerData?.copyright || ''}
+                    value={footerFormData.copyrightText}
+                    onChange={e =>
+                      setFooterFormData(prev => ({
+                        ...prev,
+                        copyrightText: e.target.value,
+                      }))
+                    }
                     className='w-full px-3 py-2 border border-border rounded-md bg-background resize-none'
                     placeholder='© 2024 Todos os direitos reservados...'
                     required
@@ -385,7 +437,7 @@ export default function FooterAdmin() {
             </DialogDescription>
           </DialogHeader>
 
-          <form action={handleSaveNavigation} className='space-y-4'>
+          <form onSubmit={handleSaveNavigation} className='space-y-4'>
             <div className='space-y-4'>
               <div className='grid md:grid-cols-2 gap-4'>
                 <div className='space-y-2'>
@@ -396,7 +448,13 @@ export default function FooterAdmin() {
                     id='name'
                     name='name'
                     type='text'
-                    defaultValue={modal.data?.name || ''}
+                    value={navFormData.name}
+                    onChange={e =>
+                      setNavFormData(prev => ({
+                        ...prev,
+                        name: e.target.value,
+                      }))
+                    }
                     className='w-full px-3 py-2 border border-border rounded-md bg-background'
                     placeholder='Ex: Sobre, Projetos, Contato...'
                     required
@@ -411,7 +469,13 @@ export default function FooterAdmin() {
                     id='order'
                     name='order'
                     type='number'
-                    defaultValue={modal.data?.order || navigation.length + 1}
+                    value={navFormData.order}
+                    onChange={e =>
+                      setNavFormData(prev => ({
+                        ...prev,
+                        order: parseInt(e.target.value) || 1,
+                      }))
+                    }
                     className='w-full px-3 py-2 border border-border rounded-md bg-background'
                     min='1'
                     required
@@ -427,7 +491,10 @@ export default function FooterAdmin() {
                   id='href'
                   name='href'
                   type='text'
-                  defaultValue={modal.data?.href || ''}
+                  value={navFormData.href}
+                  onChange={e =>
+                    setNavFormData(prev => ({ ...prev, href: e.target.value }))
+                  }
                   className='w-full px-3 py-2 border border-border rounded-md bg-background'
                   placeholder='Ex: #about, #projects, #contact...'
                   required

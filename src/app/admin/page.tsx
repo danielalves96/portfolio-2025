@@ -2,7 +2,6 @@ import { Metadata } from 'next';
 
 import {
   Briefcase,
-  Database,
   FileText,
   Globe,
   MessageSquare,
@@ -12,15 +11,6 @@ import {
   User,
   Wrench,
 } from 'lucide-react';
-
-import { Badge } from '@/components/ui/badge';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
 
 export const metadata: Metadata = {
   title: 'Admin Dashboard | Portfolio',
@@ -104,62 +94,39 @@ const adminSections = [
 
 export default function AdminPage() {
   return (
-    <div className='min-h-screen bg-background'>
-      <div className='container mx-auto px-4 py-8'>
-        {/* Header */}
-        <div className='mb-8'>
-          <div className='flex items-center gap-3 mb-4'>
-            <Database className='h-8 w-8 text-primary' />
-            <div>
-              <h1 className='text-3xl font-bold tracking-tight'>
-                Admin Dashboard
-              </h1>
-              <p className='text-muted-foreground'>
-                Selecione uma seção para gerenciar seus dados
-              </p>
-            </div>
-          </div>
+    <div className='space-y-6'>
+      {/* Header */}
+      <div>
+        <h1 className='text-2xl font-bold tracking-tight'>Dashboard</h1>
+        <p className='text-muted-foreground'>
+          Selecione uma seção para gerenciar o conteúdo do site
+        </p>
+      </div>
 
-          <div className='flex items-center gap-2'>
-            <Badge variant='secondary' className='gap-1'>
-              <Database className='h-3 w-3' />
-              {adminSections.length} Seções
-            </Badge>
-            <Badge variant='outline'>PostgreSQL + Drizzle ORM</Badge>
-          </div>
-        </div>
-
-        {/* Main Content */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Gerenciamento de Dados</CardTitle>
-            <CardDescription>
-              Selecione uma seção para gerenciar seus dados
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3'>
-              {adminSections.map(section => {
-                const IconComponent = section.icon;
-                return (
-                  <a
-                    key={section.id}
-                    href={`/admin/${section.id}`}
-                    className='flex items-center gap-3 p-4 text-left border rounded-lg hover:bg-muted/50 transition-colors'
-                  >
-                    <IconComponent className='h-5 w-5 text-primary flex-shrink-0' />
-                    <div>
-                      <p className='font-medium'>{section.title}</p>
-                      <p className='text-sm text-muted-foreground'>
-                        {section.description}
-                      </p>
-                    </div>
-                  </a>
-                );
-              })}
-            </div>
-          </CardContent>
-        </Card>
+      {/* Grid */}
+      <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3'>
+        {adminSections.map(section => {
+          const IconComponent = section.icon;
+          return (
+            <a
+              key={section.id}
+              href={`/admin/${section.id}`}
+              className='group flex items-center gap-4 p-6 text-left border rounded-xl hover:bg-accent/50 transition-all duration-200 hover:shadow-md hover:border-primary/20'
+            >
+              <div className='flex-shrink-0 p-2 rounded-lg bg-primary/10 group-hover:bg-primary/15 transition-colors'>
+                <IconComponent className='h-6 w-6 text-primary' />
+              </div>
+              <div className='flex-1'>
+                <h3 className='font-semibold text-foreground group-hover:text-primary transition-colors'>
+                  {section.title}
+                </h3>
+                <p className='text-sm text-muted-foreground mt-1 leading-relaxed'>
+                  {section.description}
+                </p>
+              </div>
+            </a>
+          );
+        })}
       </div>
     </div>
   );

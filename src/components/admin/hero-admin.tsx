@@ -3,8 +3,28 @@
 import { useEffect, useState } from 'react';
 
 import { Edit3, Plus, Save, Trash2 } from 'lucide-react';
+import * as AiIcons from 'react-icons/ai';
+import * as BiIcons from 'react-icons/bi';
+import * as BsIcons from 'react-icons/bs';
+import * as CgIcons from 'react-icons/cg';
+import * as DiIcons from 'react-icons/di';
+import * as ReactIcons from 'react-icons/fa';
+import * as FiIcons from 'react-icons/fi';
+import * as GoIcons from 'react-icons/go';
+import * as GrIcons from 'react-icons/gr';
+import * as HiIcons from 'react-icons/hi';
+import * as ImIcons from 'react-icons/im';
+import * as IoIcons from 'react-icons/io';
+import * as Io5Icons from 'react-icons/io5';
+import * as MdIcons from 'react-icons/md';
+import * as RiIcons from 'react-icons/ri';
+import * as SiIcons from 'react-icons/si';
+import * as TbIcons from 'react-icons/tb';
+import * as TiIcons from 'react-icons/ti';
+import * as VscIcons from 'react-icons/vsc';
 import { toast } from 'sonner';
 
+import { IconSelector } from '@/components/admin/icon-selector';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -30,6 +50,35 @@ import {
   updateSocialLink,
 } from '@/lib/actions/admin-actions';
 import { getHeroData, getSocialLinks } from '@/lib/actions/data-fetching';
+
+// Combine all icon libraries
+const allIcons = {
+  ...ReactIcons,
+  ...AiIcons,
+  ...BiIcons,
+  ...BsIcons,
+  ...CgIcons,
+  ...DiIcons,
+  ...FiIcons,
+  ...GoIcons,
+  ...GrIcons,
+  ...HiIcons,
+  ...ImIcons,
+  ...IoIcons,
+  ...Io5Icons,
+  ...MdIcons,
+  ...RiIcons,
+  ...SiIcons,
+  ...TbIcons,
+  ...TiIcons,
+  ...VscIcons,
+};
+
+// Function to render React Icon dynamically
+const renderIcon = (iconName: string) => {
+  const IconComponent = (allIcons as any)[iconName];
+  return IconComponent ? <IconComponent className='h-4 w-4' /> : null;
+};
 
 interface HeroData {
   id: number;
@@ -287,8 +336,12 @@ export default function HeroAdmin() {
                 <div className='flex-1 grid grid-cols-1 md:grid-cols-4 gap-3'>
                   <div>
                     <label className='text-sm font-medium'>Ícone</label>
-                    <Badge variant='outline' className='mt-1'>
-                      {link.iconName}
+                    <Badge
+                      variant='outline'
+                      className='mt-1 flex items-center gap-2'
+                    >
+                      {renderIcon(link.iconName)}
+                      <span>{link.iconName}</span>
                     </Badge>
                   </div>
                   <div>
@@ -377,15 +430,22 @@ export default function HeroAdmin() {
               <div className='grid md:grid-cols-2 gap-4'>
                 <div className='space-y-2'>
                   <label htmlFor='iconName' className='text-sm font-medium'>
-                    Nome do Ícone
+                    Ícone
                   </label>
+                  <IconSelector
+                    value={modal.data?.iconName || ''}
+                    onChange={iconName => {
+                      const input = document.getElementById(
+                        'iconName'
+                      ) as HTMLInputElement;
+                      if (input) input.value = iconName;
+                    }}
+                  />
                   <input
                     id='iconName'
                     name='iconName'
-                    type='text'
+                    type='hidden'
                     defaultValue={modal.data?.iconName || ''}
-                    className='w-full px-3 py-2 border border-border rounded-md bg-background'
-                    placeholder='Ex: Instagram, Github, Linkedin'
                     required
                   />
                 </div>

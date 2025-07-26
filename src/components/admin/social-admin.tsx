@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from 'react';
 
+import Image from 'next/image';
+
 import { Edit3, ExternalLink, Eye, Plus, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -151,12 +152,13 @@ export default function SocialAdmin() {
           >
             <CardContent className='p-4'>
               {/* Image */}
-              <div className='aspect-square bg-muted rounded-lg flex items-center justify-center mb-4 overflow-hidden'>
+              <div className='aspect-square bg-muted rounded-lg flex items-center justify-center mb-4 overflow-hidden relative'>
                 {item.image ? (
-                  <img
+                  <Image
                     src={item.image}
                     alt={item.name}
-                    className='w-full h-full object-cover'
+                    fill
+                    className='object-cover'
                   />
                 ) : (
                   <Eye className='h-8 w-8 text-muted-foreground' />
@@ -224,25 +226,6 @@ export default function SocialAdmin() {
           </div>
         )}
       </div>
-
-      {/* Summary */}
-      {socialItems.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle className='text-lg'>Resumo das Redes Sociais</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className='flex flex-wrap gap-2'>
-              {socialItems.map(item => (
-                <Badge key={item.id} variant='secondary' className='gap-1'>
-                  <ExternalLink className='h-3 w-3' />
-                  {item.name}
-                </Badge>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      )}
 
       {/* Dialog Modal */}
       <Dialog open={modal.isOpen} onOpenChange={modal.closeModal}>
@@ -317,27 +300,13 @@ export default function SocialAdmin() {
                   type='text'
                   defaultValue={modal.data?.image || ''}
                   className='w-full px-3 py-2 border border-border rounded-md bg-background'
-                  placeholder='/social/instagram-preview.jpg'
+                  placeholder='/social/instagram.jpg'
                   required
                 />
                 <p className='text-xs text-muted-foreground'>
-                  Imagem de preview ou captura de tela do perfil
+                  Imagem representativa da rede social
                 </p>
               </div>
-
-              {/* Preview */}
-              {modal.data?.image && (
-                <div className='space-y-2'>
-                  <label className='text-sm font-medium'>Preview</label>
-                  <div className='w-32 h-32 bg-muted rounded-lg flex items-center justify-center overflow-hidden'>
-                    <img
-                      src={modal.data.image}
-                      alt='Preview'
-                      className='w-full h-full object-cover'
-                    />
-                  </div>
-                </div>
-              )}
             </div>
 
             <div className='flex justify-end gap-2 pt-4 border-t'>

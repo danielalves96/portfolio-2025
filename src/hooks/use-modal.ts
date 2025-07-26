@@ -2,11 +2,11 @@
 
 import { useState } from 'react';
 
-interface UseModalProps<T = any> {
+interface UseModalProps<T = unknown> {
   defaultData?: T | null;
 }
 
-interface UseModalReturn<T = any> {
+interface UseModalReturn<T = unknown> {
   isOpen: boolean;
   data: T | null;
   openModal: (data?: T) => void;
@@ -14,7 +14,7 @@ interface UseModalReturn<T = any> {
   setData: (data: T | null) => void;
 }
 
-export function useModal<T = any>({
+export function useModal<T = unknown>({
   defaultData = null,
 }: UseModalProps<T> = {}): UseModalReturn<T> {
   const [isOpen, setIsOpen] = useState(false);

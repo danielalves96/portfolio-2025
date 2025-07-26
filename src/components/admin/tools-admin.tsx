@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 
+import Image from 'next/image';
+
 import { Edit3, Eye, Plus, Trash2, Wrench } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -157,12 +159,13 @@ export default function ToolsAdmin() {
           >
             <CardContent className='p-4'>
               {/* Image */}
-              <div className='aspect-square bg-muted rounded-lg flex items-center justify-center mb-3 overflow-hidden'>
+              <div className='aspect-square bg-muted rounded-lg flex items-center justify-center mb-3 overflow-hidden relative'>
                 {tool.image ? (
-                  <img
+                  <Image
                     src={tool.image}
                     alt={tool.name}
-                    className='w-full h-full object-contain p-2'
+                    fill
+                    className='object-contain p-2'
                   />
                 ) : (
                   <Eye className='h-8 w-8 text-muted-foreground' />
@@ -216,48 +219,6 @@ export default function ToolsAdmin() {
         )}
       </div>
 
-      {/* Tools Categories Preview */}
-      {tools.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle className='text-lg'>Preview das Ferramentas</CardTitle>
-            <CardDescription>
-              Visualize como as ferramentas aparecem no portfólio
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className='grid gap-3 md:grid-cols-2 lg:grid-cols-3'>
-              {tools.slice(0, 6).map(tool => (
-                <div
-                  key={tool.id}
-                  className='flex items-center gap-3 p-2 border rounded-lg'
-                >
-                  <div className='w-8 h-8 bg-muted rounded flex items-center justify-center overflow-hidden'>
-                    {tool.image ? (
-                      <img
-                        src={tool.image}
-                        alt={tool.name}
-                        className='w-full h-full object-contain'
-                      />
-                    ) : (
-                      <Wrench className='h-4 w-4 text-muted-foreground' />
-                    )}
-                  </div>
-                  <span className='text-sm font-medium truncate'>
-                    {tool.name}
-                  </span>
-                </div>
-              ))}
-              {tools.length > 6 && (
-                <div className='flex items-center justify-center p-2 border-2 border-dashed rounded-lg text-muted-foreground'>
-                  <span className='text-sm'>+{tools.length - 6} mais</span>
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
       {/* Dialog Modal */}
       <Dialog open={modal.isOpen} onOpenChange={modal.closeModal}>
         <DialogContent className='sm:max-w-[425px]'>
@@ -302,27 +263,6 @@ export default function ToolsAdmin() {
                   placeholder='/tools/figma.svg'
                   required
                 />
-              </div>
-
-              {/* Preview */}
-              {modal.data?.image && (
-                <div className='space-y-2'>
-                  <label className='text-sm font-medium'>Preview</label>
-                  <div className='w-16 h-16 bg-muted rounded-lg flex items-center justify-center overflow-hidden'>
-                    <img
-                      src={modal.data.image}
-                      alt='Preview'
-                      className='w-full h-full object-contain p-1'
-                    />
-                  </div>
-                </div>
-              )}
-
-              <div className='bg-muted/50 p-3 rounded-lg'>
-                <p className='text-xs text-muted-foreground'>
-                  <strong>Dica:</strong> Use ícones em formato SVG ou PNG com
-                  fundo transparente para melhor qualidade visual.
-                </p>
               </div>
             </div>
 

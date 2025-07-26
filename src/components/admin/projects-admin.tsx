@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 
+import Image from 'next/image';
+
 import { Edit3, ExternalLink, Eye, Plus, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -205,12 +207,13 @@ export default function ProjectsAdmin() {
               <div className='grid md:grid-cols-3 gap-4'>
                 <div className='space-y-2'>
                   <label className='text-sm font-medium'>Imagem</label>
-                  <div className='aspect-video bg-muted rounded-lg flex items-center justify-center'>
+                  <div className='aspect-video bg-muted rounded-lg flex items-center justify-center relative'>
                     {project.image ? (
-                      <img
+                      <Image
                         src={project.image}
                         alt={project.title}
-                        className='w-full h-full object-cover rounded-lg'
+                        fill
+                        className='object-cover rounded-lg'
                       />
                     ) : (
                       <Eye className='h-8 w-8 text-muted-foreground' />

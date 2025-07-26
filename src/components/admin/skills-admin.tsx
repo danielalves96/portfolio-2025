@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import { Edit3, Plus, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -155,11 +154,6 @@ export default function SkillsAdmin() {
                   </Button>
                 </div>
               </div>
-
-              {/* Skill ID */}
-              <p className='text-xs text-muted-foreground mt-2 pt-2 border-t'>
-                ID: {skill.id}
-              </p>
             </CardContent>
           </Card>
         ))}
@@ -181,24 +175,6 @@ export default function SkillsAdmin() {
           </div>
         )}
       </div>
-
-      {/* Summary */}
-      {skills.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle className='text-lg'>Resumo</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className='flex items-center gap-4'>
-              <Badge variant='secondary' className='gap-1'>
-                <Edit3 className='h-3 w-3' />
-                {skills.length} Habilidades
-              </Badge>
-              <Badge variant='outline'>Carousel de Skills</Badge>
-            </div>
-          </CardContent>
-        </Card>
-      )}
 
       {/* Dialog Modal */}
       <Dialog open={modal.isOpen} onOpenChange={modal.closeModal}>

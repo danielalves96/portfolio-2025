@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import { AtSign, Mail, MessageSquare, Save, User } from 'lucide-react';
 import { toast } from 'sonner';
 
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -246,100 +245,6 @@ export default function ContactAdmin() {
               </Button>
             </div>
           </form>
-        </CardContent>
-      </Card>
-
-      {/* Preview Card */}
-      {contactData && (
-        <Card>
-          <CardHeader>
-            <CardTitle className='text-lg'>Preview da Configuração</CardTitle>
-            <CardDescription>
-              Como as configurações serão aplicadas no formulário
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className='space-y-4'>
-              <div className='grid md:grid-cols-2 gap-4'>
-                <div className='space-y-2'>
-                  <label className='text-sm font-medium'>Título da Seção</label>
-                  <Badge variant='secondary' className='w-fit'>
-                    {contactData.title}
-                  </Badge>
-                </div>
-
-                <div className='space-y-2'>
-                  <label className='text-sm font-medium'>
-                    Email Destinatário
-                  </label>
-                  <Badge variant='outline' className='w-fit'>
-                    {contactData.email.recipient}
-                  </Badge>
-                </div>
-              </div>
-
-              <div className='p-4 bg-muted/50 rounded-lg'>
-                <h4 className='font-medium mb-2'>Exemplo de Email Enviado:</h4>
-                <div className='space-y-1 text-sm'>
-                  <div>
-                    <strong>De:</strong> {contactData.email.sender.name} &lt;
-                    {contactData.email.sender.email}&gt;
-                  </div>
-                  <div>
-                    <strong>Para:</strong> {contactData.email.recipient}
-                  </div>
-                  <div>
-                    <strong>Assunto:</strong> {contactData.email.subject.prefix}{' '}
-                    Nova mensagem de João Silva
-                  </div>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Environment Variables Info */}
-      <Card>
-        <CardHeader>
-          <CardTitle className='text-lg flex items-center gap-2'>
-            <MessageSquare className='h-5 w-5' />
-            Configuração Técnica
-          </CardTitle>
-          <CardDescription>
-            Informações sobre as variáveis de ambiente necessárias
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className='space-y-4'>
-            <div className='p-4 bg-muted/50 rounded-lg'>
-              <h4 className='font-medium mb-2'>
-                Variáveis de Ambiente Necessárias:
-              </h4>
-              <div className='space-y-1 text-sm font-mono'>
-                <div className='flex items-center gap-2'>
-                  <Badge variant='outline' className='text-xs'>
-                    RESEND_API_KEY
-                  </Badge>
-                  <span className='text-muted-foreground'>
-                    Chave da API do Resend para envio de emails
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <div className='text-sm text-muted-foreground'>
-              <p>
-                <strong>API Route:</strong> <code>/api/send</code>
-              </p>
-              <p>
-                <strong>Validação:</strong> Zod schema para validação dos dados
-              </p>
-              <p>
-                <strong>Idioma:</strong> Emails enviados em português
-              </p>
-            </div>
-          </div>
         </CardContent>
       </Card>
     </div>

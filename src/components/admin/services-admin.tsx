@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 
+import Image from 'next/image';
+
 import { Edit3, Eye, Plus, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -163,12 +165,13 @@ export default function ServicesAdmin() {
             </CardHeader>
             <CardContent className='space-y-4'>
               {/* Image */}
-              <div className='aspect-square bg-muted rounded-lg flex items-center justify-center overflow-hidden'>
+              <div className='aspect-square bg-muted rounded-lg flex items-center justify-center overflow-hidden relative'>
                 {service.image ? (
-                  <img
+                  <Image
                     src={service.image}
                     alt={service.title}
-                    className='w-full h-full object-cover'
+                    fill
+                    className='object-cover'
                   />
                 ) : (
                   <Eye className='h-8 w-8 text-muted-foreground' />
@@ -273,20 +276,6 @@ export default function ServicesAdmin() {
                   Caminho para o ícone ou imagem do serviço
                 </p>
               </div>
-
-              {/* Preview */}
-              {modal.data?.image && (
-                <div className='space-y-2'>
-                  <label className='text-sm font-medium'>Preview</label>
-                  <div className='w-24 h-24 bg-muted rounded-lg flex items-center justify-center overflow-hidden'>
-                    <img
-                      src={modal.data.image}
-                      alt='Preview'
-                      className='w-full h-full object-cover'
-                    />
-                  </div>
-                </div>
-              )}
             </div>
 
             <div className='flex justify-end gap-2 pt-4 border-t'>

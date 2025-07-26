@@ -1,3 +1,6 @@
+import AdminFloatButton from '@/components/common/admin-float-button';
+
+import { isAuthenticated } from '@/lib/actions/auth-actions';
 import { AboutSection } from '@/sections/about/about-section';
 import { ContactSection } from '@/sections/contact/contact-section';
 import { FooterSection } from '@/sections/footer/footer-section';
@@ -8,7 +11,9 @@ import { SkillsCarousel } from '@/sections/skills/skills-carousel';
 import { SocialSection } from '@/sections/social/social-section';
 import { ToolsSection } from '@/sections/tools/tools-section';
 
-export default function Home() {
+export default async function Home() {
+  const authenticated = await isAuthenticated();
+
   return (
     <div>
       <HeroSection />
@@ -27,6 +32,9 @@ export default function Home() {
         <ContactSection />
       </div>
       <FooterSection />
+
+      {/* Admin Float Button - Only show when logged in */}
+      {authenticated && <AdminFloatButton />}
     </div>
   );
 }

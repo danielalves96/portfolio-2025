@@ -236,16 +236,6 @@ export default function FooterAdmin() {
                   </p>
                 </div>
 
-                <div className='space-y-2'>
-                  <label className='text-sm font-medium'>Designer</label>
-                  <Badge variant='outline' className='w-fit'>
-                    {footerData?.designer || 'Paola Oliveira'}
-                  </Badge>
-                  <p className='text-xs text-muted-foreground'>
-                    Nome do designer é fixo no código
-                  </p>
-                </div>
-
                 <div className='flex justify-end pt-4 border-t'>
                   <Button
                     type='submit'
@@ -265,25 +255,6 @@ export default function FooterAdmin() {
               </form>
             </CardContent>
           </Card>
-
-          {/* Footer Preview */}
-          {footerData && (
-            <Card>
-              <CardHeader>
-                <CardTitle className='text-lg'>Preview do Rodapé</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className='p-4 bg-muted/50 rounded-lg'>
-                  <div className='text-center space-y-2'>
-                    <p className='text-sm'>{footerData.copyright}</p>
-                    <p className='text-xs text-muted-foreground'>
-                      Designed by {footerData.designer}
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          )}
         </TabsContent>
 
         {/* Navigation Tab */}
@@ -389,27 +360,6 @@ export default function FooterAdmin() {
               </div>
             </CardContent>
           </Card>
-
-          {/* Navigation Preview */}
-          {navigation.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle className='text-lg'>Preview da Navegação</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className='flex flex-wrap gap-2 justify-center'>
-                  {navigation.map((item, index) => (
-                    <span key={item.id} className='flex items-center gap-1'>
-                      <Badge variant='secondary'>{item.name}</Badge>
-                      {index < navigation.length - 1 && (
-                        <span className='text-muted-foreground'>•</span>
-                      )}
-                    </span>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          )}
         </TabsContent>
       </Tabs>
 

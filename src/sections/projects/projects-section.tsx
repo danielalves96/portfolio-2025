@@ -9,5 +9,10 @@ export async function ProjectsSection() {
     return null;
   }
 
-  return <ProjectsClient projects={projectsData.projects} />;
+  return (
+    <ProjectsClient
+      projects={projectsData.projects}
+      title={projectsData.title}
+    />
+  );
 }

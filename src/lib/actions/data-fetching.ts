@@ -28,7 +28,7 @@ export async function getProjectsData() {
   const projects = await db
     .select()
     .from(schema.projects)
-    .orderBy(schema.projects.id);
+    .orderBy(schema.projects.order);
   return {
     title: 'PROJETOS',
     projects,

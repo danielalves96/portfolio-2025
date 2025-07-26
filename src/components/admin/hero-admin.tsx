@@ -476,20 +476,33 @@ export default function HeroAdmin() {
                   {
                     label: 'Excluir',
                     onClick: async () => {
-                      if (
-                        confirm(
-                          'Tem certeza que deseja deletar este link social?'
-                        )
-                      ) {
-                        try {
-                          await deleteSocialLink(link.id);
-                          toast.success('Link social deletado com sucesso!');
-                          await loadData();
-                        } catch (error) {
-                          console.error('Error deleting social link:', error);
-                          toast.error('Erro ao deletar link social.');
+                      toast(
+                        'Tem certeza que deseja deletar este link social?',
+                        {
+                          action: {
+                            label: 'Deletar',
+                            onClick: async () => {
+                              try {
+                                await deleteSocialLink(link.id);
+                                toast.success(
+                                  'Link social deletado com sucesso!'
+                                );
+                                await loadData();
+                              } catch (error) {
+                                console.error(
+                                  'Error deleting social link:',
+                                  error
+                                );
+                                toast.error('Erro ao deletar link social.');
+                              }
+                            },
+                          },
+                          cancel: {
+                            label: 'Cancelar',
+                            onClick: () => {},
+                          },
                         }
-                      }
+                      );
                     },
                     icon: Trash2,
                     variant: 'destructive' as const,

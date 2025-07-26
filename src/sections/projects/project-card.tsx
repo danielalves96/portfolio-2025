@@ -1,9 +1,10 @@
 'use client';
 
+import { Project } from '@/types/project';
+
 import { ProjectImage } from './project-image';
 import { ProjectInfo } from './project-info';
 import { ProjectSocialLinks } from './project-social-links';
-import { Project } from './projects-data';
 
 interface ProjectCardProps {
   project: Project;

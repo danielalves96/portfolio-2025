@@ -153,16 +153,25 @@ export default function FooterAdmin() {
   };
 
   const handleDeleteNav = async (id: number) => {
-    if (confirm('Tem certeza que deseja deletar este item de navegação?')) {
-      try {
-        await deleteFooterNavigation(id);
-        toast.success('Item de navegação deletado com sucesso!');
-        await loadData();
-      } catch (error) {
-        console.error('Error deleting navigation:', error);
-        toast.error('Erro ao deletar item de navegação.');
-      }
-    }
+    toast('Tem certeza que deseja deletar este item de navegação?', {
+      action: {
+        label: 'Deletar',
+        onClick: async () => {
+          try {
+            await deleteFooterNavigation(id);
+            toast.success('Item de navegação deletado com sucesso!');
+            await loadData();
+          } catch (error) {
+            console.error('Error deleting navigation:', error);
+            toast.error('Erro ao deletar item de navegação.');
+          }
+        },
+      },
+      cancel: {
+        label: 'Cancelar',
+        onClick: () => {},
+      },
+    });
   };
 
   const handleSaveNavigation = async (e: React.FormEvent) => {

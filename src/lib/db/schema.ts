@@ -50,6 +50,7 @@ export const projects = pgTable('projects', {
   figmaDesktop: varchar('figma_desktop', { length: 500 }),
   dribbbleUrl: varchar('dribbble_url', { length: 500 }),
   behanceUrl: varchar('behance_url', { length: 500 }),
+  order: integer('order').notNull().default(0),
 });
 
 // Services

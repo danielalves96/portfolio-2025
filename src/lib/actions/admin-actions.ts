@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 
-import { eq } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 
 import { db } from '@/lib/db/connection';
 import * as schema from '@/lib/db/schema';
@@ -128,10 +128,26 @@ export async function createProject(data: {
   behanceUrl?: string;
 }) {
   try {
-    await db.insert(schema.projects).values(data);
+    // Always fix sequence before creating to prevent conflicts
+    await db.execute(sql`
+      SELECT setval(pg_get_serial_sequence('projects', 'id'), COALESCE(MAX(id), 0) + 1, false) FROM projects
+    `);
+
+    // Get the highest order value and add 1 for the new project
+    const maxOrderResult = await db
+      .select({ maxOrder: sql<number>`MAX("order")` })
+      .from(schema.projects);
+
+    const nextOrder = (maxOrderResult[0]?.maxOrder || 0) + 1;
+
+    await db.insert(schema.projects).values({
+      ...data,
+      order: nextOrder,
+    });
+
     revalidatePath('/');
     return { success: true };
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error creating project:', error);
     return { success: false, error: 'Erro ao criar projeto' };
   }
@@ -453,5 +469,25 @@ export async function deleteSocialSection(id: number) {
   } catch (error) {
     console.error('Error deleting social section:', error);
     return { success: false, error: 'Erro ao deletar seção social' };
+  }
+}
+
+// Projects order actions
+export async function updateProjectsOrder(
+  projectsOrder: { id: number; order: number }[]
+) {
+  try {
+    // Update each project's order
+    for (const { id, order } of projectsOrder) {
+      await db
+        .update(schema.projects)
+        .set({ order })
+        .where(eq(schema.projects.id, id));
+    }
+    revalidatePath('/');
+    return { success: true };
+  } catch (error) {
+    console.error('Error updating projects order:', error);
+    return { success: false, error: 'Erro ao atualizar ordem dos projetos' };
   }
 }

@@ -132,16 +132,25 @@ export default function SocialAdmin() {
   };
 
   const handleDelete = async (id: number) => {
-    if (confirm('Tem certeza que deseja deletar este item social?')) {
-      try {
-        await deleteSocialSection(id);
-        toast.success('Rede social deletada com sucesso!');
-        await loadData();
-      } catch (error) {
-        console.error('Error deleting social item:', error);
-        toast.error('Erro ao deletar rede social. Tente novamente.');
-      }
-    }
+    toast('Tem certeza que deseja deletar este item social?', {
+      action: {
+        label: 'Deletar',
+        onClick: async () => {
+          try {
+            await deleteSocialSection(id);
+            toast.success('Rede social deletada com sucesso!');
+            await loadData();
+          } catch (error) {
+            console.error('Error deleting social item:', error);
+            toast.error('Erro ao deletar rede social. Tente novamente.');
+          }
+        },
+      },
+      cancel: {
+        label: 'Cancelar',
+        onClick: () => {},
+      },
+    });
   };
 
   const handleSave = async (e: React.FormEvent) => {

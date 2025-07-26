@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 
-import { Project } from './projects-data';
+import { Project } from '@/types/project';
 
 interface ProjectImageProps {
   project: Project;

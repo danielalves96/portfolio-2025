@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 import { FaBehance, FaDribbble, FaFigma } from 'react-icons/fa';
 
-import { Project } from './projects-data';
+import { Project } from '@/types/project';
 
 interface ProjectSocialLinksProps {
   project: Project;

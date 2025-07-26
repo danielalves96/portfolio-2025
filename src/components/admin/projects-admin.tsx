@@ -2,7 +2,24 @@
 
 import { useEffect, useState } from 'react';
 
-import { Calendar, Edit3, Plus, Trash2 } from 'lucide-react';
+import {
+  closestCenter,
+  DndContext,
+  DragEndEvent,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import { Calendar, Edit3, GripVertical, Plus, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { ImageUpload } from '@/components/admin/image-upload';
@@ -21,7 +38,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { ProjectsEmptyState } from '@/components/ui/empty-state';
-import { ContentCard } from '@/components/ui/enhanced-card';
 import { SkeletonCard } from '@/components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
@@ -30,22 +46,96 @@ import {
   createProject,
   deleteProject,
   updateProject,
+  updateProjectsOrder,
 } from '@/lib/actions/admin-actions';
 import { getProjectsData } from '@/lib/actions/data-fetching';
+import { Project } from '@/types/project';
 
-interface Project {
-  id: number;
-  title: string;
-  description: string;
-  image: string;
-  tag: string[];
-  category: string[];
-  year: string;
-  whatIAccomplished: string;
-  figmaMobile: string | null;
-  figmaDesktop: string | null;
-  dribbbleUrl: string | null;
-  behanceUrl: string | null;
+// Sortable Project Component
+function SortableProject({
+  project,
+  onEdit,
+  onDelete,
+}: {
+  project: Project;
+  onEdit: (project: Project) => void;
+  onDelete: (id: number) => void;
+}) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: project.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      className='flex items-center gap-4 p-4 bg-card border border-border rounded-lg hover:bg-accent/50 transition-colors'
+    >
+      {/* Drag Handle */}
+      <div
+        {...attributes}
+        {...listeners}
+        className='flex-shrink-0 p-2 hover:bg-accent rounded cursor-grab active:cursor-grabbing'
+      >
+        <GripVertical className='h-5 w-5 text-muted-foreground' />
+      </div>
+
+      {/* Project Image */}
+      <div className='flex-shrink-0 w-16 h-16 rounded overflow-hidden'>
+        <img
+          src={project.image}
+          alt={project.title}
+          className='w-full h-full object-cover'
+        />
+      </div>
+
+      {/* Project Info */}
+      <div className='flex-1 min-w-0'>
+        <h3 className='font-semibold truncate mb-1'>{project.title}</h3>
+        <p className='text-sm text-muted-foreground line-clamp-2 mb-2'>
+          {project.description}
+        </p>
+        <div className='flex items-center gap-4 text-xs text-muted-foreground'>
+          <span className='flex items-center gap-1'>
+            <Calendar className='h-3 w-3' />
+            {project.year}
+          </span>
+          <span>{project.category.join(', ')}</span>
+        </div>
+      </div>
+
+      {/* Actions */}
+      <div className='flex-shrink-0 flex items-center gap-2'>
+        <Button
+          variant='outline'
+          size='sm'
+          onClick={() => onEdit(project)}
+          className='h-8 w-8 p-0'
+        >
+          <Edit3 className='h-4 w-4' />
+        </Button>
+        <Button
+          variant='outline'
+          size='sm'
+          onClick={() => onDelete(project.id)}
+          className='h-8 w-8 p-0 hover:bg-destructive hover:text-destructive-foreground'
+        >
+          <Trash2 className='h-4 w-4' />
+        </Button>
+      </div>
+    </div>
+  );
 }
 
 export default function ProjectsAdmin() {
@@ -68,6 +158,14 @@ export default function ProjectsAdmin() {
   });
 
   const modal = useModal<Project>();
+
+  // Drag and drop sensors
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
   useEffect(() => {
     loadData();
@@ -110,7 +208,9 @@ export default function ProjectsAdmin() {
   const loadData = async () => {
     try {
       const data = await getProjectsData();
-      setProjects(data.projects);
+      // Sort by order field
+      const sortedProjects = data.projects.sort((a, b) => a.order - b.order);
+      setProjects(sortedProjects);
     } catch (error) {
       console.error('Error loading projects:', error);
     } finally {
@@ -118,17 +218,55 @@ export default function ProjectsAdmin() {
     }
   };
 
-  const handleDelete = async (id: number) => {
-    if (confirm('Tem certeza que deseja deletar este projeto?')) {
+  const handleDragEnd = async (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (active.id !== over?.id) {
+      const oldIndex = projects.findIndex(project => project.id === active.id);
+      const newIndex = projects.findIndex(project => project.id === over?.id);
+
+      // Update local state immediately for better UX
+      const newProjects = arrayMove(projects, oldIndex, newIndex);
+      setProjects(newProjects);
+
+      // Update order values and send to server
+      const updatedOrder = newProjects.map((project, index) => ({
+        id: project.id,
+        order: index + 1,
+      }));
+
       try {
-        await deleteProject(id);
-        toast.success('Projeto deletado com sucesso!');
-        await loadData();
+        await updateProjectsOrder(updatedOrder);
+        toast.success('Ordem dos projetos atualizada!');
       } catch (error) {
-        console.error('Error deleting project:', error);
-        toast.error('Erro ao deletar projeto. Tente novamente.');
+        console.error('Error updating projects order:', error);
+        toast.error('Erro ao atualizar ordem dos projetos');
+        // Revert local state on error
+        await loadData();
       }
     }
+  };
+
+  const handleDelete = async (id: number) => {
+    toast('Tem certeza que deseja deletar este projeto?', {
+      action: {
+        label: 'Deletar',
+        onClick: async () => {
+          try {
+            await deleteProject(id);
+            toast.success('Projeto deletado com sucesso!');
+            await loadData();
+          } catch (error) {
+            console.error('Error deleting project:', error);
+            toast.error('Erro ao deletar projeto. Tente novamente.');
+          }
+        },
+      },
+      cancel: {
+        label: 'Cancelar',
+        onClick: () => {},
+      },
+    });
   };
 
   const handleSave = async (e: React.FormEvent) => {
@@ -239,55 +377,27 @@ export default function ProjectsAdmin() {
           variant='card'
         />
       ) : (
-        <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
-          {projects.map(project => {
-            // Prepare metadata for the card
-            const metadata = [
-              {
-                label: 'Ano',
-                value: project.year,
-                icon: Calendar,
-              },
-              {
-                label: 'Categorias',
-                value:
-                  project.category.length > 0
-                    ? project.category.join(', ')
-                    : 'Nenhuma',
-              },
-            ];
-
-            // Prepare actions for the card
-            const actions = [
-              {
-                label: 'Editar',
-                onClick: () => modal.openModal(project),
-                icon: Edit3,
-              },
-              {
-                label: 'Excluir',
-                onClick: () => handleDelete(project.id),
-                icon: Trash2,
-                variant: 'destructive' as const,
-              },
-            ];
-
-            return (
-              <ContentCard
-                key={project.id}
-                title={project.title}
-                description={project.description}
-                image={project.image}
-                imageAlt={project.title}
-                tags={project.tag}
-                metadata={metadata}
-                actions={actions}
-                layout='featured'
-                onCardClick={() => modal.openModal(project)}
-              />
-            );
-          })}
-        </div>
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext
+            items={projects.map(p => p.id)}
+            strategy={verticalListSortingStrategy}
+          >
+            <div className='space-y-4'>
+              {projects.map(project => (
+                <SortableProject
+                  key={project.id}
+                  project={project}
+                  onEdit={project => modal.openModal(project)}
+                  onDelete={handleDelete}
+                />
+              ))}
+            </div>
+          </SortableContext>
+        </DndContext>
       )}
 
       {/* Dialog Modal */}

@@ -2,33 +2,22 @@
 
 import { useState } from 'react';
 
+import { Project } from '@/types/project';
+
 import { ProjectCard } from './project-card';
 import { ProjectFilters } from './project-filters';
 import { ProjectHeader } from './project-header';
-import { Project } from './projects-data';
 
 interface ProjectsClientProps {
   projects: Project[];
+  title: string;
 }
 
-export function ProjectsClient({ projects }: ProjectsClientProps) {
+export function ProjectsClient({ projects, title }: ProjectsClientProps) {
   const [selectedFilter, setSelectedFilter] = useState('Todos');
 
-  // Ordenar projetos do mais recente para o mais antigo
-  const sortedProjects = [...projects].sort((a, b) => {
-    // Converter anos para números para comparação correta
-    const yearA = parseInt(a.year);
-    const yearB = parseInt(b.year);
-
-    // Ordenação primária: por ano (decrescente)
-    if (yearB !== yearA) {
-      return yearB - yearA;
-    }
-
-    // Ordenação secundária: por ID (decrescente) para projetos do mesmo ano
-    // Assumindo que IDs maiores são projetos mais recentes
-    return b.id - a.id;
-  });
+  // Usar a ordem definida no admin (campo order)
+  const sortedProjects = [...projects].sort((a, b) => a.order - b.order);
 
   const filteredProjects =
     selectedFilter === 'Todos'
@@ -37,7 +26,7 @@ export function ProjectsClient({ projects }: ProjectsClientProps) {
 
   return (
     <section className='w-full bg-white dark:bg-black text-black dark:text-white min-h-screen mb-8'>
-      <ProjectHeader />
+      <ProjectHeader title={title} />
       <ProjectFilters
         selectedFilter={selectedFilter}
         onFilterChange={setSelectedFilter}

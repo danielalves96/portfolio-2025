@@ -82,16 +82,25 @@ export default function ToolsAdmin() {
   };
 
   const handleDelete = async (id: number) => {
-    if (confirm('Tem certeza que deseja deletar esta ferramenta?')) {
-      try {
-        await deleteTool(id);
-        toast.success('Ferramenta deletada com sucesso!');
-        await loadData();
-      } catch (error) {
-        console.error('Error deleting tool:', error);
-        toast.error('Erro ao deletar ferramenta. Tente novamente.');
-      }
-    }
+    toast('Tem certeza que deseja deletar esta ferramenta?', {
+      action: {
+        label: 'Deletar',
+        onClick: async () => {
+          try {
+            await deleteTool(id);
+            toast.success('Ferramenta deletada com sucesso!');
+            await loadData();
+          } catch (error) {
+            console.error('Error deleting tool:', error);
+            toast.error('Erro ao deletar ferramenta. Tente novamente.');
+          }
+        },
+      },
+      cancel: {
+        label: 'Cancelar',
+        onClick: () => {},
+      },
+    });
   };
 
   const handleSave = async (e: React.FormEvent) => {

@@ -76,16 +76,25 @@ export default function SkillsAdmin() {
   };
 
   const handleDelete = async (id: number) => {
-    if (confirm('Tem certeza que deseja deletar esta habilidade?')) {
-      try {
-        await deleteSkill(id);
-        toast.success('Habilidade deletada com sucesso!');
-        await loadData();
-      } catch (error) {
-        console.error('Error deleting skill:', error);
-        toast.error('Erro ao deletar habilidade. Tente novamente.');
-      }
-    }
+    toast('Tem certeza que deseja deletar esta habilidade?', {
+      action: {
+        label: 'Deletar',
+        onClick: async () => {
+          try {
+            await deleteSkill(id);
+            toast.success('Habilidade deletada com sucesso!');
+            await loadData();
+          } catch (error) {
+            console.error('Error deleting skill:', error);
+            toast.error('Erro ao deletar habilidade. Tente novamente.');
+          }
+        },
+      },
+      cancel: {
+        label: 'Cancelar',
+        onClick: () => {},
+      },
+    });
   };
 
   const handleSave = async (e: React.FormEvent) => {

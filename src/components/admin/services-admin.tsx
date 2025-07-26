@@ -81,16 +81,25 @@ export default function ServicesAdmin() {
   };
 
   const handleDelete = async (id: number) => {
-    if (confirm('Tem certeza que deseja deletar este serviço?')) {
-      try {
-        await deleteService(id);
-        toast.success('Serviço deletado com sucesso!');
-        await loadData();
-      } catch (error) {
-        console.error('Error deleting service:', error);
-        toast.error('Erro ao deletar serviço. Tente novamente.');
-      }
-    }
+    toast('Tem certeza que deseja deletar este serviço?', {
+      action: {
+        label: 'Deletar',
+        onClick: async () => {
+          try {
+            await deleteService(id);
+            toast.success('Serviço deletado com sucesso!');
+            await loadData();
+          } catch (error) {
+            console.error('Error deleting service:', error);
+            toast.error('Erro ao deletar serviço. Tente novamente.');
+          }
+        },
+      },
+      cancel: {
+        label: 'Cancelar',
+        onClick: () => {},
+      },
+    });
   };
 
   const handleSave = async (e: React.FormEvent) => {

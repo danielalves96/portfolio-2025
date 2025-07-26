@@ -160,17 +160,23 @@ export default function FooterAdmin() {
     if (targetIndex < 0 || targetIndex >= newNavigation.length) return;
 
     // Trocar posições
+    const currentItem = newNavigation[currentIndex];
+    const targetItem = newNavigation[targetIndex];
+
+    if (!currentItem || !targetItem) return;
+
     [newNavigation[currentIndex], newNavigation[targetIndex]] = [
-      newNavigation[targetIndex],
-      newNavigation[currentIndex],
+      targetItem,
+      currentItem,
     ];
 
     // Atualizar orders
-    newNavigation.forEach((item, index) => {
-      item.order = index + 1;
-    });
+    const updatedNavigation = newNavigation.map((item, index) => ({
+      ...item,
+      order: index + 1,
+    }));
 
-    setNavigation(newNavigation);
+    setNavigation(updatedNavigation);
   };
 
   if (isLoading) {

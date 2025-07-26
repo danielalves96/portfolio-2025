@@ -38,8 +38,10 @@ export default function AboutAdmin() {
   const loadData = async () => {
     try {
       const data = await getAboutData();
-      setAboutData(data);
-      setParagraphs(data?.paragraphs || ['']);
+      if (data) {
+        setAboutData(data);
+        setParagraphs(data.paragraphs || ['']);
+      }
     } catch (error) {
       console.error('Error loading about data:', error);
     } finally {

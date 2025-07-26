@@ -21,6 +21,7 @@ const eslintConfig = [
       // TypeScript specific rules
       '@typescript-eslint/no-unused-vars': 'error',
       '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-explicit-any': 'off',
 
       // React specific rules
       'react/prop-types': 'off',

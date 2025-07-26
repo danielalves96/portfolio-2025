@@ -42,10 +42,10 @@ interface Project {
   category: string[];
   year: string;
   whatIAccomplished: string;
-  figmaMobile?: string;
-  figmaDesktop?: string;
-  dribbbleUrl?: string;
-  behanceUrl?: string;
+  figmaMobile: string | null;
+  figmaDesktop: string | null;
+  dribbbleUrl: string | null;
+  behanceUrl: string | null;
 }
 
 export default function ProjectsAdmin() {

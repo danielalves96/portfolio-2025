@@ -115,7 +115,9 @@ export default function HeroAdmin() {
         getHeroData(),
         getSocialLinks(),
       ]);
-      setHeroData(hero);
+      if (hero) {
+        setHeroData(hero);
+      }
       setSocialLinks(social);
     } catch (error) {
       console.error('Error loading data:', error);

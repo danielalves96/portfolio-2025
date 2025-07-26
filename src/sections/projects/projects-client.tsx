@@ -5,21 +5,7 @@ import { useState } from 'react';
 import { ProjectCard } from './project-card';
 import { ProjectFilters } from './project-filters';
 import { ProjectHeader } from './project-header';
-
-interface Project {
-  id: number;
-  title: string;
-  description: string;
-  image: string;
-  tag: string[];
-  category: string[];
-  year: string;
-  whatIAccomplished: string;
-  figmaMobile: string | null;
-  figmaDesktop: string | null;
-  dribbbleUrl: string | null;
-  behanceUrl: string | null;
-}
+import { Project } from './projects-data';
 
 interface ProjectsClientProps {
   projects: Project[];

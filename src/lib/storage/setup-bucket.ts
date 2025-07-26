@@ -6,7 +6,6 @@ export async function ensureBucketExists() {
   try {
     // Try to access the bucket first
     await s3Client.send(new HeadBucketCommand({ Bucket: BUCKET_NAME }));
-    console.log(`Bucket ${BUCKET_NAME} already exists`);
     return { success: true, message: `Bucket ${BUCKET_NAME} is ready` };
   } catch (error: any) {
     if (error.name === 'NotFound' || error.$metadata?.httpStatusCode === 404) {
@@ -18,7 +17,6 @@ export async function ensureBucketExists() {
             ACL: 'public-read',
           })
         );
-        console.log(`Bucket ${BUCKET_NAME} created successfully`);
         return {
           success: true,
           message: `Bucket ${BUCKET_NAME} created successfully`,

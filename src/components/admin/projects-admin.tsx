@@ -159,8 +159,6 @@ export default function ProjectsAdmin() {
       behanceUrl: formData.behanceUrl || undefined,
     };
 
-    console.log('Form data being saved:', data);
-
     try {
       if (modal.data) {
         await updateProject(modal.data.id, data);

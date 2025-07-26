@@ -103,7 +103,6 @@ export async function deleteImage(
 
     await s3Client.send(command);
 
-    console.log('✅ Image deleted from S3:', fileName);
     return { success: true };
   } catch (error) {
     console.error('Delete error:', error);

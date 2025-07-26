@@ -58,7 +58,6 @@ export function ImageUpload({
         onChange(result.url);
         setPreview(null); // Clear preview since we now have the final URL
         toast.success('Imagem enviada com sucesso!');
-        console.log('✅ Upload successful, URL:', result.url);
       } else {
         const error = result.error || 'Erro ao fazer upload da imagem';
         toast.error(error);
@@ -112,7 +111,6 @@ export function ImageUpload({
           console.log('✅ Image deleted from S3');
         } else {
           console.warn('⚠️ Failed to delete from S3:', result.error);
-          // Continue with removal from form even if S3 deletion fails
         }
       } catch (error) {
         console.error('❌ Error deleting from S3:', error);

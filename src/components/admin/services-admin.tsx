@@ -107,8 +107,6 @@ export default function ServicesAdmin() {
       image: currentImage,
     };
 
-    console.log('Service data being saved:', data);
-
     try {
       if (modal.data) {
         await updateService(modal.data.id, data);

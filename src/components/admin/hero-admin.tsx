@@ -428,19 +428,22 @@ export default function HeroAdmin() {
           <form action={handleSaveSocialLink} className='space-y-4'>
             <div className='space-y-4'>
               <div className='grid md:grid-cols-2 gap-4'>
-                <div className='space-y-2'>
+                <div className='space-y-2 flex flex-col'>
                   <label htmlFor='iconName' className='text-sm font-medium'>
                     Ícone
                   </label>
-                  <IconSelector
-                    value={modal.data?.iconName || ''}
-                    onChange={iconName => {
-                      const input = document.getElementById(
-                        'iconName'
-                      ) as HTMLInputElement;
-                      if (input) input.value = iconName;
-                    }}
-                  />
+                  <div className='w-fit'>
+                    <IconSelector
+                      value={modal.data?.iconName || ''}
+                      onChange={iconName => {
+                        const input = document.getElementById(
+                          'iconName'
+                        ) as HTMLInputElement;
+                        if (input) input.value = iconName;
+                      }}
+                    />
+                  </div>
+
                   <input
                     id='iconName'
                     name='iconName'

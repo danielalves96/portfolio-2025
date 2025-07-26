@@ -2,11 +2,29 @@
 
 import { useEffect, useState } from 'react';
 
-import Image from 'next/image';
-
-import { Edit3, ExternalLink, Eye, Plus, Trash2 } from 'lucide-react';
+import { Edit3, ExternalLink, Plus, Trash2 } from 'lucide-react';
+import * as AiIcons from 'react-icons/ai';
+import * as BiIcons from 'react-icons/bi';
+import * as BsIcons from 'react-icons/bs';
+import * as CgIcons from 'react-icons/cg';
+import * as DiIcons from 'react-icons/di';
+import * as ReactIcons from 'react-icons/fa';
+import * as FiIcons from 'react-icons/fi';
+import * as GoIcons from 'react-icons/go';
+import * as GrIcons from 'react-icons/gr';
+import * as HiIcons from 'react-icons/hi';
+import * as ImIcons from 'react-icons/im';
+import * as IoIcons from 'react-icons/io';
+import * as Io5Icons from 'react-icons/io5';
+import * as MdIcons from 'react-icons/md';
+import * as RiIcons from 'react-icons/ri';
+import * as SiIcons from 'react-icons/si';
+import * as TbIcons from 'react-icons/tb';
+import * as TiIcons from 'react-icons/ti';
+import * as VscIcons from 'react-icons/vsc';
 import { toast } from 'sonner';
 
+import { IconSelector } from '@/components/admin/icon-selector';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -30,6 +48,35 @@ import {
   updateSocialSection,
 } from '@/lib/actions/admin-actions';
 import { getSocialSectionData } from '@/lib/actions/data-fetching';
+
+// Combine all icon libraries
+const allIcons = {
+  ...ReactIcons,
+  ...AiIcons,
+  ...BiIcons,
+  ...BsIcons,
+  ...CgIcons,
+  ...DiIcons,
+  ...FiIcons,
+  ...GoIcons,
+  ...GrIcons,
+  ...HiIcons,
+  ...ImIcons,
+  ...IoIcons,
+  ...Io5Icons,
+  ...MdIcons,
+  ...RiIcons,
+  ...SiIcons,
+  ...TbIcons,
+  ...TiIcons,
+  ...VscIcons,
+};
+
+// Function to render React Icon dynamically
+const renderIcon = (iconName: string) => {
+  const IconComponent = (allIcons as any)[iconName];
+  return IconComponent ? <IconComponent className='h-6 w-6' /> : null;
+};
 
 interface SocialItem {
   id: number;
@@ -76,7 +123,7 @@ export default function SocialAdmin() {
     const data = {
       name: formData.get('name') as string,
       description: formData.get('description') as string,
-      image: formData.get('image') as string,
+      image: formData.get('iconName') as string, // Save iconName in image field temporarily
       url: formData.get('url') as string,
     };
 
@@ -151,17 +198,16 @@ export default function SocialAdmin() {
             className='group hover:shadow-lg transition-shadow'
           >
             <CardContent className='p-4'>
-              {/* Image */}
+              {/* Icon */}
               <div className='aspect-square bg-muted rounded-lg flex items-center justify-center mb-4 overflow-hidden relative'>
                 {item.image ? (
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    fill
-                    className='object-cover'
-                  />
+                  <div className='text-6xl text-orange-500'>
+                    {renderIcon(item.image)}
+                  </div>
                 ) : (
-                  <Eye className='h-8 w-8 text-muted-foreground' />
+                  <div className='h-12 w-12 bg-muted-foreground/20 rounded-full flex items-center justify-center'>
+                    <span className='text-xs'>?</span>
+                  </div>
                 )}
               </div>
 
@@ -290,21 +336,30 @@ export default function SocialAdmin() {
                 />
               </div>
 
-              <div className='space-y-2'>
-                <label htmlFor='image' className='text-sm font-medium'>
-                  URL da Imagem
+              <div className='space-y-2 flex flex-col'>
+                <label htmlFor='iconName' className='text-sm font-medium mr-4'>
+                  Ícone
                 </label>
+                <div className='w-fit'>
+                  <IconSelector
+                    value={modal.data?.image || ''}
+                    onChange={iconName => {
+                      const input = document.getElementById(
+                        'iconName'
+                      ) as HTMLInputElement;
+                      if (input) input.value = iconName;
+                    }}
+                  />
+                </div>
                 <input
-                  id='image'
-                  name='image'
-                  type='text'
+                  id='iconName'
+                  name='iconName'
+                  type='hidden'
                   defaultValue={modal.data?.image || ''}
-                  className='w-full px-3 py-2 border border-border rounded-md bg-background'
-                  placeholder='/social/instagram.jpg'
                   required
                 />
                 <p className='text-xs text-muted-foreground'>
-                  Imagem representativa da rede social
+                  Ícone representativo da rede social
                 </p>
               </div>
             </div>

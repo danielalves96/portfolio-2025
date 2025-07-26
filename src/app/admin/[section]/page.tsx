@@ -7,7 +7,6 @@ import { ArrowLeft } from 'lucide-react';
 import AboutAdmin from '@/components/admin/about-admin';
 import ContactAdmin from '@/components/admin/contact-admin';
 import FooterAdmin from '@/components/admin/footer-admin';
-// Components for different sections
 import HeroAdmin from '@/components/admin/hero-admin';
 import ProjectsAdmin from '@/components/admin/projects-admin';
 import ServicesAdmin from '@/components/admin/services-admin';

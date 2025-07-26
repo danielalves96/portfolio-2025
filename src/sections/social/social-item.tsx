@@ -23,7 +23,6 @@ import * as TbIcons from 'react-icons/tb';
 import * as TiIcons from 'react-icons/ti';
 import * as VscIcons from 'react-icons/vsc';
 
-// Combine all icon libraries
 const allIcons = {
   ...ReactIcons,
   ...AiIcons,
@@ -46,7 +45,6 @@ const allIcons = {
   ...VscIcons,
 };
 
-// Function to render React Icon dynamically
 const renderIcon = (iconName: string) => {
   const IconComponent = (allIcons as any)[iconName];
   return IconComponent ? <IconComponent className='h-12 w-12' /> : null;

@@ -2,6 +2,35 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Product Overview
+
+This is a **portfolio website for Paola Oliveira**, a UI/UX Designer. The application serves as a comprehensive showcase of her work, skills, and professional background.
+
+### Key Features
+
+- **Dynamic Content Management**: Admin interface for updating portfolio content without code changes
+- **Portfolio Showcase**: Projects, services, skills, and tools display with filtering capabilities
+- **Contact System**: Integrated contact form with email functionality via Resend API
+- **Responsive Design**: Mobile-first approach with dark theme support
+- **Performance Optimized**: Built with Next.js 15 and modern web technologies
+
+### Target Audience
+
+- Potential clients looking for UI/UX design services
+- Employers and recruiters in the design industry
+- Fellow designers and creative professionals
+- Anyone interested in Paola's design work and capabilities
+
+### Content Sections
+
+- Hero section with profile and introduction
+- About section with personal background
+- Projects portfolio with filtering capabilities
+- Services offered with detailed descriptions
+- Skills and tools expertise showcase
+- Social media presence integration
+- Contact information and form
+
 ## Development Commands
 
 This project uses pnpm as the package manager. Key commands:
@@ -33,108 +62,135 @@ This is a Next.js 15 portfolio application with a complete admin panel and datab
 
 ### Tech Stack
 
-**Core Framework:**
+**Framework & Runtime:**
 
-- **Framework**: Next.js 15 with App Router
-- **Language**: TypeScript 5.8.3 with strict mode enabled
-- **Runtime**: React 19.1.0
+- **Next.js 15.4.3** with App Router
+- **React 19.1.0** with TypeScript
+- **Node.js** runtime environment
+- **TypeScript 5.8.3** with strict configuration
 
-**Database & Data Management:**
+**Database & ORM:**
 
-- **Database**: PostgreSQL with connection pooling
-- **ORM**: Drizzle ORM with TypeScript schema
-- **Migrations**: Drizzle Kit for schema management
-- **Data Fetching**: Server Actions with revalidation
-
-**Authentication & Security:**
-
-- **Authentication**: Cookie-based session management
-- **Authorization**: Middleware-protected admin routes
-- **Environment**: Configurable admin credentials
+- **PostgreSQL** database with connection pooling
+- **Drizzle ORM** for type-safe database operations
+- **Drizzle Kit** for migrations and schema management
+- **Server Actions** for data fetching with revalidation
 
 **Styling & UI:**
 
-- **Styling**: Tailwind CSS v4 with custom animations
-- **Components**: Radix UI primitives with shadcn/ui components
-- **Icons**: React Icons library with comprehensive icon selector
-- **Animation**: Framer Motion for smooth transitions
-- **Theme**: next-themes for dark/light mode support
+- **Tailwind CSS 4.1.11** for styling with custom animations
+- **Radix UI** components for accessible primitives
+- **shadcn/ui** component patterns and design system
+- **Framer Motion** for smooth animations and transitions
+- **Lucide React** and **React Icons** for comprehensive iconography
+- **next-themes** for dark/light theme support
 
-**Communication & Storage:**
+**Storage & Communication:**
 
-- **Email**: Resend API for contact form submissions
-- **File Storage**: Zenko S3-compatible storage for image uploads
-- **Notifications**: Sonner for toast notifications
-- **Validation**: Zod schemas for form and API validation
+- **AWS S3** (Zenko-compatible) for file storage and image uploads
+- **Resend** API for email functionality and contact forms
+- **Sonner** for toast notifications
+- **Zod** schemas for form and API validation
 
 **Development Tools:**
 
-- **Package Manager**: pnpm
-- **Testing**: Jest with React Testing Library
-- **Linting**: ESLint + Prettier + Husky pre-commit hooks
-- **Build**: Turbopack for development
+- **pnpm** as package manager
+- **ESLint** with Next.js and Prettier integration
+- **Prettier** with import sorting plugin for code formatting
+- **Husky** for git hooks with lint-staged
+- **Turbopack** for fast development builds
+- **SWC** compiler for production optimization
+
+**Testing:**
+
+- **Jest** with jsdom environment
+- **React Testing Library** for component testing
+- 80% coverage threshold for quality assurance
+
+**Authentication & Security:**
+
+- **Cookie-based session management** with configurable credentials
+- **Middleware-protected admin routes** for secure access
+- **Environment-based security configuration**
 
 ### Project Structure
 
-**Core Application:**
+#### Root Directory
 
-- `src/app/` - Next.js App Router pages, API routes, and layouts
-  - `admin/` - Complete admin panel with protected routes
-  - `login/` - Authentication pages
-  - `page.tsx` - Main portfolio page
+- **Configuration files**: Package management (pnpm), build tools, linting, and formatting configs
+- **Database migrations**: `drizzle/` contains SQL migrations and metadata
+- **Environment files**: `.env` and `.env.local` for configuration
 
-**Admin System:**
+#### Source Code Organization (`src/`)
 
-- `src/components/admin/` - Admin-specific components
-  - `*-admin.tsx` - CRUD interfaces for each content section
-  - `icon-selector.tsx` - React Icons picker component
-  - `admin-header.tsx` - Admin navigation and logout
+**App Router (`src/app/`):**
 
-**Authentication:**
+- **Next.js 15 App Router** structure with route-based organization
+- **Route groups**: `/admin` for content management, `/login` for authentication
+- **Global styles**: `globals.css` with Tailwind imports
+- **Root layout**: Theme provider and global components setup
+- `page.tsx` - Main portfolio page
 
-- `src/components/auth/` - Authentication components
-- `src/middleware.ts` - Route protection middleware
-- `src/lib/actions/auth-actions.ts` - Login/logout server actions
+**Components (`src/components/`):**
 
-**Database Layer:**
+```
+components/
+├── admin/          # Admin interface components
+│   ├── *-admin.tsx # CRUD interfaces for each content section
+│   ├── icon-selector.tsx # React Icons picker component
+│   ├── admin-header.tsx # Admin navigation and logout
+│   └── image-upload.tsx # S3 image upload with drag-and-drop
+├── animations/     # Reusable animation components (blur-fade, text-animate)
+├── auth/          # Authentication related components
+├── common/        # Shared utility components (theme, scroll indicators)
+└── ui/            # Base UI components (shadcn/ui style)
+```
 
-- `src/lib/db/` - Database configuration and schema
-  - `schema.ts` - Drizzle schema definitions for all tables
-  - `connection.ts` - PostgreSQL connection with pooling
-  - `seed.ts` - Database seeding from static data files
-- `drizzle/` - Migration files and metadata
+**Sections (`src/sections/`):**
+**Feature-based organization** - each major page section has its own folder:
 
-**Content Sections:**
+```
+sections/
+├── about/         # About section components
+├── contact/       # Contact form and validation
+├── footer/        # Footer with navigation and copyright
+├── hero/          # Hero section with profile and title
+├── projects/      # Portfolio projects with filtering
+├── services/      # Services offered
+├── skills/        # Skills carousel
+├── social/        # Social media links
+└── tools/         # Tools and technologies
+```
 
-- `src/sections/` - Portfolio sections (now database-driven)
-  - `hero/` - Hero section with profile and social links
-  - `about/` - About section with editable biography
-  - `projects/` - Projects with categories, tags, and external links
-  - `services/` - Services offered with descriptions
-  - `skills/` - Skills carousel with dynamic content
-  - `tools/` - Tools and technologies showcase
-  - `social/` - Social media presence section
-  - `contact/` - Contact form with email integration
-  - `footer/` - Footer with navigation and copyright
+**Library Code (`src/lib/`):**
 
-**Shared Components:**
+```
+lib/
+├── actions/       # Server actions for data operations
+│   ├── admin-actions.ts # CRUD operations for all content types
+│   ├── data-fetching.ts # Data retrieval functions
+│   ├── send-email.ts # Email sending functionality
+│   ├── upload-actions.ts # S3 image upload functionality
+│   └── auth-actions.ts # Login/logout server actions
+├── db/           # Database connection and schema
+│   ├── schema.ts # Drizzle schema definitions for all tables
+│   ├── connection.ts # PostgreSQL connection with pooling
+│   └── seed.ts # Database seeding from static data files
+├── storage/      # Storage configuration
+│   └── s3-client.ts # Zenko S3-compatible client configuration
+├── hooks/        # Custom React hooks
+└── utils.ts      # Utility functions (cn for className merging)
+```
 
-- `src/components/ui/` - Base UI components (button, input, dialog, etc.)
-- `src/components/common/` - Common components (theme toggle, admin float button)
-- `src/components/animations/` - Animation components (blur-fade, text-animate)
-- `src/components/admin/image-upload.tsx` - S3 image upload component with drag-and-drop
+**Testing (`src/__tests__/`):**
 
-**Utilities & Actions:**
+- **Jest configuration** with React Testing Library
+- **Test utilities** for consistent testing setup
+- **Example tests** demonstrating patterns
 
-- `src/lib/actions/` - Server actions for data operations
-  - `admin-actions.ts` - CRUD operations for all content types
-  - `data-fetching.ts` - Data retrieval functions
-  - `send-email.ts` - Email sending functionality
-  - `upload-actions.ts` - S3 image upload functionality
-- `src/lib/storage/` - Storage configuration
-  - `s3-client.ts` - Zenko S3-compatible client configuration
-- `src/lib/` - Utility functions and configurations
-- `src/hooks/` - Custom React hooks
+**Authentication & Middleware:**
+
+- `src/middleware.ts` - Route protection middleware for admin routes
 
 **Static Assets:**
 
@@ -143,6 +199,45 @@ This is a Next.js 15 portfolio application with a complete admin panel and datab
   - `projects/` - Project screenshots
   - `skills/` - Skill-related images
   - `tools/` - Tool icons and logos
+
+#### Key Architectural Patterns
+
+**Database Schema Pattern:**
+
+- **Single table per content type** (hero, about, projects, etc.)
+- **JSON columns** for arrays (tags, categories, paragraphs)
+- **Serial IDs** as primary keys
+- **Drizzle ORM** with type-safe queries
+
+**Server Actions Pattern:**
+
+- **'use server'** directive for server-side operations
+- **CRUD operations** for each content type
+- **revalidatePath()** for cache invalidation
+- **Consistent error handling** with try/catch blocks
+
+**Component Organization Pattern:**
+
+- **Feature folders** group related components
+- **Separation of concerns**: data fetching, UI, and business logic
+- **Reusable animations** in dedicated folder
+- **UI primitives** following shadcn/ui patterns
+
+**Import Organization:**
+Prettier plugin enforces import order:
+
+1. React imports
+2. Next.js imports
+3. Third-party modules
+4. Internal modules (@/ paths)
+5. Relative imports
+
+**File Naming Conventions:**
+
+- **kebab-case** for files and folders
+- **PascalCase** for React components
+- **camelCase** for functions and variables
+- **Descriptive names** that indicate purpose
 
 ### Database Schema
 
@@ -222,6 +317,15 @@ The application uses 11 main database tables:
 - Next.js removes console logs in production builds
 - Husky + lint-staged for pre-commit code quality checks
 
+### Build Configuration
+
+- **Turbopack** for fast development builds with hot reloading
+- **SWC** compiler for production optimization and faster builds
+- **Console removal** in production builds for cleaner output
+- **Server actions** with 40mb body size limit for large file uploads
+- **Next.js Image** optimization for automatic image compression and formats
+- **Static optimization** for pages without server-side data requirements
+
 ### Authentication System
 
 **Simple Cookie-Based Auth:**
@@ -296,3 +400,48 @@ The application uses 11 main database tables:
 4. Upload images via drag-and-drop or file picker
 5. Changes immediately reflect on live site
 6. Use icon picker for social links and visual elements
+
+## Command Reference
+
+### Development Commands
+
+```bash
+pnpm dev          # Start development server with Turbopack
+pnpm build        # Build for production
+pnpm start        # Start production server
+```
+
+### Code Quality Commands
+
+```bash
+pnpm lint         # Run ESLint
+pnpm lint:fix     # Fix ESLint issues automatically
+pnpm format       # Format code with Prettier
+pnpm format:check # Check formatting without making changes
+```
+
+### Testing Commands
+
+```bash
+pnpm test         # Run Jest tests
+pnpm test:watch   # Run tests in watch mode
+pnpm test:coverage # Run tests with coverage report
+```
+
+### Database Commands
+
+```bash
+pnpm db:generate  # Generate migrations from schema changes
+pnpm db:push      # Push schema changes directly to database
+pnpm db:migrate   # Run pending migrations
+pnpm db:studio    # Open Drizzle Studio for database management
+pnpm db:seed      # Seed database with initial data
+```
+
+### Workflow Tips
+
+- Use `pnpm db:generate` after modifying schema in `src/lib/db/schema.ts`
+- Use `pnpm db:push` for development or `pnpm db:migrate` for production
+- Run `pnpm lint:fix` and `pnpm format` before committing changes
+- Access database visually with `pnpm db:studio` at `http://localhost:4983`
+- Reseed database with fresh data using `pnpm db:seed` when needed

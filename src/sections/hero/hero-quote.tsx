@@ -12,9 +12,9 @@ export async function HeroQuote() {
     return null;
   }
   return (
-    <div className='flex-1 space-y-6 text-center lg:text-right'>
-      <div className='space-y-4'>
-        <blockquote className='text-2xl md:text-3xl lg:text-4xl font-medium leading-relaxed'>
+    <div className='flex-1 space-y-4 sm:space-y-5 lg:space-y-6 text-center lg:text-right'>
+      <div className='space-y-3 sm:space-y-4'>
+        <blockquote className='text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-medium leading-relaxed'>
           <TextAnimate
             animation='blurInUp'
             by='character'

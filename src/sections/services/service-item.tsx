@@ -21,19 +21,23 @@ export function ServiceItem({
     <div>
       {/* Service Header */}
       <div
-        className='flex items-center justify-between p-6 cursor-pointer hover:bg-muted/20 transition-colors duration-200'
+        className='flex items-center justify-between p-4 sm:p-5 lg:p-6 cursor-pointer hover:bg-muted/20 transition-colors duration-200'
         onClick={onToggle}
       >
-        <div className='flex items-center space-x-4'>
-          <span className='text-muted-foreground text-lg font-medium'>
+        <div className='flex items-center space-x-2 sm:space-x-3 lg:space-x-4'>
+          <span className='text-muted-foreground text-sm sm:text-base lg:text-lg font-medium'>
             ({service.id.toString().padStart(2, '0')})
           </span>
-          <h3 className='text-xl md:text-2xl font-semibold text-foreground uppercase tracking-wide'>
+          <h3 className='text-lg sm:text-xl lg:text-2xl font-semibold text-foreground uppercase tracking-wide'>
             {service.title}
           </h3>
         </div>
         <div className='text-orange-500'>
-          {isExpanded ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
+          {isExpanded ? (
+            <ChevronUp size={20} className='sm:w-6 sm:h-6' />
+          ) : (
+            <ChevronDown size={20} className='sm:w-6 sm:h-6' />
+          )}
         </div>
       </div>
 
@@ -58,8 +62,8 @@ export function ServiceItem({
 
             {/* Text Content Overlay */}
             <div className='absolute inset-0 flex items-end'>
-              <div className='p-8 md:p-12 text-white max-w-5xl'>
-                <p className='text-lg md:text-xl lg:text-2xl font-medium leading-relaxed'>
+              <div className='p-4 sm:p-6 md:p-8 lg:p-12 text-white max-w-5xl'>
+                <p className='text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-medium leading-relaxed'>
                   {service.description}
                 </p>
               </div>

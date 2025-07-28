@@ -15,10 +15,13 @@ interface SkillItemProps {
 export function SkillItem({ skill, index }: SkillItemProps) {
   return (
     <div key={index} className='flex items-center'>
-      <span className='text-muted-foreground text-2xl md:text-3xl font-bold mr-8'>
+      <span className='text-muted-foreground text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mr-4 sm:mr-6 lg:mr-8'>
         {skill.name}
       </span>
-      <Dot size={40} className='text-muted-foreground mr-6' />
+      <Dot
+        size={30}
+        className='text-muted-foreground mr-3 sm:mr-4 lg:mr-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10'
+      />
     </div>
   );
 }

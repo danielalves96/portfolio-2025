@@ -19,8 +19,8 @@ export function SocialClient({ socialItems }: SocialClientProps) {
   const [hoveredNetwork, setHoveredNetwork] = useState<string | null>(null);
 
   return (
-    <section className='w-full flex justify-center pt-16 relative'>
-      <div className='w-lg text-5xl font-semibold'>
+    <section className='w-full flex justify-center pt-8 sm:pt-12 lg:pt-16 relative px-4'>
+      <div className='w-full max-w-lg text-3xl sm:text-4xl lg:text-5xl font-semibold'>
         {socialItems.map(network => (
           <SocialItem
             key={network.name}

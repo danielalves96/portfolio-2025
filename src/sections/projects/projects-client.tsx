@@ -25,7 +25,7 @@ export function ProjectsClient({ projects, title }: ProjectsClientProps) {
       : sortedProjects.filter(project => project.tag.includes(selectedFilter));
 
   return (
-    <section className='w-full bg-white dark:bg-black text-black dark:text-white min-h-screen mb-8'>
+    <section className='w-full bg-white dark:bg-black text-black dark:text-white min-h-screen mb-8 px-4'>
       <ProjectHeader title={title} />
       <ProjectFilters
         selectedFilter={selectedFilter}

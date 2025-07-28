@@ -24,7 +24,7 @@ export function ServicesClient({ services }: ServicesClientProps) {
   };
 
   return (
-    <section className='w-full bg-background pt-16 pb-8 px-4'>
+    <section className='w-full bg-background pt-8 sm:pt-12 lg:pt-16 pb-6 sm:pb-8 px-4'>
       <div className='max-w-7xl mx-auto'>
         <ServicesHeader />
 
@@ -40,8 +40,10 @@ export function ServicesClient({ services }: ServicesClientProps) {
           ))}
         </div>
       </div>
-      <div className='text-center mt-24'>
-        <div className='text-orange-500 text-5xl'>✦</div>
+      <div className='text-center mt-12 sm:mt-16 lg:mt-24'>
+        <div className='text-orange-500 text-3xl sm:text-4xl lg:text-5xl'>
+          ✦
+        </div>
       </div>
     </section>
   );

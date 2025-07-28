@@ -16,7 +16,7 @@ export function ProfileImage({ src, alt, name }: ProfileImageProps) {
       <div className='absolute -inset-4 bg-gradient-to-tr from-orange-300/30 to-orange-400/20 dark:from-orange-400/10 dark:to-orange-500/8 rounded-full' />
 
       {/* Profile image */}
-      <div className='relative w-96 h-96 md:w-80 md:h-80 rounded-full overflow-hidden border-4 shadow-2xl'>
+      <div className='relative w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 lg:w-80 lg:h-80 xl:w-96 xl:h-96 rounded-full overflow-hidden border-4 shadow-2xl'>
         <Image
           src={src}
           alt={alt}

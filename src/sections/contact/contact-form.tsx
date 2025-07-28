@@ -95,21 +95,22 @@ export function ContactForm({
   };
 
   return (
-    <form onSubmit={handleSubmit} className='space-y-8'>
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
-        <div className='space-y-3'>
+    <form onSubmit={handleSubmit} className='space-y-6 sm:space-y-8'>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8'>
+        <div className='space-y-2 sm:space-y-3'>
           <Label
             htmlFor='fullName'
-            className='text-foreground/80 text-sm font-medium uppercase tracking-wider'
+            className='text-foreground/80 text-xs sm:text-sm font-medium uppercase tracking-wider'
           >
-            NOME COMPLETO <span className='text-red-500 text-2xl'>*</span>
+            NOME COMPLETO{' '}
+            <span className='text-red-500 text-xl sm:text-2xl'>*</span>
           </Label>
           <Input
             id='fullName'
             type='text'
             value={formData.fullName}
             onChange={e => handleInputChange('fullName', e.target.value)}
-            className='bg-transparent border-0 border-b-2 border-foreground/30 rounded-none px-2 py-3 text-foreground placeholder:text-foreground/50 focus:border-foreground focus-visible:ring-0 focus-visible:ring-offset-0 text-lg'
+            className='bg-transparent border-0 border-b-2 border-foreground/30 rounded-none px-1 sm:px-2 py-2 sm:py-3 text-foreground placeholder:text-foreground/50 focus:border-foreground focus-visible:ring-0 focus-visible:ring-offset-0 text-base sm:text-lg'
             required
           />
           {errors.fullName && (
@@ -117,19 +118,19 @@ export function ContactForm({
           )}
         </div>
 
-        <div className='space-y-3'>
+        <div className='space-y-2 sm:space-y-3'>
           <Label
             htmlFor='email'
-            className='text-foreground/80 text-sm font-medium uppercase tracking-wider'
+            className='text-foreground/80 text-xs sm:text-sm font-medium uppercase tracking-wider'
           >
-            EMAIL <span className='text-red-500 text-2xl'>*</span>
+            EMAIL <span className='text-red-500 text-xl sm:text-2xl'>*</span>
           </Label>
           <Input
             id='email'
             type='email'
             value={formData.email}
             onChange={e => handleInputChange('email', e.target.value)}
-            className='bg-transparent border-0 border-b-2 border-foreground/30 rounded-none px-2 py-3 text-foreground placeholder:text-foreground/50 focus:border-foreground focus-visible:ring-0 focus-visible:ring-offset-0 text-lg'
+            className='bg-transparent border-0 border-b-2 border-foreground/30 rounded-none px-1 sm:px-2 py-2 sm:py-3 text-foreground placeholder:text-foreground/50 focus:border-foreground focus-visible:ring-0 focus-visible:ring-offset-0 text-base sm:text-lg'
             required
           />
           {errors.email && (
@@ -137,39 +138,39 @@ export function ContactForm({
           )}
         </div>
 
-        <div className='space-y-3'>
+        <div className='space-y-2 sm:space-y-3'>
           <Label
             htmlFor='phone'
-            className='text-foreground/80 text-sm font-medium uppercase tracking-wider'
+            className='text-foreground/80 text-xs sm:text-sm font-medium uppercase tracking-wider'
           >
             TELEFONE (OPCIONAL){' '}
-            <span className='text-transparent text-2xl'>*</span>
+            <span className='text-transparent text-xl sm:text-2xl'>*</span>
           </Label>
           <Input
             id='phone'
             type='tel'
             value={formData.phone}
             onChange={e => handleInputChange('phone', e.target.value)}
-            className='bg-transparent border-0 border-b-2 border-foreground/30 rounded-none px-2 py-3 text-foreground placeholder:text-foreground/50 focus:border-foreground focus-visible:ring-0 focus-visible:ring-offset-0 text-lg'
+            className='bg-transparent border-0 border-b-2 border-foreground/30 rounded-none px-1 sm:px-2 py-2 sm:py-3 text-foreground placeholder:text-foreground/50 focus:border-foreground focus-visible:ring-0 focus-visible:ring-offset-0 text-base sm:text-lg'
           />
           {errors.phone && (
             <p className='text-red-500 text-sm'>{errors.phone}</p>
           )}
         </div>
 
-        <div className='space-y-3'>
+        <div className='space-y-2 sm:space-y-3'>
           <Label
             htmlFor='subject'
-            className='text-foreground/80 text-sm font-medium uppercase tracking-wider'
+            className='text-foreground/80 text-xs sm:text-sm font-medium uppercase tracking-wider'
           >
-            ASSUNTO <span className='text-red-500 text-2xl'>*</span>
+            ASSUNTO <span className='text-red-500 text-xl sm:text-2xl'>*</span>
           </Label>
           <Input
             id='subject'
             type='text'
             value={formData.subject}
             onChange={e => handleInputChange('subject', e.target.value)}
-            className='bg-transparent border-0 border-b-2 border-foreground/30 rounded-none px-2 py-3 text-foreground placeholder:text-foreground/50 focus:border-foreground focus-visible:ring-0 focus-visible:ring-offset-0 text-lg'
+            className='bg-transparent border-0 border-b-2 border-foreground/30 rounded-none px-1 sm:px-2 py-2 sm:py-3 text-foreground placeholder:text-foreground/50 focus:border-foreground focus-visible:ring-0 focus-visible:ring-offset-0 text-base sm:text-lg'
             required
           />
           {errors.subject && (
@@ -178,19 +179,19 @@ export function ContactForm({
         </div>
       </div>
 
-      <div className='space-y-3'>
+      <div className='space-y-2 sm:space-y-3'>
         <Label
           htmlFor='message'
-          className='text-foreground/80 text-sm font-medium uppercase tracking-wider'
+          className='text-foreground/80 text-xs sm:text-sm font-medium uppercase tracking-wider'
         >
-          MENSAGEM <span className='text-red-500 text-2xl'>*</span>
+          MENSAGEM <span className='text-red-500 text-xl sm:text-2xl'>*</span>
         </Label>
         <Textarea
           id='message'
           rows={4}
           value={formData.message}
           onChange={e => handleInputChange('message', e.target.value)}
-          className='bg-transparent border-0 border-b-2 border-foreground/30 rounded-none px-2 py-3 text-foreground placeholder:text-foreground/50 focus:border-foreground focus-visible:ring-0 focus-visible:ring-offset-0 text-lg'
+          className='bg-transparent border-0 border-b-2 border-foreground/30 rounded-none px-1 sm:px-2 py-2 sm:py-3 text-foreground placeholder:text-foreground/50 focus:border-foreground focus-visible:ring-0 focus-visible:ring-offset-0 text-base sm:text-lg'
           required
         />
         {errors.message && (
@@ -198,7 +199,7 @@ export function ContactForm({
         )}
       </div>
 
-      <div className='text-center pt-8 space-y-4'>
+      <div className='text-center pt-6 sm:pt-8 space-y-3 sm:space-y-4'>
         {submitStatus === 'success' && (
           <div className='bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 p-4 rounded-lg'>
             Mensagem enviada com sucesso! Assim que possível entrarei em
@@ -216,7 +217,7 @@ export function ContactForm({
         <Button
           type='submit'
           disabled={isSubmitting}
-          className='bg-orange-500 hover:bg-orange-500/90 text-white px-8 py-3 font-semibold transition-colors text-lg rounded-full p-6'
+          className='bg-orange-500 hover:bg-orange-500/90 text-white px-6 sm:px-8 py-2 sm:py-3 font-semibold transition-colors text-base sm:text-lg rounded-full p-4 sm:p-6'
         >
           {isSubmitting ? 'Enviando...' : 'Enviar Mensagem'}
         </Button>

@@ -45,9 +45,9 @@ const allIcons = {
   ...VscIcons,
 };
 
-const renderIcon = (iconName: string) => {
+const renderIcon = (iconName: string, className = 'h-12 w-12') => {
   const IconComponent = (allIcons as any)[iconName];
-  return IconComponent ? <IconComponent className='h-12 w-12' /> : null;
+  return IconComponent ? <IconComponent className={className} /> : null;
 };
 
 interface SocialNetwork {
@@ -78,13 +78,19 @@ export function SocialItem({
           <div className='flex animate-scroll-infinite whitespace-nowrap'>
             {duplicatedNetworks.map((network, index) => (
               <div key={index} className='flex items-center'>
-                <div className='text-5xl text-orange-500 mr-8'>
-                  {renderIcon(network.image)}
+                <div className='text-3xl sm:text-4xl lg:text-5xl text-orange-500 mr-4 sm:mr-6 lg:mr-8'>
+                  {renderIcon(
+                    network.image,
+                    'h-8 w-8 sm:h-10 sm:w-10 lg:h-12 lg:w-12'
+                  )}
                 </div>
-                <span className='mr-8 ml-2 text-5xl text-muted-foreground'>
+                <span className='mr-4 sm:mr-6 lg:mr-8 ml-1 sm:ml-2 text-3xl sm:text-4xl lg:text-5xl text-muted-foreground'>
                   {network.name}
                 </span>
-                <Dot size={50} className='text-muted-foreground mr-8' />
+                <Dot
+                  size={40}
+                  className='text-muted-foreground mr-4 sm:mr-6 lg:mr-8 sm:w-12 sm:h-12 lg:w-14 lg:h-14'
+                />
               </div>
             ))}
           </div>
@@ -95,7 +101,7 @@ export function SocialItem({
 
   return (
     <div
-      className='border p-6 text-center transition-all duration-300 cursor-pointer relative'
+      className='border p-4 sm:p-5 lg:p-6 text-center transition-all duration-300 cursor-pointer relative'
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >

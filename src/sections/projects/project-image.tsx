@@ -20,6 +20,8 @@ export function ProjectImage({ project, index }: ProjectImageProps) {
           height={450}
           className='w-full h-full object-cover transition-transform duration-300 group-hover:scale-102'
           priority={index < 2}
+          loading={index < 2 ? 'eager' : 'lazy'}
+          sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
           onError={e => {
             // Fallback para caso a imagem não carregue
             e.currentTarget.style.display = 'none';

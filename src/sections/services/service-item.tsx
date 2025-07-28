@@ -55,6 +55,8 @@ export function ServiceItem({
               alt={service.title}
               fill
               className='object-cover'
+              loading='lazy'
+              sizes='(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw'
             />
 
             {/* Orange Gradient Overlay */}

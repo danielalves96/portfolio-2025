@@ -39,6 +39,8 @@ export function ToolItem({ tool, index }: ToolItemProps) {
               alt={tool.name}
               fill
               className='object-contain filter group-hover:brightness-110 group-hover:drop-shadow-lg transition-all duration-300'
+              loading='lazy'
+              sizes='(max-width: 640px) 72px, (max-width: 768px) 80px, (max-width: 1024px) 88px, 96px'
               onError={() => setImageError(true)}
             />
           ) : IconComponent ? (

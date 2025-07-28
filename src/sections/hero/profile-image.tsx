@@ -24,6 +24,7 @@ export function ProfileImage({ src, alt, name }: ProfileImageProps) {
           className='object-cover'
           style={{ transform: 'scale(1.1)' }}
           priority
+          sizes='(max-width: 640px) 288px, (max-width: 768px) 384px, 320px'
         />
       </div>
 

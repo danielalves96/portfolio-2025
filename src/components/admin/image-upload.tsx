@@ -132,11 +132,14 @@ export function ImageUpload({
         <div className='relative'>
           <div className='aspect-square w-full max-w-sm rounded-lg overflow-hidden border bg-muted'>
             {preview ? (
-              // Show local preview using regular img for base64
-              <img
+              // Show local preview using Next.js Image for base64
+              <Image
                 src={preview}
                 alt='Preview'
+                width={400}
+                height={400}
                 className='w-full h-full object-cover'
+                unoptimized
               />
             ) : (
               // Show uploaded image from S3

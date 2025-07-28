@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 
+import Image from 'next/image';
+
 import {
   closestCenter,
   DndContext,
@@ -93,9 +95,11 @@ function SortableProject({
 
       {/* Project Image */}
       <div className='flex-shrink-0 w-16 h-16 rounded overflow-hidden'>
-        <img
+        <Image
           src={project.image}
           alt={project.title}
+          width={264}
+          height={264}
           className='w-full h-full object-cover'
         />
       </div>

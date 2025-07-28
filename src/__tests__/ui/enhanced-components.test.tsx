@@ -17,7 +17,15 @@ import {
 // Mock Next.js Image component
 jest.mock('next/image', () => {
   return function MockImage({ src, alt, fill, ...props }: any) {
-    return <img src={src} alt={alt} data-fill={fill} {...props} />;
+    return (
+      <div
+        role='img'
+        aria-label={alt}
+        data-src={src}
+        data-fill={fill}
+        {...props}
+      />
+    );
   };
 });
 
@@ -136,7 +144,7 @@ describe('Enhanced Components', () => {
         />
       );
 
-      expect(screen.getByAltText('Test image')).toBeInTheDocument();
+      expect(screen.getByLabelText('Test image')).toBeInTheDocument();
     });
 
     it('renders with square aspect ratio by default', () => {
@@ -151,7 +159,7 @@ describe('Enhanced Components', () => {
     it('applies object-cover to fill the square area', () => {
       render(<Thumbnail src='/test-image.jpg' alt='Test image' />);
 
-      const image = screen.getByAltText('Test image');
+      const image = screen.getByLabelText('Test image');
       expect(image).toHaveClass('object-cover');
       expect(image).not.toHaveClass('p-2');
     });

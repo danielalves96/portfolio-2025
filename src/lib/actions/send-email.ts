@@ -3,10 +3,11 @@
 import { Resend } from 'resend';
 import { z } from 'zod';
 
+import { env } from '@/env';
 import { generateEmailTemplate } from '@/lib/email-template';
 import { contactData } from '@/sections/contact/contact-data';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(env.RESEND_API_KEY);
 
 const contactFormSchema = z.object({
   fullName: z.string().min(2, 'Nome deve ter pelo menos 2 caracteres'),
@@ -19,7 +20,7 @@ const contactFormSchema = z.object({
 export type ContactFormData = z.infer<typeof contactFormSchema>;
 
 export async function sendEmail(data: ContactFormData) {
-  if (!process.env.RESEND_API_KEY) {
+  if (!env.RESEND_API_KEY) {
     return {
       success: false,
       error: 'Configuração de email não encontrada.',

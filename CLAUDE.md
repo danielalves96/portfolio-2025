@@ -306,7 +306,8 @@ The application uses 11 main database tables:
 
 **Developer Experience:**
 
-- **TypeScript Configuration**: Currently using relaxed mode (strict mode is next priority)
+- **TypeScript Configuration**: Enhanced strict mode with noImplicitAny, noImplicitReturns, noUnusedLocals, and noUnusedParameters enabled
+- **Environment Variables**: Type-safe environment management with @t3-oss/env-nextjs and Zod validation
 - **Enhanced Error Handling**: Basic try/catch with plans for comprehensive error boundaries
 - **Advanced Tooling**: Husky, lint-staged, and comprehensive formatting rules
 
@@ -332,14 +333,19 @@ The application uses 11 main database tables:
 
 ### Configuration Notes
 
-**Environment Variables Required:**
+**Environment Variables (Type-safe with t3-env):**
 
-- `DATABASE_URL` - PostgreSQL connection string
-- `ADMIN_EMAIL` - Admin login email (defaults to paolatoliveira@gmail.com)
-- `ADMIN_PASSWORD` - Admin login password (defaults to P&d011217)
-- `RESEND_API_KEY` - Resend API key for email functionality
-- `SCALITY_ACCESS_KEY_ID` - Zenko S3 access key for image uploads
-- `SCALITY_SECRET_ACCESS_KEY` - Zenko S3 secret key for image uploads
+All environment variables are managed through `src/env.ts` with Zod validation:
+
+- `DATABASE_URL` - PostgreSQL connection string (validated as URL)
+- `ADMIN_EMAIL` - Admin login email (validated as email, defaults to paolatoliveira@gmail.com)
+- `ADMIN_PASSWORD` - Admin login password (min 6 chars, defaults to 000000)
+- `RESEND_API_KEY` - Resend API key for email functionality (required)
+- `SCALITY_ACCESS_KEY_ID` - Zenko S3 access key for image uploads (required)
+- `SCALITY_SECRET_ACCESS_KEY` - Zenko S3 secret key for image uploads (required)
+- `NODE_ENV` - Node.js environment (development/test/production)
+
+**Important**: Always import from `@/env` instead of accessing `process.env` directly
 
 **Development Configuration:**
 
@@ -427,10 +433,10 @@ The application uses 11 main database tables:
 
 **Next Development Priorities:**
 
-1. **TypeScript Strict Mode**: Enable strict type checking (noImplicitAny, noImplicitReturns, etc.)
-2. **Test Coverage**: Increase from current ~5% to target 80%
-3. **Error Boundaries**: Implement comprehensive error handling
-4. **Accessibility**: Improve ARIA attributes and keyboard navigation
+1. **Test Coverage**: Increase from current ~5% to target 80%
+2. **Error Boundaries**: Implement comprehensive error handling
+3. **Accessibility**: Improve ARIA attributes and keyboard navigation
+4. **Advanced TypeScript**: Enable exactOptionalPropertyTypes and other advanced strict flags
 
 **Database Workflow:**
 

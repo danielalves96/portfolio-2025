@@ -3,12 +3,14 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
+import { env } from '@/env';
+
 export async function loginAction(formData: FormData) {
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
 
-  const validEmail = process.env.ADMIN_EMAIL || 'paolatoliveira@gmail.com';
-  const validPassword = process.env.ADMIN_PASSWORD || 'P&d011217';
+  const validEmail = env.ADMIN_EMAIL;
+  const validPassword = env.ADMIN_PASSWORD;
 
   if (email !== validEmail || password !== validPassword) {
     return { success: false, error: 'Credenciais inválidas' };

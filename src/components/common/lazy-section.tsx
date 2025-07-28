@@ -38,7 +38,7 @@ export function LazySection({
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
+        if (entry?.isIntersecting) {
           setIsIntersecting(true);
           // Pequeno delay para suavizar a transição
           setTimeout(

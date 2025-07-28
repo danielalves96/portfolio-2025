@@ -371,14 +371,14 @@ const TextAnimateBase = ({
           container: {
             ...defaultItemAnimationVariants[animation].container,
             show: {
-              ...defaultItemAnimationVariants[animation].container.show,
+              ...defaultItemAnimationVariants[animation].container['show'],
               transition: {
                 delayChildren: delay,
                 staggerChildren: duration / segments.length,
               },
             },
             exit: {
-              ...defaultItemAnimationVariants[animation].container.exit,
+              ...defaultItemAnimationVariants[animation].container['exit'],
               transition: {
                 staggerChildren: duration / segments.length,
                 staggerDirection: -1,

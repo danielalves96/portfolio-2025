@@ -6,8 +6,78 @@ import { Toaster } from '@/components/ui/sonner';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Paola Oliveira | Portfolio',
-  description: 'Paola Oliveira - UI/UX Designer',
+  title: {
+    default: 'Paola Oliveira | UI/UX Designer - Portfolio',
+    template: '%s | Paola Oliveira',
+  },
+  description:
+    'Portfolio de Paola Oliveira, UI/UX Designer especializada em design de interfaces, experiência do usuário e projetos digitais inovadores. Conheça meus trabalhos e serviços.',
+  keywords: [
+    'UI Designer',
+    'UX Designer',
+    'Design de Interface',
+    'Experiência do Usuário',
+    'Portfolio Design',
+    'Paola Oliveira',
+    'Design Digital',
+    'Projetos UI/UX',
+    'Designer Brasil',
+  ],
+  authors: [{ name: 'Paola Oliveira', url: 'https://paolauiux.com.br' }],
+  creator: 'Paola Oliveira',
+  publisher: 'Kyantech Solutions',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL('https://paolauiux.com.br'),
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'pt_BR',
+    url: 'https://paolauiux.com.br',
+    title: 'Paola Oliveira | UI/UX Designer - Portfolio',
+    description:
+      'Portfolio de Paola Oliveira, UI/UX Designer especializada em design de interfaces, experiência do usuário e projetos digitais inovadores.',
+    siteName: 'Paola Oliveira Portfolio',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Paola Oliveira - UI/UX Designer Portfolio',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Paola Oliveira | UI/UX Designer - Portfolio',
+    description:
+      'Portfolio de Paola Oliveira, UI/UX Designer especializada em design de interfaces e experiência do usuário.',
+    images: ['/og-image.jpg'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  verification: {
+    google: '7Wf7NjhzEB34cNR9_mTeOQ-9uWDjZKFigYOaalz82Pw',
+  },
+  other: {
+    developer: 'Kyantech Solutions',
+    'developer-email': 'daniel@kyantech.com.br',
+    'developer-ceo': 'Daniel Luiz Alves',
+  },
 };
 
 export default function RootLayout({
@@ -16,7 +86,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en' suppressHydrationWarning>
+    <html lang='pt-BR' suppressHydrationWarning>
       <body className='antialiased'>
         <ThemeProvider
           attribute='class'

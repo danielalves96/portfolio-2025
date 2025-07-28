@@ -17,10 +17,10 @@ export async function FooterSection() {
     <section className='border-t'>
       <footer className='max-w-7xl mx-auto pt-12 sm:pt-14 lg:pt-16 pb-6 sm:pb-8 px-4'>
         <div className='flex flex-col items-center space-y-6 sm:space-y-8'>
-          <h1 className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-9xl font-normal text-center leading-tight'>
+          <h2 className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-9xl font-normal text-center leading-tight'>
             Let
             <span className='text-orange-500'>'</span>s Work
-          </h1>
+          </h2>
           <div className='mt-4 sm:mt-6'>
             <Button
               size='xl'

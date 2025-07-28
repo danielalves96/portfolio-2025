@@ -1,4 +1,9 @@
 import AdminFloatButton from '@/components/common/admin-float-button';
+import {
+  portfolioStructuredData,
+  StructuredData,
+  websiteStructuredData,
+} from '@/components/seo/structured-data';
 
 import { isAuthenticated } from '@/lib/actions/auth-actions';
 import { AboutSection } from '@/sections/about/about-section';
@@ -15,26 +20,32 @@ export default async function Home() {
   const authenticated = await isAuthenticated();
 
   return (
-    <div>
-      <HeroSection />
-      <SkillsCarousel />
-      <div id='about'>
-        <AboutSection />
-      </div>
-      <div id='projects'>
-        <ProjectsSection />
-      </div>
-      <ServicesSection />
-      <SocialSection />
-      <ToolsSection />
-      <SkillsCarousel />
-      <div id='contact'>
-        <ContactSection />
-      </div>
-      <FooterSection />
+    <>
+      {/* Structured Data for SEO */}
+      <StructuredData data={portfolioStructuredData} />
+      <StructuredData data={websiteStructuredData} />
 
-      {/* Admin Float Button - Only show when logged in */}
-      {authenticated && <AdminFloatButton />}
-    </div>
+      <main>
+        <HeroSection />
+        <SkillsCarousel />
+        <section id='about'>
+          <AboutSection />
+        </section>
+        <section id='projects'>
+          <ProjectsSection />
+        </section>
+        <ServicesSection />
+        <SocialSection />
+        <ToolsSection />
+        <SkillsCarousel />
+        <section id='contact'>
+          <ContactSection />
+        </section>
+        <FooterSection />
+
+        {/* Admin Float Button - Only show when logged in */}
+        {authenticated && <AdminFloatButton />}
+      </main>
+    </>
   );
 }

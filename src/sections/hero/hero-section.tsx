@@ -19,7 +19,7 @@ export async function HeroSection() {
       <HeroBackground />
       <div className='relative z-10 container mx-auto px-4 py-8 sm:py-12 lg:py-20 flex flex-col lg:flex-row items-center justify-between min-h-screen'>
         <HeroTitle />
-        <div className='flex-1 flex flex-col items-center space-y-4 sm:space-y-6 lg:space-y-8 my-8 sm:my-10 lg:my-0'>
+        <div className='flex-1 flex flex-col items-center space-y-4 sm:space-y-8 my-8 sm:my-12 lg:my-0'>
           <BlurFade inView={true} delay={0.55}>
             <ProfileImage
               src={heroData.profileSrc}

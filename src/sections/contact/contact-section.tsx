@@ -21,9 +21,9 @@ export async function ContactSection() {
             <div className='absolute bottom-0 left-1/2 -translate-x-1/2 w-[12rem] sm:w-[14rem] lg:w-[16rem] h-[12rem] sm:h-[14rem] lg:h-[16rem] bg-orange-500/12 dark:bg-orange-500/6 rounded-full blur-[100px] sm:blur-[120px]' />
           </div>
 
-          <h1 className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal text-foreground text-center mb-8 sm:mb-10 lg:mb-12 px-4'>
+          <h2 className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal text-foreground text-center mb-8 sm:mb-10 lg:mb-12 px-4'>
             {contactData.title}
-          </h1>
+          </h2>
 
           <ContactForm />
         </div>

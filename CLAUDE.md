@@ -47,9 +47,6 @@ This project uses pnpm as the package manager. Key commands:
 - `pnpm lint:fix` - Run ESLint with auto-fix
 - `pnpm format` - Format code with Prettier
 - `pnpm format:check` - Check code formatting
-- `pnpm test` - Run Jest tests
-- `pnpm test:watch` - Run tests in watch mode
-- `pnpm test:coverage` - Run tests with coverage report
 
 **Database Management:**
 
@@ -103,13 +100,6 @@ This is a Next.js 15 portfolio application with a complete admin panel and datab
 - **Husky** for git hooks with lint-staged
 - **Turbopack** for fast development builds
 - **SWC** compiler for production optimization
-
-**Testing:**
-
-- **Jest** with jsdom environment
-- **React Testing Library** for component testing
-- 80% coverage threshold for quality assurance
-- **Current Coverage**: ~5% (needs improvement - see Development Notes)
 
 **Authentication & Security:**
 
@@ -189,12 +179,6 @@ lib/
 ├── hooks/        # Custom React hooks
 └── utils.ts      # Utility functions (cn for className merging)
 ```
-
-**Testing (`src/__tests__/`):**
-
-- **Jest configuration** with React Testing Library
-- **Test utilities** for consistent testing setup
-- **Example tests** demonstrating patterns
 
 **Authentication & Middleware:**
 
@@ -351,7 +335,6 @@ All environment variables are managed through `src/env.ts` with Zod validation:
 
 - TypeScript strict mode with comprehensive compiler options
 - ESLint extends Next.js, TypeScript, and Prettier configurations
-- Jest configured for component testing with 80% coverage threshold
 - Next.js removes console logs in production builds
 - Husky + lint-staged for pre-commit code quality checks
 
@@ -433,10 +416,9 @@ All environment variables are managed through `src/env.ts` with Zod validation:
 
 **Next Development Priorities:**
 
-1. **Test Coverage**: Increase from current ~5% to target 80%
-2. **Error Boundaries**: Implement comprehensive error handling
-3. **Accessibility**: Improve ARIA attributes and keyboard navigation
-4. **Advanced TypeScript**: Enable exactOptionalPropertyTypes and other advanced strict flags
+1. **Error Boundaries**: Implement comprehensive error handling
+2. **Accessibility**: Improve ARIA attributes and keyboard navigation
+3. **Advanced TypeScript**: Enable exactOptionalPropertyTypes and other advanced strict flags
 
 **Database Workflow:**
 
@@ -484,14 +466,6 @@ pnpm lint         # Run ESLint
 pnpm lint:fix     # Fix ESLint issues automatically
 pnpm format       # Format code with Prettier
 pnpm format:check # Check formatting without making changes
-```
-
-### Testing Commands
-
-```bash
-pnpm test         # Run Jest tests
-pnpm test:watch   # Run tests in watch mode
-pnpm test:coverage # Run tests with coverage report
 ```
 
 ### Database Commands

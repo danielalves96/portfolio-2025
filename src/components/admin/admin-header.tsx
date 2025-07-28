@@ -51,14 +51,11 @@ export default function AdminHeader({
 
   return (
     <div className='sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
-      {/* Main Header */}
       <header className='border-b'>
         <div className='container mx-auto px-4 py-4 max-w-7xl'>
           <div className='flex items-center justify-between'>
-            {/* Left side - Back button + Title and subtitle */}
             <div className='flex-1 min-w-0'>
               <div className='flex items-center gap-4'>
-                {/* Back button area - positioned before title */}
                 {actions && (
                   <div className='flex items-center gap-2 flex-shrink-0'>
                     {actions}
@@ -77,7 +74,6 @@ export default function AdminHeader({
               </div>
             </div>
 
-            {/* Right side - User menu */}
             <div className='flex items-center gap-2 ml-6'>
               <Button
                 variant='ghost'
@@ -127,7 +123,6 @@ export default function AdminHeader({
         </div>
       </header>
 
-      {/* Breadcrumb Section - Separate from header */}
       {breadcrumbs && (
         <div className='border-b bg-muted/30'>
           <div className='container mx-auto px-4 py-3 max-w-7xl'>

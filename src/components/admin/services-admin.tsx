@@ -39,7 +39,6 @@ export default function ServicesAdmin() {
   const [isLoading, setIsLoading] = useState(true);
   const [currentImage, setCurrentImage] = useState('');
 
-  // Form state
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -51,7 +50,6 @@ export default function ServicesAdmin() {
     loadData();
   }, []);
 
-  // Update form state when modal data changes
   useEffect(() => {
     if (modal.data) {
       setCurrentImage(modal.data.image || '');
@@ -60,7 +58,6 @@ export default function ServicesAdmin() {
         description: modal.data.description || '',
       });
     } else {
-      // Reset for new service
       setCurrentImage('');
       setFormData({
         title: '',
@@ -120,7 +117,6 @@ export default function ServicesAdmin() {
         toast.success('Serviço criado com sucesso!');
       }
       await loadData();
-      // Reset form state
       setCurrentImage('');
       setFormData({
         title: '',
@@ -153,7 +149,6 @@ export default function ServicesAdmin() {
 
   return (
     <div className='space-y-6'>
-      {/* Header */}
       <div className='flex items-center justify-between p-6 bg-card rounded-lg border'>
         <div>
           <h2 className='text-xl font-semibold flex items-center gap-2'>
@@ -170,7 +165,6 @@ export default function ServicesAdmin() {
         </Button>
       </div>
 
-      {/* Services Grid */}
       {services.length === 0 ? (
         <ServicesEmptyState
           onCreateService={() => modal.openModal()}
@@ -179,7 +173,6 @@ export default function ServicesAdmin() {
       ) : (
         <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
           {services.map(service => {
-            // Prepare actions for the card
             const actions = [
               {
                 label: 'Editar',
@@ -210,7 +203,6 @@ export default function ServicesAdmin() {
         </div>
       )}
 
-      {/* Dialog Modal */}
       <Dialog open={modal.isOpen} onOpenChange={modal.closeModal}>
         <DialogContent className='sm:max-w-[500px]'>
           <DialogHeader>

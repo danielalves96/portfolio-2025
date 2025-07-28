@@ -30,18 +30,15 @@ export default async function Home() {
 
   return (
     <>
-      {/* Structured Data for SEO */}
       <StructuredData data={portfolioStructuredData} />
       <StructuredData data={websiteStructuredData} />
       <StructuredData data={mainBreadcrumbStructuredData} />
       <StructuredData data={organizationStructuredData} />
 
       <main>
-        {/* Critical sections - load immediately */}
         <HeroSection />
         <SkillsCarousel />
 
-        {/* Above the fold - high priority */}
         <LazySection
           priority='high'
           fallback={<sectionSkeletons.about />}
@@ -54,7 +51,6 @@ export default async function Home() {
           </Suspense>
         </LazySection>
 
-        {/* Below the fold - medium priority */}
         <LazySection
           priority='medium'
           fallback={<sectionSkeletons.projects />}
@@ -79,7 +75,6 @@ export default async function Home() {
           </Suspense>
         </LazySection>
 
-        {/* Lower priority sections */}
         <LazySection
           priority='low'
           fallback={<sectionSkeletons.social />}
@@ -102,7 +97,6 @@ export default async function Home() {
           </Suspense>
         </LazySection>
 
-        {/* Second skills carousel - low priority */}
         <LazySection
           priority='low'
           fallback={<sectionSkeletons.skills />}
@@ -114,7 +108,6 @@ export default async function Home() {
           </Suspense>
         </LazySection>
 
-        {/* Contact section - medium priority (important for conversion) */}
         <LazySection
           priority='medium'
           fallback={<sectionSkeletons.contact />}
@@ -128,10 +121,8 @@ export default async function Home() {
           </Suspense>
         </LazySection>
 
-        {/* Footer - always visible */}
         <FooterSection />
 
-        {/* Admin Float Button - Only show when logged in */}
         {authenticated && <AdminFloatButton />}
       </main>
     </>

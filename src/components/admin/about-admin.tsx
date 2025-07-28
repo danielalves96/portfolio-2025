@@ -27,7 +27,6 @@ export default function AboutAdmin() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
 
-  // Form state
   const [formData, setFormData] = useState({
     name: '',
     city: '',
@@ -38,7 +37,6 @@ export default function AboutAdmin() {
     loadData();
   }, []);
 
-  // Update form state when aboutData changes
   useEffect(() => {
     if (aboutData) {
       setFormData({
@@ -48,7 +46,6 @@ export default function AboutAdmin() {
       });
       setParagraphs(aboutData.paragraphs || ['']);
     } else {
-      // Reset form state
       setFormData({
         name: '',
         city: '',
@@ -85,7 +82,6 @@ export default function AboutAdmin() {
       if (result.success) {
         toast.success('Dados pessoais atualizados com sucesso!');
         await loadData();
-        // Reset form state after successful save
         setFormData({
           name: '',
           city: '',
@@ -127,7 +123,6 @@ export default function AboutAdmin() {
       description='Configure as informações pessoais e biografia da seção sobre'
     >
       <form onSubmit={handleSave} className='space-y-6'>
-        {/* Basic Info */}
         <FormSection
           title='Informações Básicas'
           description='Dados pessoais que aparecerão na seção sobre'
@@ -187,7 +182,6 @@ export default function AboutAdmin() {
           </FormSectionGrid>
         </FormSection>
 
-        {/* Biography Paragraphs */}
         <FormSection
           title='Biografia'
           description='Parágrafos que compõem sua biografia pessoal'
@@ -250,7 +244,6 @@ export default function AboutAdmin() {
           </div>
         </FormSection>
 
-        {/* Save Button */}
         <div className='flex justify-end pt-4 border-t'>
           <Button
             type='submit'

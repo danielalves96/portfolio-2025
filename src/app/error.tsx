@@ -17,10 +17,8 @@ interface ErrorPageProps {
 
 export default function ErrorPage({ error, reset }: ErrorPageProps) {
   useEffect(() => {
-    // Log error to monitoring service
     console.error('Global error page:', error);
 
-    // Report error using our error reporting system
     reportError(error, {
       digest: error.digest,
       context: 'client',
@@ -37,12 +35,10 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
   return (
     <div className='min-h-screen bg-background flex items-center justify-center p-6'>
       <div className='max-w-lg w-full text-center space-y-8'>
-        {/* Icon */}
         <div className='mx-auto w-20 h-20 bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center'>
           <AlertTriangle className='w-10 h-10 text-red-600 dark:text-red-400' />
         </div>
 
-        {/* Content */}
         <div className='space-y-4'>
           <h1 className='text-3xl font-bold text-foreground'>
             Algo deu errado
@@ -53,7 +49,6 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
           </p>
         </div>
 
-        {/* Error Details (Development Only) */}
         {process.env.NODE_ENV === 'development' && (
           <details className='text-left bg-muted/30 border rounded-lg p-4'>
             <summary className='cursor-pointer text-sm font-medium mb-2'>
@@ -86,7 +81,6 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
           </details>
         )}
 
-        {/* Actions */}
         <div className='flex flex-col sm:flex-row gap-4 justify-center'>
           <Button onClick={reset} className='flex items-center gap-2'>
             <RefreshCcw className='w-4 h-4' />
@@ -104,7 +98,6 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
           </Link>
         </div>
 
-        {/* Support */}
         <div className='pt-6 border-t space-y-2'>
           <p className='text-sm text-muted-foreground'>
             Se o problema persistir, entre em contato:

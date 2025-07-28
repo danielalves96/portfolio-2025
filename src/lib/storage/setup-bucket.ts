@@ -4,12 +4,10 @@ import { BUCKET_NAME, s3Client } from './s3-client';
 
 export async function ensureBucketExists() {
   try {
-    // Try to access the bucket first
     await s3Client.send(new HeadBucketCommand({ Bucket: BUCKET_NAME }));
     return { success: true, message: `Bucket ${BUCKET_NAME} is ready` };
   } catch (error: any) {
     if (error.name === 'NotFound' || error.$metadata?.httpStatusCode === 404) {
-      // Bucket doesn't exist, try to create it
       try {
         await s3Client.send(
           new CreateBucketCommand({

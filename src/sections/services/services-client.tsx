@@ -27,8 +27,6 @@ export function ServicesClient({ services }: ServicesClientProps) {
     <section className='w-full bg-background pt-8 sm:pt-12 lg:pt-16 pb-6 sm:pb-8 px-4'>
       <div className='max-w-7xl mx-auto'>
         <ServicesHeader />
-
-        {/* Services List */}
         <div className='space-y-0'>
           {services.map(service => (
             <ServiceItem

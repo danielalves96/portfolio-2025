@@ -32,7 +32,6 @@ export default function ContactAdmin() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
 
-  // Form state
   const [formData, setFormData] = useState({
     title: '',
     emailRecipient: '',
@@ -45,7 +44,6 @@ export default function ContactAdmin() {
     loadData();
   }, []);
 
-  // Update form state when contactData changes
   useEffect(() => {
     if (contactData) {
       setFormData({
@@ -56,7 +54,6 @@ export default function ContactAdmin() {
         emailSubjectPrefix: contactData.email?.subject?.prefix || '',
       });
     } else {
-      // Reset form state
       setFormData({
         title: '',
         emailRecipient: '',
@@ -95,7 +92,6 @@ export default function ContactAdmin() {
       if (result.success) {
         toast.success('Configurações de contato atualizadas com sucesso!');
         await loadData();
-        // Reset form state after successful save
         setFormData({
           title: '',
           emailRecipient: '',
@@ -124,7 +120,6 @@ export default function ContactAdmin() {
       description='Configure o título da seção e parâmetros do formulário de contato'
     >
       <form onSubmit={handleSave} className='space-y-6'>
-        {/* Section Title */}
         <FormField
           label='Título da Seção'
           description='Título que aparecerá na seção de contato'
@@ -140,7 +135,6 @@ export default function ContactAdmin() {
           />
         </FormField>
 
-        {/* Email Configuration */}
         <FormSection
           title='Configuração de Email'
           description='Parâmetros para o envio de emails do formulário de contato'
@@ -229,7 +223,6 @@ export default function ContactAdmin() {
           </FormSectionGrid>
         </FormSection>
 
-        {/* Save Button */}
         <div className='flex justify-end pt-4 border-t'>
           <Button
             type='submit'

@@ -29,10 +29,9 @@ export function useModal<T = unknown>({
 
   const closeModal = () => {
     setIsOpen(false);
-    // Reset data when closing modal
     setTimeout(() => {
       setData(defaultData);
-    }, 200); // Small delay to prevent visual glitch
+    }, 200);
   };
 
   return {

@@ -47,7 +47,6 @@ export function SectionErrorFallback({
   );
 }
 
-// Specialized fallbacks for different sections
 export function ProjectsErrorFallback() {
   return (
     <SectionErrorFallback

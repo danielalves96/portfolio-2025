@@ -13,7 +13,6 @@ export const metadata: Metadata = {
 export default async function LoginPage() {
   const authenticated = await isAuthenticated();
 
-  // If user is already logged in, redirect to admin
   if (authenticated) {
     redirect('/admin');
   }

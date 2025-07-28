@@ -33,7 +33,6 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 
-// Combine all icon libraries
 const allIcons = {
   ...ReactIcons,
   ...AiIcons,
@@ -56,7 +55,6 @@ const allIcons = {
   ...VscIcons,
 };
 
-// Popular social and common icons
 const POPULAR_ICONS = [
   'FaInstagram',
   'FaLinkedin',
@@ -107,12 +105,10 @@ export function IconSelector({ value, onChange, children }: IconSelectorProps) {
   const [search, setSearch] = useState('');
   const [selectedIcon, setSelectedIcon] = useState(value || '');
 
-  // Get all icon names
   const allIconNames = Object.keys(allIcons).filter(
     name => typeof (allIcons as any)[name] === 'function'
   );
 
-  // Filter icons based on search
   const filteredIcons = search
     ? allIconNames.filter(name =>
         name.toLowerCase().includes(search.toLowerCase())

@@ -62,7 +62,6 @@ export function ContactForm({
         throw new Error(result.error || 'Erro ao enviar mensagem');
       }
 
-      // Reset form after successful submission
       setFormData({
         fullName: '',
         email: '',

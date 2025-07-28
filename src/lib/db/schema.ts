@@ -7,7 +7,6 @@ import {
   varchar,
 } from 'drizzle-orm/pg-core';
 
-// About section
 export const about = pgTable('about', {
   id: serial('id').primaryKey(),
   name: varchar('name', { length: 100 }).notNull(),
@@ -16,7 +15,6 @@ export const about = pgTable('about', {
   paragraphs: json('paragraphs').$type<string[]>().notNull(),
 });
 
-// Hero section
 export const hero = pgTable('hero', {
   id: serial('id').primaryKey(),
   titleLine1: varchar('title_line1', { length: 100 }).notNull(),
@@ -27,7 +25,6 @@ export const hero = pgTable('hero', {
   quoteText: json('quote_text').$type<string[]>().notNull(),
 });
 
-// Social links
 export const socialLinks = pgTable('social_links', {
   id: serial('id').primaryKey(),
   href: varchar('href', { length: 255 }).notNull(),
@@ -36,7 +33,6 @@ export const socialLinks = pgTable('social_links', {
   order: integer('order').notNull(),
 });
 
-// Projects
 export const projects = pgTable('projects', {
   id: serial('id').primaryKey(),
   title: varchar('title', { length: 200 }).notNull(),
@@ -53,7 +49,6 @@ export const projects = pgTable('projects', {
   order: integer('order').notNull().default(0),
 });
 
-// Services
 export const services = pgTable('services', {
   id: serial('id').primaryKey(),
   title: varchar('title', { length: 200 }).notNull(),
@@ -61,20 +56,17 @@ export const services = pgTable('services', {
   image: varchar('image', { length: 255 }).notNull(),
 });
 
-// Skills
 export const skills = pgTable('skills', {
   id: serial('id').primaryKey(),
   name: varchar('name', { length: 100 }).notNull(),
 });
 
-// Tools
 export const tools = pgTable('tools', {
   id: serial('id').primaryKey(),
   name: varchar('name', { length: 100 }).notNull(),
   image: varchar('image', { length: 255 }).notNull(),
 });
 
-// Contact
 export const contact = pgTable('contact', {
   id: serial('id').primaryKey(),
   title: varchar('title', { length: 200 }).notNull(),
@@ -86,13 +78,11 @@ export const contact = pgTable('contact', {
   }).notNull(),
 });
 
-// Footer
 export const footer = pgTable('footer', {
   id: serial('id').primaryKey(),
   copyrightText: text('copyright_text').notNull(),
 });
 
-// Footer navigation
 export const footerNavigation = pgTable('footer_navigation', {
   id: serial('id').primaryKey(),
   name: varchar('name', { length: 100 }).notNull(),
@@ -100,7 +90,6 @@ export const footerNavigation = pgTable('footer_navigation', {
   order: integer('order').notNull(),
 });
 
-// Social section
 export const socialSection = pgTable('social_section', {
   id: serial('id').primaryKey(),
   name: varchar('name', { length: 100 }).notNull(),

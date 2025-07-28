@@ -15,7 +15,6 @@ export async function ContactSection() {
     <section className='py-12 sm:py-16 lg:py-26 flex items-center justify-center p-4 relative overflow-hidden'>
       <div className='w-full max-w-7xl relative z-10 overflow-hidden'>
         <div className='dark:bg-foreground/5 backdrop-blur-sm rounded-2xl sm:rounded-3xl border border-primary dark:border-amber-600/20 p-6 sm:p-8 lg:p-12 relative'>
-          {/* Background decorative elements */}
           <div className='absolute inset-0 -z-10'>
             <div className='absolute -top-12 sm:-top-16 lg:-top-20 -left-12 sm:-left-16 lg:-left-24 w-[20rem] sm:w-[25rem] lg:w-[30rem] h-[20rem] sm:h-[25rem] lg:h-[30rem] bg-orange-500/20 dark:bg-orange-500/10 rounded-full blur-[80px] sm:blur-[100px]' />
             <div className='absolute -top-12 sm:-top-16 lg:-top-24 -right-12 sm:-right-16 lg:-right-24 w-[15rem] sm:w-[18rem] lg:w-[20rem] h-[15rem] sm:h-[18rem] lg:h-[20rem] bg-orange-500/15 dark:bg-orange-500/8 rounded-full blur-[80px] sm:blur-[100px]' />

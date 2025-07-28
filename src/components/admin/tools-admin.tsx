@@ -43,7 +43,6 @@ export default function ToolsAdmin() {
   const [isLoading, setIsLoading] = useState(true);
   const [currentImage, setCurrentImage] = useState('');
 
-  // Form state
   const [formData, setFormData] = useState({
     name: '',
   });
@@ -54,7 +53,6 @@ export default function ToolsAdmin() {
     loadData();
   }, []);
 
-  // Update form state when modal data changes
   useEffect(() => {
     if (modal.data) {
       setCurrentImage(modal.data.image || '');
@@ -62,7 +60,6 @@ export default function ToolsAdmin() {
         name: modal.data.name || '',
       });
     } else {
-      // Reset for new tool
       setCurrentImage('');
       setFormData({
         name: '',
@@ -120,7 +117,6 @@ export default function ToolsAdmin() {
         toast.success('Ferramenta criada com sucesso!');
       }
       await loadData();
-      // Reset form state
       setCurrentImage('');
       setFormData({
         name: '',
@@ -135,10 +131,8 @@ export default function ToolsAdmin() {
   if (isLoading) {
     return (
       <div className='space-y-6'>
-        {/* Header skeleton */}
         <SkeletonCard showImage={false} showActions={false} textLines={1} />
 
-        {/* Tools skeleton */}
         <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
           {[...Array(8)].map((_, i) => (
             <SkeletonCard
@@ -157,7 +151,6 @@ export default function ToolsAdmin() {
 
   return (
     <div className='space-y-6'>
-      {/* Section Info */}
       <div className='flex items-center justify-between p-6 bg-card rounded-lg border'>
         <div className='space-y-2'>
           <h2 className='text-xl font-semibold flex items-center gap-2'>
@@ -179,7 +172,6 @@ export default function ToolsAdmin() {
         </Button>
       </div>
 
-      {/* Tools Grid */}
       {tools.length === 0 ? (
         <EmptyState
           icon={Wrench}
@@ -195,7 +187,6 @@ export default function ToolsAdmin() {
       ) : (
         <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
           {tools.map(tool => {
-            // Prepare actions for the card
             const actions = [
               {
                 label: 'Editar',
@@ -226,7 +217,6 @@ export default function ToolsAdmin() {
         </div>
       )}
 
-      {/* Dialog Modal */}
       <Dialog open={modal.isOpen} onOpenChange={modal.closeModal}>
         <DialogContent className='sm:max-w-[425px]'>
           <DialogHeader>

@@ -16,13 +16,12 @@ export async function loginAction(formData: FormData) {
     return { success: false, error: 'Credenciais inválidas' };
   }
 
-  // Set authentication cookie
   const cookieStore = await cookies();
   cookieStore.set('auth-token', 'authenticated', {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
-    maxAge: 60 * 60 * 24 * 7, // 7 days
+    maxAge: 60 * 60 * 24 * 7,
   });
 
   redirect('/admin');

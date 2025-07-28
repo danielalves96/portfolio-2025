@@ -1,6 +1,3 @@
-// Note: We can't import env directly here as this runs on client-side too
-// Will check NODE_ENV directly from process.env for client-side compatibility
-
 export interface ErrorReport {
   eventId: string;
   message: string;
@@ -48,8 +45,6 @@ class ClientErrorLogger implements ErrorLogger {
       ...context,
     };
 
-    // For client-side, always log to console
-    // In the future, this could send to a client-accessible endpoint
     console.group(`🚨 Client Error Report [${eventId}]`);
     console.error('Message:', report.message);
     console.error('Context:', report.context);
@@ -106,8 +101,6 @@ class ServerErrorLogger implements ErrorLogger {
       ...context,
     };
 
-    // For server-side in production, you could send to monitoring service
-    // For now, just log to console
     console.group(`🚨 Server Error Report [${eventId}]`);
     console.error('Message:', report.message);
     console.error('Context:', report.context);
@@ -140,16 +133,11 @@ class ServerErrorLogger implements ErrorLogger {
   }
 }
 
-// Create logger instance based on environment
-// Use process.env directly for client-side compatibility
 export const errorLogger: ErrorLogger =
   typeof window !== 'undefined'
-    ? // Client-side: use client logger
-      new ClientErrorLogger()
-    : // Server-side: use server logger (could be enhanced for production)
-      new ServerErrorLogger();
+    ? new ClientErrorLogger()
+    : new ServerErrorLogger();
 
-// Convenience functions
 export const reportError = (
   error: Error,
   context?: Partial<ErrorReport>
@@ -164,7 +152,6 @@ export const reportMessage = (
   return errorLogger.reportMessage(message, context);
 };
 
-// React Error Boundary integration
 export const reportReactError = (
   error: Error,
   errorInfo: React.ErrorInfo,
@@ -181,7 +168,6 @@ export const reportReactError = (
   });
 };
 
-// Server-side error reporting
 export const reportServerError = (
   error: Error,
   request?: {
@@ -205,7 +191,6 @@ export const reportServerError = (
   });
 };
 
-// Admin-specific error reporting
 export const reportAdminError = (
   error: Error,
   context?: Partial<ErrorReport>
@@ -220,11 +205,9 @@ export const reportAdminError = (
   });
 };
 
-// Global error handler setup
 export const setupGlobalErrorHandling = () => {
   if (typeof window === 'undefined') return;
 
-  // Handle unhandled promise rejections
   window.addEventListener('unhandledrejection', event => {
     reportError(new Error(`Unhandled Promise Rejection: ${event.reason}`), {
       severity: 'high',
@@ -234,7 +217,6 @@ export const setupGlobalErrorHandling = () => {
     });
   });
 
-  // Handle global errors
   window.addEventListener('error', event => {
     reportError(event.error || new Error(event.message), {
       severity: 'high',

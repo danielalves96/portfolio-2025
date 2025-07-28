@@ -65,12 +65,10 @@ export default function FooterAdmin() {
   const [isSaving, setIsSaving] = useState(false);
   const modal = useModal<NavigationItem>();
 
-  // Footer form state
   const [footerFormData, setFooterFormData] = useState({
     copyrightText: '',
   });
 
-  // Navigation form state
   const [navFormData, setNavFormData] = useState({
     name: '',
     href: '',
@@ -81,7 +79,6 @@ export default function FooterAdmin() {
     loadData();
   }, []);
 
-  // Sync footer form state with data
   useEffect(() => {
     if (footerData) {
       setFooterFormData({
@@ -90,7 +87,6 @@ export default function FooterAdmin() {
     }
   }, [footerData]);
 
-  // Sync navigation form state with modal data
   useEffect(() => {
     if (modal.data) {
       setNavFormData({
@@ -112,7 +108,6 @@ export default function FooterAdmin() {
       const data = await getFooterData();
       setFooterData(data);
 
-      // Carregar dados de navegação do footer
       if (data?.navigation) {
         const navigationItems = data.navigation.map(nav => ({
           id: nav.id,
@@ -192,7 +187,6 @@ export default function FooterAdmin() {
       }
       await loadData();
       modal.closeModal();
-      // Reset form state
       setNavFormData({
         name: '',
         href: '',
@@ -214,7 +208,6 @@ export default function FooterAdmin() {
 
     if (targetIndex < 0 || targetIndex >= newNavigation.length) return;
 
-    // Trocar posições
     const currentItem = newNavigation[currentIndex];
     const targetItem = newNavigation[targetIndex];
 
@@ -225,7 +218,6 @@ export default function FooterAdmin() {
       currentItem,
     ];
 
-    // Atualizar orders
     const updatedNavigation = newNavigation.map((item, index) => ({
       ...item,
       order: index + 1,
@@ -262,7 +254,6 @@ export default function FooterAdmin() {
           <TabsTrigger value='navigation'>Navegação</TabsTrigger>
         </TabsList>
 
-        {/* Footer Tab */}
         <TabsContent value='footer'>
           <Card>
             <CardHeader>
@@ -324,7 +315,6 @@ export default function FooterAdmin() {
           </Card>
         </TabsContent>
 
-        {/* Navigation Tab */}
         <TabsContent value='navigation'>
           <Card>
             <CardHeader>
@@ -345,7 +335,6 @@ export default function FooterAdmin() {
               </div>
             </CardHeader>
             <CardContent>
-              {/* Navigation List */}
               <div className='space-y-3'>
                 {navigation.map((item, index) => (
                   <div
@@ -430,7 +419,6 @@ export default function FooterAdmin() {
         </TabsContent>
       </Tabs>
 
-      {/* Dialog Modal for Navigation */}
       <Dialog open={modal.isOpen} onOpenChange={modal.closeModal}>
         <DialogContent className='sm:max-w-[425px]'>
           <DialogHeader>

@@ -55,7 +55,6 @@ function Button({
   const Comp = asChild ? Slot : 'button';
   const isDisabled = disabled || loading;
 
-  // When using asChild, we can't add loading state as it would create multiple children
   if (asChild) {
     return (
       <Comp

@@ -15,7 +15,7 @@ interface ImageUploadProps {
   value?: string;
   onChange: (url: string) => void;
   accept?: string;
-  maxSize?: number; // in MB
+  maxSize?: number;
   placeholder?: string;
 }
 
@@ -33,13 +33,11 @@ export function ImageUpload({
   const handleFileUpload = async (file: File) => {
     if (!file) return;
 
-    // Validate file size
     if (file.size > maxSize * 1024 * 1024) {
       toast.error(`Arquivo muito grande. Tamanho máximo: ${maxSize}MB`);
       return;
     }
 
-    // Create preview immediately
     const reader = new FileReader();
     reader.onload = e => {
       setPreview(e.target?.result as string);
@@ -56,18 +54,18 @@ export function ImageUpload({
 
       if (result.success && result.url) {
         onChange(result.url);
-        setPreview(null); // Clear preview since we now have the final URL
+        setPreview(null);
         toast.success('Imagem enviada com sucesso!');
       } else {
         const error = result.error || 'Erro ao fazer upload da imagem';
         toast.error(error);
-        setPreview(null); // Clear preview on error
+        setPreview(null);
         console.error('❌ Upload failed:', error);
       }
     } catch (error) {
       console.error('Upload error:', error);
       toast.error('Erro ao fazer upload da imagem');
-      setPreview(null); // Clear preview on error
+      setPreview(null);
     } finally {
       setIsUploading(false);
     }
@@ -104,7 +102,6 @@ export function ImageUpload({
 
   const removeImage = async () => {
     if (value) {
-      // Delete from S3 bucket if it's an uploaded image
       try {
         const result = await deleteImage(value);
         if (result.success) {
@@ -114,7 +111,6 @@ export function ImageUpload({
         }
       } catch (error) {
         console.error('❌ Error deleting from S3:', error);
-        // Continue with removal from form even if S3 deletion fails
       }
     }
 
@@ -128,11 +124,9 @@ export function ImageUpload({
   return (
     <div className='space-y-4'>
       {displayImage ? (
-        // Show uploaded/preview image with remove option
         <div className='relative'>
           <div className='aspect-square w-full max-w-sm rounded-lg overflow-hidden border bg-muted'>
             {preview ? (
-              // Show local preview using Next.js Image for base64
               <Image
                 src={preview}
                 alt='Preview'
@@ -142,14 +136,13 @@ export function ImageUpload({
                 unoptimized
               />
             ) : (
-              // Show uploaded image from S3
               <Image
                 src={value!}
                 alt='Uploaded image'
                 className='w-full h-full object-cover'
                 width={250}
                 height={250}
-                unoptimized // For external S3 URLs
+                unoptimized
               />
             )}
             {isUploading && (
@@ -177,7 +170,6 @@ export function ImageUpload({
           )}
         </div>
       ) : (
-        // Show upload area
         <div
           className={`
             relative border-2 border-dashed rounded-lg p-6 transition-colors cursor-pointer

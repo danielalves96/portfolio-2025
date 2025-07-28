@@ -174,8 +174,6 @@ function FormSectionHeader({
   );
 }
 
-// Specialized form section components
-
 interface FormSectionGroupProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   spacing?: 'sm' | 'md' | 'lg';
@@ -236,7 +234,6 @@ function FormSectionGrid({
   );
 }
 
-// Hook for managing form section state
 interface UseFormSectionStateOptions {
   defaultExpanded?: boolean;
   onToggle?: (isOpen: boolean) => void;

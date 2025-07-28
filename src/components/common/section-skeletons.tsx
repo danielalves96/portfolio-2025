@@ -1,17 +1,14 @@
 import React from 'react';
 
-// Skeleton para seção de projetos
 export function ProjectsSkeleton() {
   return (
     <div className='py-20 px-4'>
       <div className='max-w-6xl mx-auto'>
-        {/* Header */}
         <div className='text-center mb-12'>
           <div className='h-8 bg-gray-200 dark:bg-gray-700 rounded w-48 mx-auto mb-4 animate-pulse' />
           <div className='h-4 bg-gray-200 dark:bg-gray-700 rounded w-64 mx-auto animate-pulse' />
         </div>
 
-        {/* Filter buttons */}
         <div className='flex justify-center gap-4 mb-12'>
           {[1, 2, 3, 4].map(i => (
             <div
@@ -21,7 +18,6 @@ export function ProjectsSkeleton() {
           ))}
         </div>
 
-        {/* Project grid */}
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
           {[1, 2, 3, 4, 5, 6].map(i => (
             <div key={i} className='animate-pulse'>
@@ -37,18 +33,15 @@ export function ProjectsSkeleton() {
   );
 }
 
-// Skeleton para seção de serviços
 export function ServicesSkeleton() {
   return (
     <div className='py-20 px-4'>
       <div className='max-w-4xl mx-auto'>
-        {/* Header */}
         <div className='text-center mb-16'>
           <div className='h-8 bg-gray-200 dark:bg-gray-700 rounded w-48 mx-auto mb-4 animate-pulse' />
           <div className='h-4 bg-gray-200 dark:bg-gray-700 rounded w-64 mx-auto animate-pulse' />
         </div>
 
-        {/* Services grid */}
         <div className='grid gap-8 md:grid-cols-2'>
           {[1, 2, 3, 4].map(i => (
             <div key={i} className='animate-pulse'>
@@ -68,18 +61,15 @@ export function ServicesSkeleton() {
   );
 }
 
-// Skeleton para seção de ferramentas
 export function ToolsSkeleton() {
   return (
     <div className='py-20 px-4'>
       <div className='max-w-6xl mx-auto'>
-        {/* Header */}
         <div className='text-center mb-16'>
           <div className='h-8 bg-gray-200 dark:bg-gray-700 rounded w-48 mx-auto mb-4 animate-pulse' />
           <div className='h-4 bg-gray-200 dark:bg-gray-700 rounded w-64 mx-auto animate-pulse' />
         </div>
 
-        {/* Tools grid */}
         <div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8'>
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(i => (
             <div key={i} className='animate-pulse text-center'>
@@ -93,7 +83,6 @@ export function ToolsSkeleton() {
   );
 }
 
-// Skeleton para seção social
 export function SocialSkeleton() {
   return (
     <div className='py-20 px-4'>
@@ -113,18 +102,15 @@ export function SocialSkeleton() {
   );
 }
 
-// Skeleton para seção de contato
 export function ContactSkeleton() {
   return (
     <div className='py-20 px-4'>
       <div className='max-w-2xl mx-auto'>
-        {/* Header */}
         <div className='text-center mb-12'>
           <div className='h-8 bg-gray-200 dark:bg-gray-700 rounded w-48 mx-auto mb-4 animate-pulse' />
           <div className='h-4 bg-gray-200 dark:bg-gray-700 rounded w-64 mx-auto animate-pulse' />
         </div>
 
-        {/* Form */}
         <div className='space-y-6 animate-pulse'>
           <div className='h-12 bg-gray-200 dark:bg-gray-700 rounded' />
           <div className='h-12 bg-gray-200 dark:bg-gray-700 rounded' />
@@ -136,7 +122,6 @@ export function ContactSkeleton() {
   );
 }
 
-// Skeleton para skills carousel
 export function SkillsSkeleton() {
   return (
     <div className='py-12 overflow-hidden'>
@@ -152,16 +137,12 @@ export function SkillsSkeleton() {
   );
 }
 
-// Skeleton para about section
 export function AboutSkeleton() {
   return (
     <div className='py-20 px-4'>
       <div className='max-w-4xl mx-auto animate-pulse'>
         <div className='grid md:grid-cols-2 gap-12 items-center'>
-          {/* Image */}
           <div className='aspect-square bg-gray-200 dark:bg-gray-700 rounded-lg' />
-
-          {/* Content */}
           <div className='space-y-4'>
             <div className='h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4' />
             <div className='space-y-2'>

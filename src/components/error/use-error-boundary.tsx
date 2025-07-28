@@ -15,7 +15,6 @@ export function useErrorBoundary(options: UseErrorBoundaryOptions = {}) {
 
   const captureError = useCallback(
     (error: Error, extraInfo?: Record<string, any>) => {
-      // Report error using our error reporting system
       reportError(error, {
         context,
         severity: 'medium',
@@ -25,11 +24,7 @@ export function useErrorBoundary(options: UseErrorBoundaryOptions = {}) {
         },
         extra: extraInfo,
       }).catch(console.error);
-
-      // Call custom error handler if provided
       onError?.(error);
-
-      // Re-throw to trigger error boundary
       throw error;
     },
     [onError, context, tags]

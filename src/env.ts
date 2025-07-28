@@ -6,13 +6,10 @@ export const env = createEnv({
    * Specify your server-side environment variables schema here. This will ensure they're validated during build.
    */
   server: {
-    // Database
     DATABASE_URL: z
       .string()
       .url()
       .describe('PostgreSQL database connection string'),
-
-    // Authentication
     ADMIN_EMAIL: z
       .string()
       .email()
@@ -23,14 +20,10 @@ export const env = createEnv({
       .min(6)
       .default('000000')
       .describe('Admin password for authentication'),
-
-    // Email Service
     RESEND_API_KEY: z
       .string()
       .min(1)
       .describe('Resend API key for email functionality'),
-
-    // Storage (Zenko S3-compatible)
     SCALITY_ACCESS_KEY_ID: z
       .string()
       .min(1)
@@ -39,8 +32,6 @@ export const env = createEnv({
       .string()
       .min(1)
       .describe('Zenko S3-compatible storage secret access key'),
-
-    // Next.js
     NODE_ENV: z
       .enum(['development', 'test', 'production'])
       .default('development')

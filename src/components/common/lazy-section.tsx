@@ -29,7 +29,6 @@ export function LazySection({
     const element = ref.current;
     if (!element) return;
 
-    // Para alta prioridade, carrega imediatamente
     if (priority === 'high') {
       setIsVisible(true);
       setIsIntersecting(true);
@@ -40,7 +39,6 @@ export function LazySection({
       ([entry]) => {
         if (entry?.isIntersecting) {
           setIsIntersecting(true);
-          // Pequeno delay para suavizar a transição
           setTimeout(
             () => {
               setIsVisible(true);
@@ -95,7 +93,6 @@ export function LazySection({
   );
 }
 
-// Hook para preload de seções baseado em scroll velocity
 export function useScrollVelocityPreload() {
   const [shouldPreload, setShouldPreload] = useState(false);
   const lastScrollY = useRef(0);
@@ -109,7 +106,6 @@ export function useScrollVelocityPreload() {
       scrollVelocity.current = Math.abs(currentScrollY - lastScrollY.current);
       lastScrollY.current = currentScrollY;
 
-      // Se usuário está scrollando rápido, preload próximas seções
       if (scrollVelocity.current > 50) {
         setShouldPreload(true);
       }

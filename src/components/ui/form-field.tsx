@@ -61,7 +61,6 @@ function FormField({
   children,
   ...props
 }: FormFieldProps) {
-  // Determine the state based on props
   const fieldState = React.useMemo(() => {
     if (loading) return 'loading';
     if (error) return 'error';
@@ -69,13 +68,11 @@ function FormField({
     return state || 'default';
   }, [loading, error, success, state]);
 
-  // Generate unique IDs for accessibility
   const fieldId = React.useId();
   const descriptionId = description ? `${fieldId}-description` : undefined;
   const errorId = error ? `${fieldId}-error` : undefined;
   const successId = success ? `${fieldId}-success` : undefined;
 
-  // Clone children to add accessibility attributes
   const enhancedChildren = React.Children.map(children, child => {
     if (React.isValidElement(child)) {
       const ariaDescribedBy =
@@ -98,7 +95,6 @@ function FormField({
       className={cn(formFieldVariants({ state: fieldState }), className)}
       {...props}
     >
-      {/* Label */}
       {label && (
         <Label htmlFor={fieldId} className='flex items-center gap-1'>
           {label}
@@ -113,7 +109,6 @@ function FormField({
         </Label>
       )}
 
-      {/* Description */}
       {description && (
         <FormFieldMessage
           id={descriptionId}
@@ -123,11 +118,9 @@ function FormField({
         />
       )}
 
-      {/* Form Control */}
       <div className='relative'>
         {enhancedChildren}
 
-        {/* Loading overlay for input fields */}
         {loading && (
           <div className='absolute inset-0 bg-background/50 rounded-md flex items-center justify-center pointer-events-none'>
             <Loader2 className='h-4 w-4 animate-spin text-muted-foreground' />
@@ -135,7 +128,6 @@ function FormField({
         )}
       </div>
 
-      {/* Success Message */}
       {success && (
         <FormFieldMessage
           id={successId}
@@ -145,7 +137,6 @@ function FormField({
         />
       )}
 
-      {/* Error Message */}
       {error && (
         <FormFieldMessage
           id={errorId}
@@ -185,8 +176,6 @@ function FormFieldMessage({
     </div>
   );
 }
-
-// Specialized form field components for common use cases
 
 interface FormFieldGroupProps
   extends React.HTMLAttributes<HTMLFieldSetElement> {
@@ -242,7 +231,6 @@ function FormFieldInline({
   );
 }
 
-// Hook for form field state management
 interface UseFormFieldStateOptions {
   initialValue?: string;
   validate?: (value: string) => string | undefined;
@@ -259,7 +247,6 @@ function useFormFieldState({
   const [touched, setTouched] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
 
-  // Debounced validation
   React.useEffect(() => {
     if (!validate || !touched) return;
 

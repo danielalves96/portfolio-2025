@@ -17,10 +17,8 @@ interface AdminErrorPageProps {
 
 export default function AdminErrorPage({ error, reset }: AdminErrorPageProps) {
   useEffect(() => {
-    // Log admin error
     console.error('Admin error page:', error);
 
-    // Report admin error using our error reporting system
     reportAdminError(error, {
       digest: error.digest,
       extra: {
@@ -56,12 +54,10 @@ Descrição do que estava fazendo:
   return (
     <div className='min-h-screen bg-background flex items-center justify-center p-6'>
       <div className='max-w-2xl w-full text-center space-y-8'>
-        {/* Icon */}
         <div className='mx-auto w-20 h-20 bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center'>
           <AlertTriangle className='w-10 h-10 text-red-600 dark:text-red-400' />
         </div>
 
-        {/* Title */}
         <div className='space-y-4'>
           <h1 className='text-2xl font-bold text-foreground'>
             Erro no Painel Administrativo
@@ -72,7 +68,6 @@ Descrição do que estava fazendo:
           </p>
         </div>
 
-        {/* Error Details Card */}
         <div className='bg-muted/30 border rounded-lg p-6 text-left'>
           <h3 className='font-semibold text-foreground mb-4 flex items-center gap-2'>
             <Bug className='w-4 h-4' />
@@ -114,7 +109,6 @@ Descrição do que estava fazendo:
           </div>
         </div>
 
-        {/* Development Stack Trace */}
         {process.env.NODE_ENV === 'development' && error.stack && (
           <details className='text-left bg-muted/30 border rounded-lg p-4'>
             <summary className='cursor-pointer text-sm font-medium mb-3'>
@@ -126,7 +120,6 @@ Descrição do que estava fazendo:
           </details>
         )}
 
-        {/* Action Buttons */}
         <div className='flex flex-col sm:flex-row gap-4 justify-center'>
           <Button onClick={reset} className='flex items-center gap-2'>
             <RefreshCcw className='w-4 h-4' />
@@ -147,7 +140,6 @@ Descrição do que estava fazendo:
           </Button>
         </div>
 
-        {/* Navigation */}
         <div className='flex flex-col sm:flex-row gap-4 justify-center pt-6 border-t'>
           <Link href='/admin'>
             <Button variant='ghost' className='flex items-center gap-2'>
@@ -164,7 +156,6 @@ Descrição do que estava fazendo:
           </Link>
         </div>
 
-        {/* Support */}
         <div className='text-xs text-muted-foreground space-y-1 pt-4'>
           <p>
             <strong>Suporte Técnico:</strong>{' '}

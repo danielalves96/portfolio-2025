@@ -53,7 +53,6 @@ export class ErrorBoundary extends Component<Props, State> {
       errorInfo,
     });
 
-    // Report error using our error reporting system
     reportReactError(error, errorInfo, {
       severity: 'high',
       tags: {
@@ -69,7 +68,6 @@ export class ErrorBoundary extends Component<Props, State> {
         console.error('Failed to report error:', reportingError);
       });
 
-    // Check if this error should auto-retry
     if (this.shouldAutoRetry(error) && this.state.retryCount < 3) {
       console.log(
         `Auto-retrying error (attempt ${this.state.retryCount + 1}/3):`,
@@ -78,7 +76,6 @@ export class ErrorBoundary extends Component<Props, State> {
       this.performAutoRetry();
     }
 
-    // Call custom error handler if provided
     this.props.onError?.(error, errorInfo);
   }
 
@@ -117,7 +114,6 @@ export class ErrorBoundary extends Component<Props, State> {
     }, 100);
   };
 
-  // Auto-retry for certain types of errors
   private shouldAutoRetry = (error: Error): boolean => {
     const autoRetryErrors = [
       'ChunkLoadError',
@@ -142,7 +138,7 @@ export class ErrorBoundary extends Component<Props, State> {
           this.resetErrorBoundary();
         },
         1000 * (retryCount + 1)
-      ); // Exponential backoff
+      );
     }
   };
 
@@ -221,7 +217,6 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 }
 
-// Hook para uso mais fácil em componentes funcionais
 export const useErrorHandler = () => {
   return (error: Error, errorInfo?: React.ErrorInfo) => {
     reportReactError(error, errorInfo || { componentStack: '' }, {

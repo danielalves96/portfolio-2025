@@ -46,7 +46,6 @@ import {
 } from '@/lib/actions/admin-actions';
 import { getSocialSectionData } from '@/lib/actions/data-fetching';
 
-// Combine all icon libraries
 const allIcons = {
   ...ReactIcons,
   ...AiIcons,
@@ -69,7 +68,6 @@ const allIcons = {
   ...VscIcons,
 };
 
-// Function to render React Icon dynamically
 const renderIcon = (iconName: string) => {
   const IconComponent = (allIcons as any)[iconName];
   return IconComponent ? <IconComponent className='h-6 w-6' /> : null;
@@ -88,7 +86,6 @@ export default function SocialAdmin() {
   const [isLoading, setIsLoading] = useState(true);
   const modal = useModal<SocialItem>();
 
-  // Form state
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -100,17 +97,15 @@ export default function SocialAdmin() {
     loadData();
   }, []);
 
-  // Update form state when modal data changes
   useEffect(() => {
     if (modal.data) {
       setFormData({
         name: modal.data.name || '',
         description: modal.data.description || '',
-        iconName: modal.data.image || '', // image field contains iconName
+        iconName: modal.data.image || '',
         url: modal.data.url || '',
       });
     } else {
-      // Reset form state
       setFormData({
         name: '',
         description: '',
@@ -159,7 +154,7 @@ export default function SocialAdmin() {
     const data = {
       name: formData.name,
       description: formData.description,
-      image: formData.iconName, // Save iconName in image field
+      image: formData.iconName,
       url: formData.url,
     };
 
@@ -173,7 +168,6 @@ export default function SocialAdmin() {
       }
       await loadData();
       modal.closeModal();
-      // Reset form state after successful save
       setFormData({
         name: '',
         description: '',
@@ -206,7 +200,6 @@ export default function SocialAdmin() {
 
   return (
     <div className='space-y-6'>
-      {/* Header */}
       <div className='flex items-center justify-between p-6 bg-card rounded-lg border'>
         <div>
           <h2 className='text-xl font-semibold flex items-center gap-2'>
@@ -223,7 +216,6 @@ export default function SocialAdmin() {
         </Button>
       </div>
 
-      {/* Social Items Grid */}
       {socialItems.length === 0 ? (
         <EmptyState
           icon={Edit3}
@@ -245,7 +237,6 @@ export default function SocialAdmin() {
                 className='group hover:shadow-lg transition-shadow p-4 border rounded-lg bg-card cursor-pointer'
                 onClick={() => modal.openModal(item)}
               >
-                {/* Custom icon display */}
                 <div className='aspect-square bg-muted rounded-lg flex items-center justify-center mb-4 overflow-hidden relative'>
                   {item.image ? (
                     <div className='text-6xl text-orange-500'>
@@ -258,7 +249,6 @@ export default function SocialAdmin() {
                   )}
                 </div>
 
-                {/* Content */}
                 <div className='space-y-3'>
                   <div className='flex items-start justify-between'>
                     <div className='space-y-1 flex-1'>
@@ -291,7 +281,6 @@ export default function SocialAdmin() {
                     </div>
                   </div>
 
-                  {/* URL */}
                   <div className='pt-2 border-t'>
                     <a
                       href={item.url}
@@ -311,7 +300,6 @@ export default function SocialAdmin() {
         </div>
       )}
 
-      {/* Dialog Modal */}
       <Dialog open={modal.isOpen} onOpenChange={modal.closeModal}>
         <DialogContent className='sm:max-w-[500px]'>
           <DialogHeader>

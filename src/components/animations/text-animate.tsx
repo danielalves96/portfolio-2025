@@ -319,7 +319,6 @@ const TextAnimateBase = ({
 }: TextAnimateProps) => {
   const MotionComponent = motion.create(Component);
 
-  // --- triggerOnce logic ---
   const [hasAnimated, setHasAnimated] = useState(false);
   const handleInView = useCallback(() => {
     if (triggerOnce && !hasAnimated) {
@@ -389,7 +388,6 @@ const TextAnimateBase = ({
         }
       : { container: defaultContainerVariants, item: defaultItemVariants };
 
-  // --- Determine animation trigger logic ---
   const shouldOnce = triggerOnce ? false : once;
 
   return (
@@ -427,5 +425,4 @@ const TextAnimateBase = ({
   );
 };
 
-// Export the memoized version
 export const TextAnimate = memo(TextAnimateBase);

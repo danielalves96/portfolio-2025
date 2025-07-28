@@ -7,7 +7,6 @@ import { eq, sql } from 'drizzle-orm';
 import { db } from '@/lib/db/connection';
 import * as schema from '@/lib/db/schema';
 
-// About Actions
 export async function updateAboutData(data: {
   name: string;
   city: string;
@@ -34,7 +33,6 @@ export async function updateAboutData(data: {
   }
 }
 
-// Hero Actions
 export async function updateHeroData(data: {
   titleLine1: string;
   titleLine2: string;
@@ -63,7 +61,6 @@ export async function updateHeroData(data: {
   }
 }
 
-// Social Links Actions
 export async function createSocialLink(data: {
   href: string;
   iconName: string;
@@ -113,7 +110,6 @@ export async function deleteSocialLink(id: number) {
   }
 }
 
-// Projects Actions
 export async function createProject(data: {
   title: string;
   description: string;
@@ -128,12 +124,10 @@ export async function createProject(data: {
   behanceUrl?: string;
 }) {
   try {
-    // Always fix sequence before creating to prevent conflicts
     await db.execute(sql`
       SELECT setval(pg_get_serial_sequence('projects', 'id'), COALESCE(MAX(id), 0) + 1, false) FROM projects
     `);
 
-    // Get the highest order value and add 1 for the new project
     const maxOrderResult = await db
       .select({ maxOrder: sql<number>`MAX("order")` })
       .from(schema.projects);
@@ -193,7 +187,6 @@ export async function deleteProject(id: number) {
   }
 }
 
-// Services Actions
 export async function createService(data: {
   title: string;
   description: string;
@@ -241,7 +234,6 @@ export async function deleteService(id: number) {
   }
 }
 
-// Skills Actions
 export async function createSkill(data: { name: string }) {
   try {
     await db.insert(schema.skills).values(data);
@@ -280,7 +272,6 @@ export async function deleteSkill(id: number) {
   }
 }
 
-// Tools Actions
 export async function createTool(data: { name: string; image: string }) {
   try {
     await db.insert(schema.tools).values(data);
@@ -320,7 +311,6 @@ export async function deleteTool(id: number) {
   }
 }
 
-// Contact Actions
 export async function updateContactData(data: {
   title: string;
   emailRecipient: string;
@@ -348,7 +338,6 @@ export async function updateContactData(data: {
   }
 }
 
-// Footer Actions
 export async function updateFooterData(data: { copyrightText: string }) {
   try {
     const [existing] = await db.select().from(schema.footer).limit(1);
@@ -370,7 +359,6 @@ export async function updateFooterData(data: { copyrightText: string }) {
   }
 }
 
-// Footer Navigation Actions
 export async function createFooterNavigation(data: {
   name: string;
   href: string;
@@ -420,7 +408,6 @@ export async function deleteFooterNavigation(id: number) {
   }
 }
 
-// Social Section Actions
 export async function createSocialSection(data: {
   name: string;
   description: string;
@@ -472,12 +459,10 @@ export async function deleteSocialSection(id: number) {
   }
 }
 
-// Projects order actions
 export async function updateProjectsOrder(
   projectsOrder: { id: number; order: number }[]
 ) {
   try {
-    // Update each project's order
     for (const { id, order } of projectsOrder) {
       await db
         .update(schema.projects)

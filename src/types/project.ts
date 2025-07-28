@@ -1,4 +1,3 @@
-// Project type based on database schema
 export interface Project {
   id: number;
   title: string;

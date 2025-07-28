@@ -19,7 +19,6 @@ export function ServiceItem({
 }: ServiceItemProps) {
   return (
     <div>
-      {/* Service Header */}
       <div
         className='flex items-center justify-between p-4 sm:p-5 lg:p-6 cursor-pointer hover:bg-muted/20 transition-colors duration-200'
         onClick={onToggle}
@@ -41,7 +40,6 @@ export function ServiceItem({
         </div>
       </div>
 
-      {/* Expanded Content */}
       <div
         className={`overflow-hidden transition-all duration-500 ease-in-out ${
           isExpanded ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'
@@ -49,7 +47,6 @@ export function ServiceItem({
       >
         <div className='border-b border-border/30'>
           <div className='relative aspect-[21/9] overflow-hidden'>
-            {/* Background Image */}
             <Image
               src={service.image}
               alt={service.title}
@@ -59,10 +56,8 @@ export function ServiceItem({
               sizes='(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw'
             />
 
-            {/* Orange Gradient Overlay */}
             <div className='absolute inset-0 bg-gradient-to-t from-orange-700/90 via-orange-600/70 to-transparent' />
 
-            {/* Text Content Overlay */}
             <div className='absolute inset-0 flex items-end'>
               <div className='p-4 sm:p-6 md:p-8 lg:p-12 text-white max-w-5xl'>
                 <p className='text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-medium leading-relaxed'>

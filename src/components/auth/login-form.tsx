@@ -27,10 +27,8 @@ export default function LoginForm() {
         if (result && !result.success) {
           toast.error(result.error);
         }
-        // Success case will redirect, so no need to handle it here
       } catch {
         // This catch is for the redirect, which is expected behavior
-        // Don't show any error message for redirects
       }
     });
   };

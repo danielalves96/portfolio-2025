@@ -24,7 +24,6 @@ interface SocialLinksProps {
   className?: string;
 }
 
-// Combine all icon libraries
 const allIcons = {
   ...ReactIcons,
   ...AiIcons,
@@ -47,7 +46,6 @@ const allIcons = {
   ...VscIcons,
 };
 
-// Function to render React Icon dynamically
 const renderIcon = (iconName: string) => {
   const IconComponent = (allIcons as any)[iconName];
   return IconComponent ? (

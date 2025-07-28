@@ -10,12 +10,10 @@ export default function NotFound() {
   return (
     <div className='min-h-screen bg-background flex items-center justify-center p-6'>
       <div className='max-w-lg w-full text-center space-y-8'>
-        {/* Icon */}
         <div className='mx-auto w-20 h-20 bg-orange-100 dark:bg-orange-900/20 rounded-full flex items-center justify-center'>
           <FileQuestion className='w-10 h-10 text-orange-600 dark:text-orange-400' />
         </div>
 
-        {/* Content */}
         <div className='space-y-4'>
           <h1 className='text-4xl font-bold text-foreground'>404</h1>
           <h2 className='text-xl font-semibold text-foreground'>
@@ -27,7 +25,6 @@ export default function NotFound() {
           </p>
         </div>
 
-        {/* Quick Links */}
         <div className='bg-muted/30 border rounded-lg p-6'>
           <h3 className='font-semibold text-foreground mb-4'>
             Navegação rápida:
@@ -48,7 +45,6 @@ export default function NotFound() {
           </div>
         </div>
 
-        {/* Actions */}
         <div className='flex flex-col sm:flex-row gap-4 justify-center'>
           <Link href='/'>
             <Button className='flex items-center gap-2 w-full sm:w-auto'>
@@ -67,7 +63,6 @@ export default function NotFound() {
           </Button>
         </div>
 
-        {/* Footer */}
         <div className='text-xs text-muted-foreground'>
           <p>
             Se você chegou aqui através de um link, por favor nos informe em{' '}

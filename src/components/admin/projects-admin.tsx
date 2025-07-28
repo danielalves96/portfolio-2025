@@ -53,7 +53,6 @@ import {
 import { getProjectsData } from '@/lib/actions/data-fetching';
 import { Project } from '@/types/project';
 
-// Sortable Project Component
 function SortableProject({
   project,
   onEdit,
@@ -84,7 +83,6 @@ function SortableProject({
       style={style}
       className='flex items-center gap-4 p-4 bg-card border border-border rounded-lg hover:bg-accent/50 transition-colors'
     >
-      {/* Drag Handle */}
       <div
         {...attributes}
         {...listeners}
@@ -93,7 +91,6 @@ function SortableProject({
         <GripVertical className='h-5 w-5 text-muted-foreground' />
       </div>
 
-      {/* Project Image */}
       <div className='flex-shrink-0 w-16 h-16 rounded overflow-hidden'>
         <Image
           src={project.image}
@@ -104,7 +101,6 @@ function SortableProject({
         />
       </div>
 
-      {/* Project Info */}
       <div className='flex-1 min-w-0'>
         <h3 className='font-semibold truncate mb-1'>{project.title}</h3>
         <p className='text-sm text-muted-foreground line-clamp-2 mb-2'>
@@ -119,7 +115,6 @@ function SortableProject({
         </div>
       </div>
 
-      {/* Actions */}
       <div className='flex-shrink-0 flex items-center gap-2'>
         <Button
           variant='outline'
@@ -147,7 +142,6 @@ export default function ProjectsAdmin() {
   const [isLoading, setIsLoading] = useState(true);
   const [currentImage, setCurrentImage] = useState('');
 
-  // Form state
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -163,7 +157,6 @@ export default function ProjectsAdmin() {
 
   const modal = useModal<Project>();
 
-  // Drag and drop sensors
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -175,7 +168,6 @@ export default function ProjectsAdmin() {
     loadData();
   }, []);
 
-  // Update form state when modal data changes
   useEffect(() => {
     if (modal.data) {
       setCurrentImage(modal.data.image || '');
@@ -192,7 +184,6 @@ export default function ProjectsAdmin() {
         behanceUrl: modal.data.behanceUrl || '',
       });
     } else {
-      // Reset for new project
       setCurrentImage('');
       setFormData({
         title: '',
@@ -212,7 +203,6 @@ export default function ProjectsAdmin() {
   const loadData = async () => {
     try {
       const data = await getProjectsData();
-      // Sort by order field
       const sortedProjects = data.projects.sort((a, b) => a.order - b.order);
       setProjects(sortedProjects);
     } catch (error) {
@@ -229,11 +219,9 @@ export default function ProjectsAdmin() {
       const oldIndex = projects.findIndex(project => project.id === active.id);
       const newIndex = projects.findIndex(project => project.id === over?.id);
 
-      // Update local state immediately for better UX
       const newProjects = arrayMove(projects, oldIndex, newIndex);
       setProjects(newProjects);
 
-      // Update order values and send to server
       const updatedOrder = newProjects.map((project, index) => ({
         id: project.id,
         order: index + 1,
@@ -245,7 +233,6 @@ export default function ProjectsAdmin() {
       } catch (error) {
         console.error('Error updating projects order:', error);
         toast.error('Erro ao atualizar ordem dos projetos');
-        // Revert local state on error
         await loadData();
       }
     }
@@ -276,7 +263,6 @@ export default function ProjectsAdmin() {
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Handle array fields properly
     const tags = formData.tags
       .split(',')
       .map(t => t.trim())
@@ -309,7 +295,6 @@ export default function ProjectsAdmin() {
         toast.success('Projeto criado com sucesso!');
       }
       await loadData();
-      // Reset form state
       setCurrentImage('');
       setFormData({
         title: '',
@@ -333,10 +318,8 @@ export default function ProjectsAdmin() {
   if (isLoading) {
     return (
       <div className='space-y-6'>
-        {/* Header skeleton */}
         <SkeletonCard showImage={false} showActions={false} textLines={1} />
 
-        {/* Projects skeleton */}
         <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
           {[...Array(6)].map((_, i) => (
             <SkeletonCard
@@ -353,7 +336,6 @@ export default function ProjectsAdmin() {
 
   return (
     <div className='space-y-6'>
-      {/* Header */}
       <Card>
         <CardHeader>
           <div className='flex items-center justify-between'>
@@ -374,7 +356,6 @@ export default function ProjectsAdmin() {
         </CardHeader>
       </Card>
 
-      {/* Projects Grid */}
       {projects.length === 0 ? (
         <ProjectsEmptyState
           onCreateProject={() => modal.openModal()}
@@ -404,7 +385,6 @@ export default function ProjectsAdmin() {
         </DndContext>
       )}
 
-      {/* Dialog Modal */}
       <Dialog open={modal.isOpen} onOpenChange={modal.closeModal}>
         <DialogContent className='sm:max-w-[600px] max-h-[80vh] overflow-y-auto'>
           <DialogHeader>

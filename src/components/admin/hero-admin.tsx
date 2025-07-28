@@ -50,7 +50,6 @@ import {
 } from '@/lib/actions/admin-actions';
 import { getHeroData, getSocialLinks } from '@/lib/actions/data-fetching';
 
-// Combine all icon libraries
 const allIcons = {
   ...ReactIcons,
   ...AiIcons,
@@ -73,7 +72,6 @@ const allIcons = {
   ...VscIcons,
 };
 
-// Function to render React Icon dynamically
 const renderIcon = (iconName: string) => {
   const IconComponent = (allIcons as any)[iconName];
   return IconComponent ? <IconComponent className='h-4 w-4' /> : null;
@@ -104,7 +102,6 @@ export default function HeroAdmin() {
   const [isSaving, setIsSaving] = useState(false);
   const modal = useModal<SocialLink>();
 
-  // Hero form state
   const [currentImage, setCurrentImage] = useState('');
   const [heroFormData, setHeroFormData] = useState({
     titleLine1: '',
@@ -115,7 +112,6 @@ export default function HeroAdmin() {
     quoteText: '',
   });
 
-  // Social links form state
   const [socialFormData, setSocialFormData] = useState({
     href: '',
     iconName: '',
@@ -127,7 +123,6 @@ export default function HeroAdmin() {
     loadData();
   }, []);
 
-  // Sync hero form state with data
   useEffect(() => {
     if (heroData) {
       setHeroFormData({
@@ -142,7 +137,6 @@ export default function HeroAdmin() {
     }
   }, [heroData]);
 
-  // Sync social form state with modal data
   useEffect(() => {
     if (modal.data) {
       setSocialFormData({
@@ -227,7 +221,6 @@ export default function HeroAdmin() {
       }
       await loadData();
       modal.closeModal();
-      // Reset form state
       setSocialFormData({
         href: '',
         iconName: '',
@@ -251,13 +244,11 @@ export default function HeroAdmin() {
 
   return (
     <div className='space-y-6'>
-      {/* Hero Data */}
       <FormSection
         title='Dados do Hero'
         description='Configure o título, perfil e citação da seção principal'
       >
         <form onSubmit={handleSaveHero} className='space-y-8'>
-          {/* Seção do Título Principal */}
           <div>
             <h3 className='text-lg font-semibold mb-4 text-foreground'>
               Título Principal
@@ -305,13 +296,11 @@ export default function HeroAdmin() {
             </FormSectionGrid>
           </div>
 
-          {/* Seção do Perfil */}
           <div>
             <h3 className='text-lg font-semibold mb-4 text-foreground'>
-              👤 Perfil e Imagem
+              Perfil e Imagem
             </h3>
 
-            {/* Upload da imagem com mais espaço */}
             <FormField
               label='Imagem do Perfil'
               description='Foto de perfil que aparecerá no hero. Recomenda-se uma imagem quadrada de alta qualidade (mínimo 400x400px).'
@@ -329,7 +318,6 @@ export default function HeroAdmin() {
               </div>
             </FormField>
 
-            {/* Campos relacionados à imagem */}
             <div className='mt-6'>
               <FormSectionGrid columns={2} gap='md'>
                 <FormField
@@ -375,7 +363,6 @@ export default function HeroAdmin() {
             </div>
           </div>
 
-          {/* Seção da Citação */}
           <div>
             <h3 className='text-lg font-semibold mb-4 text-foreground'>
               Citação Inspiracional
@@ -423,7 +410,6 @@ export default function HeroAdmin() {
         </form>
       </FormSection>
 
-      {/* Social Links */}
       <FormSection
         title={`Links Sociais (${socialLinks.length})`}
         description='Gerencie os links sociais exibidos no hero'
@@ -533,7 +519,6 @@ export default function HeroAdmin() {
         </div>
       </FormSection>
 
-      {/* Dialog Modal for Social Links */}
       <Dialog open={modal.isOpen} onOpenChange={modal.closeModal}>
         <DialogContent className='sm:max-w-[425px]'>
           <DialogHeader>

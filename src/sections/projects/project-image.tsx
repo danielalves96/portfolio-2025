@@ -23,7 +23,6 @@ export function ProjectImage({ project, index }: ProjectImageProps) {
           loading={index < 2 ? 'eager' : 'lazy'}
           sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
           onError={e => {
-            // Fallback para caso a imagem não carregue
             e.currentTarget.style.display = 'none';
             const fallback = e.currentTarget.nextElementSibling as HTMLElement;
             if (fallback) {

@@ -10,7 +10,6 @@ import {
   ToolsSkeleton,
 } from './section-skeletons';
 
-// Lazy loaded sections com skeletons específicos
 export const LazyAboutSection = lazy(() =>
   import('@/sections/about/about-section').then(module => ({
     default: module.AboutSection,
@@ -53,7 +52,6 @@ export const LazyContactSection = lazy(() =>
   }))
 );
 
-// Mapeamento de skeletons para cada seção
 export const sectionSkeletons = {
   about: AboutSkeleton,
   projects: ProjectsSkeleton,

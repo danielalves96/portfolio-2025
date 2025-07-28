@@ -14,16 +14,11 @@
     "jsx": "preserve",
     "incremental": true,
     "forceConsistentCasingInFileNames": true,
-    // Strict mode - habilitando progressivamente
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    // Desabilitando temporariamente para implementação gradual
-    // "exactOptionalPropertyTypes": true,
     "noImplicitOverride": true,
-    // "noPropertyAccessFromIndexSignature": true,
-    // "noUncheckedIndexedAccess": true,
     "plugins": [
       {
         "name": "next"

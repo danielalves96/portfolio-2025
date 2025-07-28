@@ -12,7 +12,6 @@ export async function uploadImage(
   formData: FormData
 ): Promise<{ success: boolean; url?: string; error?: string }> {
   try {
-    // Ensure bucket exists
     const bucketResult = await ensureBucketExists();
     if (!bucketResult.success) {
       return { success: false, error: bucketResult.error };
@@ -24,7 +23,6 @@ export async function uploadImage(
       return { success: false, error: 'Nenhum arquivo selecionado' };
     }
 
-    // Validate file type
     const allowedTypes = [
       'image/jpeg',
       'image/jpg',
@@ -39,8 +37,7 @@ export async function uploadImage(
       };
     }
 
-    // Validate file size (40MB max)
-    const maxSize = 40 * 1024 * 1024; // 40MB in bytes
+    const maxSize = 40 * 1024 * 1024;
     if (file.size > maxSize) {
       return {
         success: false,
@@ -48,25 +45,21 @@ export async function uploadImage(
       };
     }
 
-    // Generate unique filename
     const fileExtension = file.name.split('.').pop();
     const fileName = `${uuidv4()}.${fileExtension}`;
 
-    // Convert file to buffer
     const buffer = Buffer.from(await file.arrayBuffer());
 
-    // Upload to S3
     const command = new PutObjectCommand({
       Bucket: BUCKET_NAME,
       Key: fileName,
       Body: buffer,
       ContentType: file.type,
-      ACL: 'public-read', // Make file publicly accessible
+      ACL: 'public-read',
     });
 
     await s3Client.send(command);
 
-    // Return public URL
     const url = `${BASE_URL}/${BUCKET_NAME}/${fileName}`;
 
     return { success: true, url };
@@ -87,8 +80,6 @@ export async function deleteImage(
       return { success: false, error: 'URL da imagem inválida' };
     }
 
-    // Extract the file key from the URL
-    // URL format: https://l0la-storage.kyantech.com.br/portfolio-assets/filename.jpg
     const urlParts = imageUrl.split('/');
     const fileName = urlParts[urlParts.length - 1];
 

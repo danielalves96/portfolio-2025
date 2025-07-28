@@ -28,7 +28,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 import { cn } from '@/lib/utils';
 
-// Enhanced card variants for different layouts
 const enhancedCardVariants = cva('group transition-all duration-200', {
   variants: {
     layout: {
@@ -49,7 +48,6 @@ const enhancedCardVariants = cva('group transition-all duration-200', {
   },
 });
 
-// Thumbnail component with fallback states
 interface ThumbnailProps extends React.HTMLAttributes<HTMLDivElement> {
   src?: string | null;
   alt: string;
@@ -146,7 +144,6 @@ function Thumbnail({
   );
 }
 
-// Metadata display component
 interface MetadataProps extends React.HTMLAttributes<HTMLDivElement> {
   items: Array<{
     label: string;
@@ -195,7 +192,6 @@ function Metadata({
   );
 }
 
-// Enhanced content card component
 interface ContentCardProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof enhancedCardVariants> {
@@ -332,7 +328,6 @@ function ContentCard({
       </CardHeader>
 
       <CardContent className='space-y-4'>
-        {/* Image thumbnail */}
         {image !== undefined && (
           <Thumbnail
             src={image}
@@ -342,7 +337,6 @@ function ContentCard({
           />
         )}
 
-        {/* Tags */}
         {tags.length > 0 && (
           <BadgeGroup spacing='sm'>
             {tags.slice(0, 3).map(tag => (
@@ -358,14 +352,12 @@ function ContentCard({
           </BadgeGroup>
         )}
 
-        {/* Metadata */}
         {metadata.length > 0 && <Metadata items={metadata} compact />}
       </CardContent>
     </Card>
   );
 }
 
-// List item variant for compact display
 interface ContentListItemProps extends Omit<ContentCardProps, 'layout'> {
   compact?: boolean;
 }
@@ -411,7 +403,6 @@ function ContentListItem({
       onClick={onCardClick}
       {...props}
     >
-      {/* Thumbnail */}
       {image !== undefined && (
         <Thumbnail
           src={image}
@@ -422,7 +413,6 @@ function ContentListItem({
         />
       )}
 
-      {/* Content */}
       <div className='flex-1 min-w-0 space-y-1'>
         <div className='flex items-center gap-2'>
           <h3
@@ -447,7 +437,6 @@ function ContentListItem({
           </p>
         )}
 
-        {/* Tags and metadata in compact view */}
         {(tags.length > 0 || metadata.length > 0) && (
           <div className='flex items-center gap-2 text-xs text-muted-foreground'>
             {tags.slice(0, 2).map(tag => (
@@ -464,7 +453,6 @@ function ContentListItem({
         )}
       </div>
 
-      {/* Actions */}
       {actions.length > 0 && (
         <div className='flex items-center gap-1'>
           {actions.slice(0, 2).map((action, index) => (

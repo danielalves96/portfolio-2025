@@ -5,7 +5,6 @@ import { getProjectsData } from '@/lib/actions/data-fetching';
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://paolauiux.com.br';
 
-  // Fetch dynamic content for lastModified dates
   const [projects] = await Promise.all([
     getProjectsData().catch(() => ({ projects: [] })),
   ]);
@@ -55,7 +54,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  // Add individual project URLs if projects exist
   if (projects.projects && projects.projects.length > 0) {
     projects.projects.forEach((project: any) => {
       if (project.figmaUrl) {

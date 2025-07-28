@@ -39,7 +39,6 @@ const emptyStateVariants = cva('text-center', {
   },
 });
 
-// Predefined illustrations for common empty states
 const illustrations: Record<string, LucideIcon> = {
   projects: Layers,
   services: Settings,
@@ -83,7 +82,6 @@ function EmptyState({
   children,
   ...props
 }: EmptyStateProps) {
-  // Determine the icon component
   const IconComponent = React.useMemo(() => {
     if (typeof icon === 'string') {
       return illustrations[icon] || illustrations.general;
@@ -93,14 +91,12 @@ function EmptyState({
 
   const content = (
     <div className='space-y-4'>
-      {/* Icon */}
       <div className='flex justify-center'>
         <div className='rounded-full bg-muted p-4'>
           <IconComponent className='h-8 w-8 text-muted-foreground' />
         </div>
       </div>
 
-      {/* Text content */}
       <div className='space-y-2'>
         <h3 className='text-lg font-semibold text-foreground'>{title}</h3>
         {description && (
@@ -110,7 +106,6 @@ function EmptyState({
         )}
       </div>
 
-      {/* Actions */}
       {(action || secondaryAction) && (
         <div className='flex flex-col sm:flex-row items-center justify-center gap-2 pt-2'>
           {action && (
@@ -138,7 +133,6 @@ function EmptyState({
         </div>
       )}
 
-      {/* Custom children */}
       {children}
     </div>
   );
@@ -163,8 +157,6 @@ function EmptyState({
     </div>
   );
 }
-
-// Specialized empty state components for common scenarios
 
 interface ProjectsEmptyStateProps
   extends Omit<EmptyStateProps, 'icon' | 'title'> {
@@ -276,7 +268,6 @@ function SearchEmptyState({
   );
 }
 
-// Loading empty state for when data is being fetched
 interface LoadingEmptyStateProps
   extends Omit<EmptyStateProps, 'icon' | 'title' | 'action'> {
   message?: string;
@@ -294,14 +285,12 @@ function LoadingEmptyState({
       )}
     >
       <div className='space-y-4'>
-        {/* Animated loading icon */}
         <div className='flex justify-center'>
           <div className='rounded-full bg-muted p-4'>
             <div className='h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent' />
           </div>
         </div>
 
-        {/* Loading message */}
         <div className='space-y-2'>
           <h3 className='text-lg font-semibold text-foreground'>{message}</h3>
           <p className='text-sm text-muted-foreground'>
@@ -313,7 +302,6 @@ function LoadingEmptyState({
   );
 }
 
-// Error empty state for when something goes wrong
 interface ErrorEmptyStateProps extends Omit<EmptyStateProps, 'icon' | 'title'> {
   error?: string;
   onRetry?: () => void;

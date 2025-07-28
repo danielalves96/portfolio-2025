@@ -30,7 +30,6 @@ const badgeVariants = cva(
           'border-transparent bg-destructive text-white [a&]:hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',
         outline:
           'text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground',
-        // Status variants with semantic colors
         success:
           'border-transparent bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 [a&]:hover:bg-green-200 dark:[a&]:hover:bg-green-900/50',
         warning:
@@ -38,7 +37,6 @@ const badgeVariants = cva(
         error:
           'border-transparent bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400 [a&]:hover:bg-red-200 dark:[a&]:hover:bg-red-900/50',
         info: 'border-transparent bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400 [a&]:hover:bg-blue-200 dark:[a&]:hover:bg-blue-900/50',
-        // Content status variants
         published:
           'border-transparent bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
         draft:
@@ -65,7 +63,6 @@ const badgeVariants = cva(
   }
 );
 
-// Status icon mapping
 const statusIcons: Record<string, LucideIcon> = {
   success: CheckCircle2,
   warning: AlertCircle,
@@ -99,7 +96,6 @@ function Badge({
 }: BadgeProps) {
   const Comp = asChild ? Slot : 'span';
 
-  // Determine which icon to show
   const IconComponent = React.useMemo(() => {
     if (icon === false) return null;
     if (typeof icon === 'function') return icon;
@@ -123,7 +119,6 @@ function Badge({
   );
 }
 
-// Specialized status badge component
 interface StatusBadgeProps extends Omit<BadgeProps, 'variant'> {
   status:
     | 'published'
@@ -147,7 +142,6 @@ function StatusBadge({
   children,
   ...props
 }: StatusBadgeProps) {
-  // Default labels for common statuses
   const defaultLabels: Record<string, string> = {
     published: 'Published',
     draft: 'Draft',
@@ -168,7 +162,6 @@ function StatusBadge({
   );
 }
 
-// Dot indicator for subtle status display
 interface StatusDotProps extends React.HTMLAttributes<HTMLSpanElement> {
   status:
     | 'published'
@@ -225,7 +218,6 @@ function StatusDot({
   );
 }
 
-// Badge group for displaying multiple related badges
 interface BadgeGroupProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   spacing?: 'sm' | 'default' | 'lg';

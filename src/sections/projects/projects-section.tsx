@@ -18,11 +18,9 @@ export async function ProjectsSection() {
 
   return (
     <>
-      {/* Structured Data for Projects Collection */}
       <StructuredData
         data={generateProjectsCollectionStructuredData(projectsData.projects)}
       />
-
       <ErrorBoundary fallback={<ProjectsErrorFallback />}>
         <ProjectsClient
           projects={projectsData.projects}

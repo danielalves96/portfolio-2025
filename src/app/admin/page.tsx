@@ -103,7 +103,6 @@ export default function AdminPage() {
       />
       <main className='container mx-auto py-8 px-4 max-w-7xl'>
         <div className='space-y-8'>
-          {/* Quick Stats */}
           <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
             <div className='p-4 border rounded-lg bg-card'>
               <div className='flex items-center gap-2'>
@@ -148,7 +147,6 @@ export default function AdminPage() {
             </div>
           </div>
 
-          {/* Main Sections Grid */}
           <div className='space-y-4'>
             <div className='flex items-center justify-between'>
               <h2 className='text-xl font-semibold'>Seções do Portfólio</h2>

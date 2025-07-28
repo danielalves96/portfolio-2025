@@ -41,7 +41,6 @@ export default function SkillsAdmin() {
   const [isLoading, setIsLoading] = useState(true);
   const modal = useModal<Skill>();
 
-  // Form state
   const [formData, setFormData] = useState({
     name: '',
   });
@@ -50,14 +49,12 @@ export default function SkillsAdmin() {
     loadData();
   }, []);
 
-  // Update form state when modal data changes
   useEffect(() => {
     if (modal.data) {
       setFormData({
         name: modal.data.name || '',
       });
     } else {
-      // Reset form state
       setFormData({
         name: '',
       });
@@ -114,7 +111,6 @@ export default function SkillsAdmin() {
       }
       await loadData();
       modal.closeModal();
-      // Reset form state after successful save
       setFormData({
         name: '',
       });
@@ -127,7 +123,6 @@ export default function SkillsAdmin() {
   if (isLoading) {
     return (
       <div className='space-y-6'>
-        {/* Header skeleton */}
         <Card>
           <CardHeader>
             <div className='h-6 bg-muted animate-pulse rounded w-1/3' />
@@ -135,7 +130,6 @@ export default function SkillsAdmin() {
           </CardHeader>
         </Card>
 
-        {/* Skills skeleton */}
         <SkeletonList items={8} showAvatar={false} showActions={true} />
       </div>
     );
@@ -143,7 +137,6 @@ export default function SkillsAdmin() {
 
   return (
     <div className='space-y-6'>
-      {/* Header */}
       <Card>
         <CardHeader>
           <div className='flex items-center justify-between'>
@@ -164,7 +157,6 @@ export default function SkillsAdmin() {
         </CardHeader>
       </Card>
 
-      {/* Skills List */}
       {skills.length === 0 ? (
         <SkillsEmptyState
           onCreateSkill={() => modal.openModal()}
@@ -173,7 +165,6 @@ export default function SkillsAdmin() {
       ) : (
         <div className='space-y-2'>
           {skills.map(skill => {
-            // Prepare actions for the list item
             const actions = [
               {
                 label: 'Editar',
@@ -201,7 +192,6 @@ export default function SkillsAdmin() {
         </div>
       )}
 
-      {/* Dialog Modal */}
       <Dialog open={modal.isOpen} onOpenChange={modal.closeModal}>
         <DialogContent className='sm:max-w-[425px]'>
           <DialogHeader>

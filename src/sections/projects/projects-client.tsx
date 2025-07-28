@@ -16,7 +16,6 @@ interface ProjectsClientProps {
 export function ProjectsClient({ projects, title }: ProjectsClientProps) {
   const [selectedFilter, setSelectedFilter] = useState('Todos');
 
-  // Usar a ordem definida no admin (campo order)
   const sortedProjects = [...projects].sort((a, b) => a.order - b.order);
 
   const filteredProjects =

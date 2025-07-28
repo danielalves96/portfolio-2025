@@ -23,7 +23,6 @@ interface ToolItemProps {
 export function ToolItem({ tool, index }: ToolItemProps) {
   const [imageError, setImageError] = useState(false);
 
-  // Obter o ícone do React Icons se disponível
   const IconComponent = tool.iconComponent
     ? (SiIcons as any)[tool.iconComponent]
     : null;
@@ -31,7 +30,6 @@ export function ToolItem({ tool, index }: ToolItemProps) {
   return (
     <BlurFade key={tool.id} delay={0.2 + index * 0.1} inView>
       <div className='group flex flex-col items-center transition-all duration-300 hover:scale-110'>
-        {/* Tool Icon */}
         <div className='relative w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 lg:w-22 lg:h-22 mb-2 sm:mb-3 group-hover:scale-105 transition-transform duration-300 flex items-center justify-center'>
           {!imageError && tool.image ? (
             <Image
@@ -52,10 +50,9 @@ export function ToolItem({ tool, index }: ToolItemProps) {
           )}
         </div>
 
-        {/* Tool Name */}
-        {/* <p className='text-sm font-medium text-foreground text-center'>
+        <p className='text-sm font-medium text-foreground text-center'>
           {tool.name}
-        </p> */}
+        </p>
       </div>
     </BlurFade>
   );

@@ -64,7 +64,6 @@ export const portfolioStructuredData = {
   },
 };
 
-// Structured data para projetos individuais
 export function generateProjectStructuredData(project: any) {
   return {
     '@context': 'https://schema.org',
@@ -101,7 +100,6 @@ export function generateProjectStructuredData(project: any) {
   };
 }
 
-// Structured data para a seção de projetos
 export function generateProjectsCollectionStructuredData(projects: any[]) {
   return {
     '@context': 'https://schema.org',
@@ -189,7 +187,6 @@ export const websiteStructuredData = {
   },
 };
 
-// Breadcrumb structured data para navegação principal
 export const mainBreadcrumbStructuredData = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
@@ -227,7 +224,6 @@ export const mainBreadcrumbStructuredData = {
   ],
 };
 
-// Organization structured data para SEO corporativo
 export const organizationStructuredData = {
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',

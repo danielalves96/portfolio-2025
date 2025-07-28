@@ -2,7 +2,7 @@ export interface Tool {
   id: number;
   name: string;
   icon: string;
-  iconComponent?: string; // Para ícones do React Icons
+  iconComponent?: string;
 }
 
 export interface ToolsData {

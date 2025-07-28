@@ -64,6 +64,90 @@ export const portfolioStructuredData = {
   },
 };
 
+// Structured data para projetos individuais
+export function generateProjectStructuredData(project: any) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CreativeWork',
+    name: project.title,
+    description: project.description,
+    creator: {
+      '@type': 'Person',
+      name: 'Paola Oliveira',
+      jobTitle: 'UI/UX Designer',
+      url: 'https://paolauiux.com.br',
+    },
+    image: project.image,
+    dateCreated: project.createdAt || new Date().toISOString(),
+    inLanguage: 'pt-BR',
+    category: project.category,
+    keywords: project.tags || [],
+    url: project.figmaUrl || project.dribbbleUrl || project.behanceUrl,
+    sameAs: [project.figmaUrl, project.dribbbleUrl, project.behanceUrl].filter(
+      Boolean
+    ),
+    genre: 'UI/UX Design',
+    workExample: {
+      '@type': 'CreativeWork',
+      name: project.title,
+      description: project.description,
+      image: project.image,
+    },
+    isPartOf: {
+      '@type': 'Website',
+      name: 'Paola Oliveira Portfolio',
+      url: 'https://paolauiux.com.br',
+    },
+  };
+}
+
+// Structured data para a seção de projetos
+export function generateProjectsCollectionStructuredData(projects: any[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Projetos - Paola Oliveira',
+    description: 'Portfólio de projetos de UI/UX Design de Paola Oliveira',
+    url: 'https://paolauiux.com.br/#projects',
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: projects.length,
+      itemListElement: projects.map((project, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        item: {
+          '@type': 'CreativeWork',
+          name: project.title,
+          description: project.description,
+          image: project.image,
+          url: project.figmaUrl || project.dribbbleUrl || project.behanceUrl,
+          creator: {
+            '@type': 'Person',
+            name: 'Paola Oliveira',
+          },
+        },
+      })),
+    },
+    breadcrumb: {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Home',
+          item: 'https://paolauiux.com.br',
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'Projetos',
+          item: 'https://paolauiux.com.br/#projects',
+        },
+      ],
+    },
+  };
+}
+
 export const websiteStructuredData = {
   '@context': 'https://schema.org',
   '@type': 'Website',
@@ -102,5 +186,77 @@ export const websiteStructuredData = {
   copyrightHolder: {
     '@type': 'Person',
     name: 'Paola Oliveira',
+  },
+};
+
+// Breadcrumb structured data para navegação principal
+export const mainBreadcrumbStructuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: 'https://paolauiux.com.br',
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'Sobre',
+      item: 'https://paolauiux.com.br/#about',
+    },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: 'Projetos',
+      item: 'https://paolauiux.com.br/#projects',
+    },
+    {
+      '@type': 'ListItem',
+      position: 4,
+      name: 'Serviços',
+      item: 'https://paolauiux.com.br/#services',
+    },
+    {
+      '@type': 'ListItem',
+      position: 5,
+      name: 'Contato',
+      item: 'https://paolauiux.com.br/#contact',
+    },
+  ],
+};
+
+// Organization structured data para SEO corporativo
+export const organizationStructuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: 'Paola Oliveira - UI/UX Designer',
+  description:
+    'Serviços profissionais de UI/UX Design para projetos digitais inovadores',
+  url: 'https://paolauiux.com.br',
+  telephone: '+55-41-99168-3540',
+  email: 'paolatoliveira@gmail.com',
+  address: {
+    '@type': 'PostalAddress',
+    addressCountry: 'BR',
+    addressLocality: 'Brasil',
+  },
+  founder: {
+    '@type': 'Person',
+    name: 'Paola Oliveira',
+    jobTitle: 'UI/UX Designer',
+  },
+  serviceType: [
+    'UI Design',
+    'UX Design',
+    'Design de Interface',
+    'Experiência do Usuário',
+    'Prototipagem',
+    'Design System',
+  ],
+  areaServed: {
+    '@type': 'Country',
+    name: 'Brasil',
   },
 };

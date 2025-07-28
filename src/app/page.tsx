@@ -1,5 +1,7 @@
 import AdminFloatButton from '@/components/common/admin-float-button';
 import {
+  mainBreadcrumbStructuredData,
+  organizationStructuredData,
   portfolioStructuredData,
   StructuredData,
   websiteStructuredData,
@@ -24,6 +26,8 @@ export default async function Home() {
       {/* Structured Data for SEO */}
       <StructuredData data={portfolioStructuredData} />
       <StructuredData data={websiteStructuredData} />
+      <StructuredData data={mainBreadcrumbStructuredData} />
+      <StructuredData data={organizationStructuredData} />
 
       <main>
         <HeroSection />

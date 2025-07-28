@@ -33,7 +33,10 @@ export const metadata: Metadata = {
   },
   metadataBase: new URL('https://paolauiux.com.br'),
   alternates: {
-    canonical: '/',
+    canonical: 'https://paolauiux.com.br',
+    languages: {
+      'pt-BR': 'https://paolauiux.com.br',
+    },
   },
   openGraph: {
     type: 'website',
@@ -45,7 +48,7 @@ export const metadata: Metadata = {
     siteName: 'Paola Oliveira Portfolio',
     images: [
       {
-        url: '/og-image.jpg',
+        url: '/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Paola Oliveira - UI/UX Designer Portfolio',
@@ -57,7 +60,7 @@ export const metadata: Metadata = {
     title: 'Paola Oliveira | UI/UX Designer - Portfolio',
     description:
       'Portfolio de Paola Oliveira, UI/UX Designer especializada em design de interfaces e experiência do usuário.',
-    images: ['/og-image.jpg'],
+    images: ['/og-image.png'],
   },
   robots: {
     index: true,

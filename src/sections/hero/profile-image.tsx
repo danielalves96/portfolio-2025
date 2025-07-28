@@ -16,7 +16,7 @@ export function ProfileImage({ src, alt, name }: ProfileImageProps) {
       <div className='absolute -inset-4 bg-gradient-to-tr from-orange-300/30 to-orange-400/20 dark:from-orange-400/10 dark:to-orange-500/8 rounded-full' />
 
       {/* Profile image */}
-      <div className='relative w-96 h-96 md:w-80 md:h-80 rounded-full overflow-hidden border-4 shadow-2xl'>
+      <div className='relative w-72 h-72 sm:w-96 sm:h-96 md:w-80 md:h-80 rounded-full overflow-hidden border-4 shadow-2xl'>
         <Image
           src={src}
           alt={alt}
@@ -28,7 +28,7 @@ export function ProfileImage({ src, alt, name }: ProfileImageProps) {
       </div>
 
       {/* Name badge */}
-      <div className='absolute -top-2 -right-4'>
+      <div className='absolute -top-2 -right-4 '>
         <div className='bg-orange-500 px-4 py-2 rounded-full shadow-lg'>
           <span className='text-white font-semibold text-sm'>{name}</span>
         </div>

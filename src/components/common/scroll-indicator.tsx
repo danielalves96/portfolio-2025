@@ -21,7 +21,7 @@ export function ScrollIndicator() {
   if (!showScrollIndicator) return null;
 
   return (
-    <div className='absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 transition-opacity duration-300'>
+    <div className='absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 transition-opacity duration-300 hidden md:block'>
       <div className='animate-bounce'>
         <svg
           className='w-8 h-8 text-orange-500 dark:text-orange-500'

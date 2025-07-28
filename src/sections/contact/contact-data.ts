@@ -15,10 +15,10 @@ export interface ContactData {
 export const contactData: ContactData = {
   title: 'Entre em contato comigo!',
   email: {
-    recipient: 'daniel.madeireira@gmail.com',
+    recipient: 'paolatoliveira@gmail.com',
     sender: {
       name: 'Contato Portfolio',
-      email: 'onboarding@resend.dev',
+      email: 'noreply@paolauiux.com.br',
     },
     subject: {
       prefix: 'Contato do site',

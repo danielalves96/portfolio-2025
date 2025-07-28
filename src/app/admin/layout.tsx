@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
+import { AdminErrorBoundary } from '@/components/error/admin-error-boundary';
+
 import { isAuthenticated } from '@/lib/actions/auth-actions';
 
 export const metadata: Metadata = {
@@ -26,5 +28,9 @@ export default async function AdminLayout({
     redirect('/login');
   }
 
-  return <div className='min-h-screen bg-background'>{children}</div>;
+  return (
+    <div className='min-h-screen bg-background'>
+      <AdminErrorBoundary>{children}</AdminErrorBoundary>
+    </div>
+  );
 }

@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 
 import { ThemeProvider } from '@/components/common/theme-provider';
+import { ErrorBoundary } from '@/components/error/error-boundary';
+import { GlobalErrorHandler } from '@/components/error/global-error-handler';
 import { Toaster } from '@/components/ui/sonner';
 
 import './globals.css';
@@ -91,15 +93,20 @@ export default function RootLayout({
   return (
     <html lang='pt-BR' suppressHydrationWarning>
       <body className='antialiased'>
-        <ThemeProvider
-          attribute='class'
-          defaultTheme='dark'
-          enableSystem={false}
-          disableTransitionOnChange
+        <ErrorBoundary
+          showErrorDetails={process.env.NODE_ENV === 'development'}
         >
-          {children}
-          <Toaster />
-        </ThemeProvider>
+          <GlobalErrorHandler />
+          <ThemeProvider
+            attribute='class'
+            defaultTheme='dark'
+            enableSystem={false}
+            disableTransitionOnChange
+          >
+            {children}
+            <Toaster />
+          </ThemeProvider>
+        </ErrorBoundary>
       </body>
     </html>
   );

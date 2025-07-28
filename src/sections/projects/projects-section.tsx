@@ -1,3 +1,5 @@
+import { ErrorBoundary } from '@/components/error/error-boundary';
+import { ProjectsErrorFallback } from '@/components/error/section-error-fallback';
 import {
   generateProjectsCollectionStructuredData,
   StructuredData,
@@ -21,10 +23,12 @@ export async function ProjectsSection() {
         data={generateProjectsCollectionStructuredData(projectsData.projects)}
       />
 
-      <ProjectsClient
-        projects={projectsData.projects}
-        title={projectsData.title}
-      />
+      <ErrorBoundary fallback={<ProjectsErrorFallback />}>
+        <ProjectsClient
+          projects={projectsData.projects}
+          title={projectsData.title}
+        />
+      </ErrorBoundary>
     </>
   );
 }

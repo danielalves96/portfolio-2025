@@ -1,3 +1,6 @@
+import { ErrorBoundary } from '@/components/error/error-boundary';
+import { ContactErrorFallback } from '@/components/error/section-error-fallback';
+
 import { getContactData } from '@/lib/actions/data-fetching';
 
 import { ContactForm } from './contact-form';
@@ -25,7 +28,9 @@ export async function ContactSection() {
             {contactData.title}
           </h2>
 
-          <ContactForm />
+          <ErrorBoundary fallback={<ContactErrorFallback />}>
+            <ContactForm />
+          </ErrorBoundary>
         </div>
       </div>
     </section>

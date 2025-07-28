@@ -12,7 +12,10 @@ This is a **portfolio website for Paola Oliveira**, a UI/UX Designer. The applic
 - **Portfolio Showcase**: Projects, services, skills, and tools display with filtering capabilities
 - **Contact System**: Integrated contact form with email functionality via Resend API
 - **Responsive Design**: Mobile-first approach with dark theme support
-- **Performance Optimized**: Built with Next.js 15 and modern web technologies
+- **Performance Optimized**: Built with Next.js 15, lazy loading, and modern web technologies
+- **Advanced SEO**: Structured data, dynamic sitemap, canonical URLs, and Open Graph optimization
+- **Lazy Loading**: Intersection Observer-based loading with skeleton placeholders
+- **Image Optimization**: Priority-based loading with responsive sizes and Next.js Image component
 
 ### Target Audience
 
@@ -106,12 +109,17 @@ This is a Next.js 15 portfolio application with a complete admin panel and datab
 - **Jest** with jsdom environment
 - **React Testing Library** for component testing
 - 80% coverage threshold for quality assurance
+- **Current Coverage**: ~5% (needs improvement - see Development Notes)
 
 **Authentication & Security:**
 
-- **Cookie-based session management** with configurable credentials
-- **Middleware-protected admin routes** for secure access
-- **Environment-based security configuration**
+- **Simple Cookie-based Authentication**: Intentionally basic auth system for this portfolio project
+  - Environment-configurable credentials (ADMIN_EMAIL, ADMIN_PASSWORD)
+  - Secure cookie storage with 7-day expiration
+  - Middleware-protected admin routes
+  - **Note**: This authentication system is appropriate for a personal portfolio with single admin access
+- **Input Validation**: Zod schemas for all forms and API inputs
+- **Environment-based Configuration**: All sensitive data in environment variables
 
 ### Project Structure
 
@@ -278,6 +286,30 @@ The application uses 11 main database tables:
 - Middleware protection for all admin routes
 - Environment-based security configuration
 
+### Recent Improvements (2025)
+
+**SEO Optimization:**
+
+- **Structured Data**: Schema.org markup for Person, Website, CreativeWork, and Organization
+- **Dynamic Sitemap**: Database-driven sitemap generation with project URLs
+- **Canonical URLs**: Proper canonical URL implementation for duplicate content prevention
+- **Open Graph**: Corrected OG image references and comprehensive social media tags
+- **Breadcrumb Navigation**: Structured data for improved search engine understanding
+
+**Performance Optimization:**
+
+- **Lazy Loading**: Intersection Observer-based loading with priority system (high/medium/low)
+- **Skeleton Loading**: Custom skeleton components to prevent layout shift
+- **Image Optimization**: Priority-based loading, responsive sizes, and lazy loading for non-critical images
+- **Code Splitting**: React.lazy() implementation for non-critical sections
+- **Bundle Analysis**: Optimized bundle size through progressive loading
+
+**Developer Experience:**
+
+- **TypeScript Configuration**: Currently using relaxed mode (strict mode is next priority)
+- **Enhanced Error Handling**: Basic try/catch with plans for comprehensive error boundaries
+- **Advanced Tooling**: Husky, lint-staged, and comprehensive formatting rules
+
 ### Key Patterns & Changes from Original
 
 **Database-First Architecture:**
@@ -380,9 +412,25 @@ The application uses 11 main database tables:
 - Uses `@/` path alias for all src imports
 - Portfolio showcases UI/UX design work for "Paola Oliveira"
 - Responsive design with mobile-first approach
-- Intersection Observer for scroll-based animations
-- Next.js Image component for optimized image loading
+- Intersection Observer for scroll-based animations and lazy loading
+- Next.js Image component for optimized image loading with priority settings
 - Dark theme as default with system theme support disabled
+- Lazy loading system with skeleton placeholders to prevent layout shift
+
+**Important Components:**
+
+- `LazySection` (`src/components/common/lazy-section.tsx`): Intersection Observer wrapper for performance
+- `section-skeletons.tsx`: Custom skeleton loaders for each section type
+- `lazy-sections.tsx`: React.lazy() wrappers for code splitting
+- `structured-data.tsx`: SEO Schema.org markup components
+- `ImageUpload` (`src/components/admin/image-upload.tsx`): S3-compatible file upload with drag-and-drop
+
+**Next Development Priorities:**
+
+1. **TypeScript Strict Mode**: Enable strict type checking (noImplicitAny, noImplicitReturns, etc.)
+2. **Test Coverage**: Increase from current ~5% to target 80%
+3. **Error Boundaries**: Implement comprehensive error handling
+4. **Accessibility**: Improve ARIA attributes and keyboard navigation
 
 **Database Workflow:**
 
@@ -400,6 +448,18 @@ The application uses 11 main database tables:
 4. Upload images via drag-and-drop or file picker
 5. Changes immediately reflect on live site
 6. Use icon picker for social links and visual elements
+
+**Authentication Philosophy:**
+
+The current cookie-based authentication system is **intentionally simple and appropriate** for this portfolio project:
+
+- **Single Admin User**: Only Paola needs access, no multi-user complexity required
+- **Portfolio Context**: This is a personal portfolio, not a multi-tenant SaaS application
+- **Sufficient Security**: Environment-based credentials with secure cookies provide adequate protection
+- **Maintenance**: Simple system reduces maintenance overhead and potential security holes
+- **Performance**: No JWT overhead or complex session management needed
+
+**Do NOT** implement complex authentication (JWT, OAuth, role-based access) as it would be over-engineering for this use case.
 
 ## Command Reference
 

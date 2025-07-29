@@ -54,7 +54,6 @@ This project uses pnpm as the package manager. Key commands:
 - `pnpm db:push` - Push schema changes directly to database
 - `pnpm db:migrate` - Run pending migrations
 - `pnpm db:studio` - Open Drizzle Studio for database management
-- `pnpm db:seed` - Seed database with initial data from static files
 
 ## Architecture Overview
 
@@ -140,7 +139,9 @@ components/
 │   └── image-upload.tsx # S3 image upload with drag-and-drop
 ├── animations/     # Reusable animation components (blur-fade, text-animate)
 ├── auth/          # Authentication related components
-├── common/        # Shared utility components (theme, scroll indicators)
+├── common/        # Shared utility components (theme, scroll indicators, lazy loading)
+├── error/         # Error handling components (boundaries, fallbacks)
+├── seo/           # SEO components (structured data)
 └── ui/            # Base UI components (shadcn/ui style)
 ```
 
@@ -172,10 +173,14 @@ lib/
 │   └── auth-actions.ts # Login/logout server actions
 ├── db/           # Database connection and schema
 │   ├── schema.ts # Drizzle schema definitions for all tables
-│   ├── connection.ts # PostgreSQL connection with pooling
-│   └── seed.ts # Database seeding from static data files
+│   └── connection.ts # PostgreSQL connection with pooling
 ├── storage/      # Storage configuration
-│   └── s3-client.ts # Zenko S3-compatible client configuration
+│   ├── s3-client.ts # Zenko S3-compatible client configuration
+│   └── setup-bucket.ts # S3 bucket setup utilities
+├── utils/        # Utility functions
+│   └── image-optimization.ts # Advanced image optimization utilities
+├── email-template.ts # Email template for contact form
+├── error-reporting.ts # Comprehensive error logging system
 ├── hooks/        # Custom React hooks
 └── utils.ts      # Utility functions (cn for className merging)
 ```
@@ -284,14 +289,22 @@ The application uses 11 main database tables:
 
 - **Lazy Loading**: Intersection Observer-based loading with priority system (high/medium/low)
 - **Skeleton Loading**: Custom skeleton components to prevent layout shift
-- **Image Optimization**: Priority-based loading, responsive sizes, and lazy loading for non-critical images
+- **Image Optimization**: Advanced image optimization utilities with priority-based loading, responsive sizes, quality control, and lazy loading for non-critical images
 - **Code Splitting**: React.lazy() implementation for non-critical sections
+
+**Error Handling & Monitoring:**
+
+- **Comprehensive Error Boundaries**: React error boundaries with auto-retry functionality for chunk loading errors
+- **Error Reporting System**: Custom error logger with client/server/admin context tracking
+- **Global Error Handling**: Unhandled promise rejection and global error listeners
+- **Error Recovery**: Auto-retry mechanism for network and chunk loading errors with exponential backoff
 
 **Developer Experience:**
 
 - **TypeScript Configuration**: Enhanced strict mode with noImplicitAny, noImplicitReturns, noUnusedLocals, and noUnusedParameters enabled
 - **Environment Variables**: Type-safe environment management with @t3-oss/env-nextjs and Zod validation
-- **Enhanced Error Handling**: Implemented comprehensive error boundaries and global error handling.
+- **Code Quality**: Removed Jest testing framework to streamline project focus
+- **UI/UX Improvements**: Updated color scheme from primary to orange for enhanced visual consistency
 - **Advanced Tooling**: Husky, lint-staged, and comprehensive formatting rules
 
 ### Key Patterns & Changes from Original
@@ -412,6 +425,9 @@ All environment variables are managed through `src/env.ts` with Zod validation:
 - `lazy-sections.tsx`: React.lazy() wrappers for code splitting
 - `structured-data.tsx`: SEO Schema.org markup components
 - `ImageUpload` (`src/components/admin/image-upload.tsx`): S3-compatible file upload with drag-and-drop
+- `image-optimization.ts` (`src/lib/utils/image-optimization.ts`): Image optimization utilities with quality control and responsive sizing
+- `ErrorBoundary` (`src/components/error/error-boundary.tsx`): Advanced error boundary with auto-retry and reporting
+- `error-reporting.ts` (`src/lib/error-reporting.ts`): Comprehensive error logging system for client/server/admin contexts
 
 **Next Development Priorities:**
 
@@ -424,7 +440,7 @@ All environment variables are managed through `src/env.ts` with Zod validation:
 2. Generate migration with `pnpm db:generate`
 3. Apply migration with `pnpm db:push` or `pnpm db:migrate`
 4. Update seed data in `src/lib/db/seed.ts` if needed
-5. Reseed database with `pnpm db:seed`
+5. Seed database through admin interface or direct operations
 
 **Content Management Workflow:**
 
@@ -473,7 +489,6 @@ pnpm db:generate  # Generate migrations from schema changes
 pnpm db:push      # Push schema changes directly to database
 pnpm db:migrate   # Run pending migrations
 pnpm db:studio    # Open Drizzle Studio for database management
-pnpm db:seed      # Seed database with initial data
 ```
 
 ### Workflow Tips
@@ -482,4 +497,4 @@ pnpm db:seed      # Seed database with initial data
 - Use `pnpm db:push` for development or `pnpm db:migrate` for production
 - Run `pnpm lint:fix` and `pnpm format` before committing changes
 - Access database visually with `pnpm db:studio` at `http://localhost:4983`
-- Reseed database with fresh data using `pnpm db:seed` when needed
+- Manage database content through the admin interface at `/admin`

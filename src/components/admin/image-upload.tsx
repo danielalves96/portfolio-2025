@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import Image from 'next/image';
 
-import { Upload, X } from 'lucide-react';
+import { ExternalLink, Upload, X } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
@@ -124,14 +124,14 @@ export function ImageUpload({
   return (
     <div className='space-y-4'>
       {displayImage ? (
-        <div className='relative'>
-          <div className='aspect-square w-full max-w-sm rounded-lg overflow-hidden border bg-muted'>
+        <div className='relative w-48'>
+          <div className='h-48 w-48 rounded-lg overflow-hidden border bg-muted'>
             {preview ? (
               <Image
                 src={preview}
                 alt='Preview'
-                width={400}
-                height={400}
+                width={100}
+                height={100}
                 className='w-full h-full object-cover'
                 unoptimized
               />
@@ -140,8 +140,8 @@ export function ImageUpload({
                 src={value!}
                 alt='Uploaded image'
                 className='w-full h-full object-cover'
-                width={250}
-                height={250}
+                width={100}
+                height={100}
                 unoptimized
               />
             )}
@@ -155,18 +155,29 @@ export function ImageUpload({
           </div>
           <Button
             type='button'
-            variant='destructive'
+            variant='outline'
             size='sm'
-            className='absolute top-2 right-2'
+            className='absolute top-2 right-2 z-10 rounded-none p-1 h-6 w-6'
             onClick={removeImage}
             disabled={isUploading}
           >
             <X className='h-4 w-4' />
           </Button>
           {value && (
-            <p className='text-xs text-muted-foreground mt-2 break-all'>
-              {value}
-            </p>
+            <div className='flex items-center gap-1 mt-2'>
+              <p className='text-xs text-muted-foreground truncate max-w-[140px]'>
+                {value}
+              </p>
+              <a
+                href={value}
+                target='_blank'
+                rel='noopener noreferrer'
+                className='text-muted-foreground hover:text-primary transition-colors'
+                title='Abrir em nova aba'
+              >
+                <ExternalLink className='h-4 w-4' />
+              </a>
+            </div>
           )}
         </div>
       ) : (

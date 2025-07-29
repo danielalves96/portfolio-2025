@@ -132,7 +132,7 @@ Descrição do que estava fazendo quando o erro ocorreu:
             <strong>Suporte Técnico:</strong>{' '}
             <a
               href='mailto:daniel@kyantech.com.br'
-              className='text-primary hover:underline'
+              className='text-orange-500hover:underline'
             >
               daniel@kyantech.com.br
             </a>

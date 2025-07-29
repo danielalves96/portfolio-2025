@@ -381,7 +381,7 @@ export default function HeroAdmin() {
                     quoteText: e.target.value,
                   }))
                 }
-                className='w-full px-3 py-2 border border-border rounded-md bg-background resize-y focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors'
+                className='w-full px-3 py-2 border border-border rounded-md bg-background resize-y focus:ring-2 focus:ring-primary/20 focus:border-orange-500 transition-colors'
                 placeholder='Design é resolver problemas de forma criativa e eficiente.&#10;Cada projeto é uma oportunidade de inovar e impactar positivamente.&#10;Transformo ideias em experiências digitais memoráveis.'
                 required
               />

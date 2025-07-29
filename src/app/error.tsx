@@ -105,7 +105,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
           <p className='text-sm'>
             <a
               href='mailto:daniel@kyantech.com.br?subject=Erro no Portfolio - Paola Oliveira'
-              className='text-primary hover:underline'
+              className='text-orange-500hover:underline'
             >
               daniel@kyantech.com.br
             </a>

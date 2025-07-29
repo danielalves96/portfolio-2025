@@ -60,7 +60,7 @@ export default function LoginForm() {
               type='email'
               autoComplete='email'
               required
-              className='w-full px-3 py-2 border border-border rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent'
+              className='w-full px-3 py-2 border border-border rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent'
               placeholder='Digite seu email'
             />
           </div>
@@ -80,7 +80,7 @@ export default function LoginForm() {
                 type={showPassword ? 'text' : 'password'}
                 autoComplete='current-password'
                 required
-                className='w-full px-3 py-2 pr-10 border border-border rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent'
+                className='w-full px-3 py-2 pr-10 border border-border rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent'
                 placeholder='Digite sua senha'
               />
               <button

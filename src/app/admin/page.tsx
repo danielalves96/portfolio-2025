@@ -165,12 +165,12 @@ export default function AdminPage() {
                     className='group relative flex flex-col p-6 text-left border rounded-xl hover:bg-accent/50 transition-all duration-200 hover:shadow-lg hover:shadow-primary/5 hover:border-primary/20 hover:-translate-y-1'
                   >
                     <div className='flex items-start gap-4 mb-4'>
-                      <div className='flex-shrink-0 p-3 rounded-xl bg-primary/10 group-hover:bg-primary/15 transition-colors'>
+                      <div className='flex-shrink-0 p-3 rounded-xl bg-orange-500/10 group-hover:bg-orange-500/15 transition-colors'>
                         <IconComponent className='h-6 w-6 text-primary' />
                       </div>
                       <div className='flex-1 min-w-0'>
                         <div className='flex items-center gap-2 mb-1'>
-                          <h3 className='font-semibold text-foreground group-hover:text-primary transition-colors truncate'>
+                          <h3 className='font-semibold text-foreground group-hover:text-orange-500transition-colors truncate'>
                             {section.title}
                           </h3>
                         </div>
@@ -182,7 +182,7 @@ export default function AdminPage() {
 
                     <div className='mt-auto pt-4 border-t border-border/50'>
                       <div className='flex items-center justify-end text-xs text-muted-foreground'>
-                        <span className='text-primary group-hover:text-primary/80'>
+                        <span className='text-orange-500group-hover:text-primary/80'>
                           Gerenciar →
                         </span>
                       </div>

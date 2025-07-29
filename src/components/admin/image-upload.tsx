@@ -173,7 +173,7 @@ export function ImageUpload({
         <div
           className={`
             relative border-2 border-dashed rounded-lg p-6 transition-colors cursor-pointer
-            ${dragActive ? 'border-primary bg-primary/5' : 'border-muted-foreground/25 hover:border-primary/50'}
+            ${dragActive ? 'border-orange-500 bg-orange-500/5' : 'border-muted-foreground/25 hover:border-primary/50'}
             ${isUploading ? 'pointer-events-none opacity-50' : ''}
           `}
           onDrop={handleDrop}

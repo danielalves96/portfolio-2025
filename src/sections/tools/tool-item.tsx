@@ -49,10 +49,6 @@ export function ToolItem({ tool, index }: ToolItemProps) {
             </div>
           )}
         </div>
-
-        <p className='text-sm font-medium text-foreground text-center'>
-          {tool.name}
-        </p>
       </div>
     </BlurFade>
   );

@@ -30,16 +30,16 @@ export default function NotFound() {
             Navegação rápida:
           </h3>
           <div className='grid grid-cols-2 gap-3 text-sm'>
-            <Link href='/#about' className='text-primary hover:underline'>
+            <Link href='/#about' className='text-orange-500hover:underline'>
               Sobre Paola
             </Link>
-            <Link href='/#projects' className='text-primary hover:underline'>
+            <Link href='/#projects' className='text-orange-500hover:underline'>
               Projetos
             </Link>
-            <Link href='/#services' className='text-primary hover:underline'>
+            <Link href='/#services' className='text-orange-500hover:underline'>
               Serviços
             </Link>
-            <Link href='/#contact' className='text-primary hover:underline'>
+            <Link href='/#contact' className='text-orange-500hover:underline'>
               Contato
             </Link>
           </div>
@@ -68,7 +68,7 @@ export default function NotFound() {
             Se você chegou aqui através de um link, por favor nos informe em{' '}
             <a
               href='mailto:daniel@kyantech.com.br?subject=Link quebrado no portfolio'
-              className='text-primary hover:underline'
+              className='text-orange-500hover:underline'
             >
               daniel@kyantech.com.br
             </a>

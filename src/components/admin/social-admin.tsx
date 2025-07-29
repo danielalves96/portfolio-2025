@@ -70,7 +70,7 @@ const allIcons = {
 
 const renderIcon = (iconName: string) => {
   const IconComponent = (allIcons as any)[iconName];
-  return IconComponent ? <IconComponent className='h-6 w-6' /> : null;
+  return IconComponent ? <IconComponent className='h-20 w-20' /> : null;
 };
 
 interface SocialItem {
@@ -239,7 +239,7 @@ export default function SocialAdmin() {
               >
                 <div className='aspect-square bg-muted rounded-lg flex items-center justify-center mb-4 overflow-hidden relative'>
                   {item.image ? (
-                    <div className='text-6xl text-orange-500'>
+                    <div className='text-6xl text-primary'>
                       {renderIcon(item.image)}
                     </div>
                   ) : (
@@ -286,7 +286,7 @@ export default function SocialAdmin() {
                       href={item.url}
                       target='_blank'
                       rel='noopener noreferrer'
-                      className='flex items-center gap-2 text-sm text-primary hover:underline'
+                      className='flex items-center gap-2 text-sm text-orange-500hover:underline'
                       onClick={e => e.stopPropagation()}
                     >
                       <ExternalLink className='h-3 w-3' />

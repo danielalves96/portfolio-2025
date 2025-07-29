@@ -287,7 +287,7 @@ function LoadingEmptyState({
       <div className='space-y-4'>
         <div className='flex justify-center'>
           <div className='rounded-full bg-muted p-4'>
-            <div className='h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent' />
+            <div className='h-8 w-8 animate-spin rounded-full border-2 border-orange-500 border-t-transparent' />
           </div>
         </div>
 

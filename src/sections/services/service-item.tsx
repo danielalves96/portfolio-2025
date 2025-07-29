@@ -1,8 +1,10 @@
 'use client';
 
-import Image from 'next/image';
-
 import { ChevronDown, ChevronUp } from 'lucide-react';
+
+import { ImageWithSkeleton } from '@/components/ui/image-with-skeleton';
+
+import { generateBlurDataURL } from '@/lib/utils/image-optimization';
 
 import { Service } from './services-data';
 
@@ -10,12 +12,14 @@ interface ServiceItemProps {
   service: Service;
   isExpanded: boolean;
   onToggle: () => void;
+  index?: number;
 }
 
 export function ServiceItem({
   service,
   isExpanded,
   onToggle,
+  index = 0,
 }: ServiceItemProps) {
   return (
     <div>
@@ -46,14 +50,19 @@ export function ServiceItem({
         }`}
       >
         <div className='border-b border-border/30'>
-          <div className='relative aspect-[21/9] overflow-hidden'>
-            <Image
+          <div className='relative'>
+            <ImageWithSkeleton
               src={service.image}
               alt={service.title}
               fill
               className='object-cover'
-              loading='lazy'
-              sizes='(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw'
+              priority={index === 0}
+              loading={index === 0 ? 'eager' : 'lazy'}
+              sizes='(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 60vw'
+              quality={index === 0 ? 85 : 70}
+              placeholder='blur'
+              blurDataURL={generateBlurDataURL()}
+              aspectRatio='aspect-[21/9]'
             />
 
             <div className='absolute inset-0 bg-gradient-to-t from-orange-700/90 via-orange-600/70 to-transparent' />

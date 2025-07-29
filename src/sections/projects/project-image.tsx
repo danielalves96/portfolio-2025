@@ -2,6 +2,13 @@
 
 import Image from 'next/image';
 
+import {
+  generateBlurDataURL,
+  generateSizes,
+  getImageQuality,
+  getLoadingStrategy,
+  shouldLoadWithPriority,
+} from '@/lib/utils/image-optimization';
 import { Project } from '@/types/project';
 
 interface ProjectImageProps {
@@ -10,6 +17,8 @@ interface ProjectImageProps {
 }
 
 export function ProjectImage({ project, index }: ProjectImageProps) {
+  const priority = shouldLoadWithPriority(index, 'project');
+
   return (
     <div className='relative m-auto p-6 border-l'>
       <div className='aspect-[15/10] bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden group'>
@@ -19,9 +28,12 @@ export function ProjectImage({ project, index }: ProjectImageProps) {
           width={600}
           height={450}
           className='w-full h-full object-cover transition-transform duration-300 group-hover:scale-102'
-          priority={index < 2}
-          loading={index < 2 ? 'eager' : 'lazy'}
-          sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+          priority={priority}
+          loading={getLoadingStrategy(priority)}
+          sizes={generateSizes('project')}
+          quality={getImageQuality(priority)}
+          placeholder='blur'
+          blurDataURL={generateBlurDataURL()}
           onError={e => {
             e.currentTarget.style.display = 'none';
             const fallback = e.currentTarget.nextElementSibling as HTMLElement;

@@ -28,12 +28,13 @@ export function ServicesClient({ services }: ServicesClientProps) {
       <div className='max-w-7xl mx-auto'>
         <ServicesHeader />
         <div className='space-y-0'>
-          {services.map(service => (
+          {services.map((service, index) => (
             <ServiceItem
               key={service.id}
               service={service}
               isExpanded={expandedService === service.id}
               onToggle={() => toggleService(service.id)}
+              index={index}
             />
           ))}
         </div>

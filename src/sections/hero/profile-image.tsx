@@ -2,6 +2,12 @@
 
 import Image from 'next/image';
 
+import {
+  generateBlurDataURL,
+  generateSizes,
+  getImageQuality,
+} from '@/lib/utils/image-optimization';
+
 interface ProfileImageProps {
   src: string;
   alt: string;
@@ -22,7 +28,10 @@ export function ProfileImage({ src, alt, name }: ProfileImageProps) {
           className='object-cover'
           style={{ transform: 'scale(1.1)' }}
           priority
-          sizes='(max-width: 640px) 1024px, (max-width: 768px) 1024px, 1024px'
+          sizes={generateSizes('hero')}
+          quality={getImageQuality(true, true)}
+          placeholder='blur'
+          blurDataURL={generateBlurDataURL()}
         />
       </div>
 

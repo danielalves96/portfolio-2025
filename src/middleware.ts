@@ -3,6 +3,20 @@ import { NextRequest, NextResponse } from 'next/server';
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // Image optimization and caching headers
+  if (pathname.match(/\.(jpg|jpeg|png|webp|avif|gif|svg)$/i)) {
+    const response = NextResponse.next();
+
+    // Set aggressive caching for images
+    response.headers.set(
+      'Cache-Control',
+      'public, max-age=31536000, immutable'
+    );
+    response.headers.set('Vary', 'Accept');
+
+    return response;
+  }
+
   if (
     pathname === '/' ||
     pathname === '/login' ||

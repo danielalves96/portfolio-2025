@@ -118,10 +118,10 @@ export async function createProject(data: {
   category: string[];
   year: string;
   whatIAccomplished: string;
-  figmaMobile?: string;
-  figmaDesktop?: string;
-  dribbbleUrl?: string;
-  behanceUrl?: string;
+  figmaMobile?: string | null;
+  figmaDesktop?: string | null;
+  dribbbleUrl?: string | null;
+  behanceUrl?: string | null;
 }) {
   try {
     await db.execute(sql`
@@ -157,10 +157,10 @@ export async function updateProject(
     category: string[];
     year: string;
     whatIAccomplished: string;
-    figmaMobile?: string;
-    figmaDesktop?: string;
-    dribbbleUrl?: string;
-    behanceUrl?: string;
+    figmaMobile?: string | null;
+    figmaDesktop?: string | null;
+    dribbbleUrl?: string | null;
+    behanceUrl?: string | null;
   }
 ) {
   try {

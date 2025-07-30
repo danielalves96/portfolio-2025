@@ -280,10 +280,10 @@ export default function ProjectsAdmin() {
       category: categories,
       year: formData.year,
       whatIAccomplished: formData.whatIAccomplished,
-      figmaMobile: formData.figmaMobile || undefined,
-      figmaDesktop: formData.figmaDesktop || undefined,
-      dribbbleUrl: formData.dribbbleUrl || undefined,
-      behanceUrl: formData.behanceUrl || undefined,
+      figmaMobile: formData.figmaMobile.trim() || null,
+      figmaDesktop: formData.figmaDesktop.trim() || null,
+      dribbbleUrl: formData.dribbbleUrl.trim() || null,
+      behanceUrl: formData.behanceUrl.trim() || null,
     };
 
     try {
@@ -544,7 +544,7 @@ export default function ProjectsAdmin() {
                     <input
                       id='figmaMobile'
                       name='figmaMobile'
-                      type='url'
+                      type='text'
                       value={formData.figmaMobile}
                       onChange={e =>
                         setFormData({
@@ -565,7 +565,7 @@ export default function ProjectsAdmin() {
                     <input
                       id='figmaDesktop'
                       name='figmaDesktop'
-                      type='url'
+                      type='text'
                       value={formData.figmaDesktop}
                       onChange={e =>
                         setFormData({
@@ -586,7 +586,7 @@ export default function ProjectsAdmin() {
                     <input
                       id='dribbbleUrl'
                       name='dribbbleUrl'
-                      type='url'
+                      type='text'
                       value={formData.dribbbleUrl}
                       onChange={e =>
                         setFormData({
@@ -604,7 +604,7 @@ export default function ProjectsAdmin() {
                     <input
                       id='behanceUrl'
                       name='behanceUrl'
-                      type='url'
+                      type='text'
                       value={formData.behanceUrl}
                       onChange={e =>
                         setFormData({ ...formData, behanceUrl: e.target.value })
